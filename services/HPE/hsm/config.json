@@ -1,0 +1,10 @@
+{
+  "description": "Helion Service Manager provides a catalog of services which can be deployed in Stackto platform",
+  "categories": [
+    "ServiceManager"
+  ],
+  "labels": [
+    "ServiceManager"
+  ],
+  "type": "local"
+}

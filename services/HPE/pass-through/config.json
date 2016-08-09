@@ -1,0 +1,12 @@
+{
+  "description": "pass-through",
+  "categories": [
+    "Configuration",
+    "pass-through"
+  ],
+  "labels": [
+    "Configuration",
+    "pass-through"
+  ],
+  "type": "local"
+}

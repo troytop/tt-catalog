@@ -1,0 +1,10 @@
+{
+  "description": "Google's free online language translation service instantly translates text and web pages.",
+  "categories": [
+    "Translation"
+  ],
+  "labels": [
+    "RestApi"
+  ],
+  "type": "by-ref"
+}
