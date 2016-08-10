@@ -1,0 +1,10 @@
+{
+  "description": "Control Plane for Helion Stackato",
+  "categories": [
+    "HCP"
+  ],
+  "labels": [
+    "HCP"
+  ],
+  "type": "local"
+}
