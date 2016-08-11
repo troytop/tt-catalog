@@ -1,5 +1,7 @@
 .PHONY: help test
 
+export CATALOG_LOCATION?=s3://helion-service-manager/release/catalog-templates/HCP-v1/stable-1/services
+
 default: help
 
 help:
@@ -20,3 +22,7 @@ test: tools test-format
 test-format:
 	@echo "$(OK_COLOR)==> Checking code with gofmt$(NO_COLOR)"
 	./scripts/testFmt.sh tests
+
+publish-catalog:
+	@echo "$(OK_COLOR)===> Publish catalog to s3 location @ ${}$(NO_COLOR)"
+	./scripts/publish-catalog-bucket.sh
