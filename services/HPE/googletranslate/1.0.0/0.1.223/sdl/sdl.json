@@ -1,6 +1,6 @@
 {
     "name": "googletranslate",
-    "product_version": "1.0.1",
+    "product_version": "1.0.0",
     "sdl_version": "0.1.223",
     "vendor": "HPE",
     "components": [
