@@ -19,7 +19,7 @@ tools:
 
 test: tools test-format
 	@echo "$(OK_COLOR)==> Testing code$(NO_COLOR)"
-	SKIP_SDL_VALIDATION="hce hcf helion-console hcp" godep go test ./... -v
+	SKIP_SDL_VALIDATION="hce hcf hsc hcp" godep go test ./... -v
 
 test-format:
 	@echo "$(OK_COLOR)==> Checking code with gofmt$(NO_COLOR)"

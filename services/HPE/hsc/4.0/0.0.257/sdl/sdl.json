@@ -1,7 +1,7 @@
 {
-  "name": "helion-console",
+  "name": "hsc",
   "product_version": "4.0",
-  "sdl_version": "0.0.222",
+  "sdl_version": "0.0.257",
   "vendor": "HPE",
   "components": [
     {
@@ -15,7 +15,7 @@
       "platform": "linux-x86_64",
       "capabilities": [],
       "repository": "docker-registry.helion.space:443",
-      "image": "hsc/hsc-console:0.0.222",
+      "image": "hsc/hsc-console:0.0.257",
       "workload_type": "container",
       "entrypoint": [],
       "parameters": [
@@ -30,7 +30,6 @@
         }
       ],
       "affinity": [],
-      "labels": [],
       "min_instances": 1,
       "max_instances": 1,
       "service_ports": [
@@ -62,7 +61,7 @@
       "platform": "linux-x86_64",
       "capabilities": [],
       "repository": "docker-registry.helion.space:443",
-      "image": "hsc/hsc-proxy:0.0.222",
+      "image": "hsc/hsc-proxy:0.0.257",
       "workload_type": "container",
       "entrypoint": [],
       "parameters": [
@@ -128,10 +127,15 @@
         },
         {
           "name": "GITHUB_OAUTH_STATE"
+        },
+        {
+          "name": "ENCRYPTION_KEY_VOLUME"
+        },
+        {
+          "name": "ENCRYPTION_KEY_FILENAME"
         }
       ],
       "affinity": [],
-      "labels": [],
       "min_instances": 1,
       "max_instances": 1,
       "service_ports": [
@@ -189,7 +193,6 @@
         }
       ],
       "affinity": [],
-      "labels": [],
       "min_instances": 1,
       "max_instances": 1,
       "service_ports": [
@@ -248,15 +251,26 @@
       "workload_type": "container",
       "capabilities": [],
       "repository": "docker-registry.helion.space:443",
-      "image": "hsc/hsc-initiate-upgrade-job:0.0.222",
+      "image": "hsc/hsc-initiate-upgrade-job:0.0.257",
       "entrypoint": [],
       "parameters": [
         {
           "name": "CONSOLE_VERSION"
+        },
+        {
+          "name": "UPGRADE_VOLUME"
+        },
+        {
+          "name": "UPGRADE_LOCK_FILENAME"
+        },
+        {
+          "name": "ENCRYPTION_KEY_VOLUME"
+        },
+        {
+          "name": "ENCRYPTION_KEY_FILENAME"
         }
       ],
       "affinity": [],
-      "labels": [],
       "min_instances": 1,
       "max_instances": 1,
       "retry_count": 100,
@@ -265,6 +279,10 @@
         {
           "volume_name": "hsc-upgrade-volume",
           "mountpoint": "/hsc-upgrade-volume"
+        },
+        {
+          "volume_name": "hsc-encryption-key-volume",
+          "mountpoint": "/hsc-encryption-key-volume"
         }
       ]
     }
@@ -282,7 +300,7 @@
       "workload_type": "container",
       "capabilities": [],
       "repository": "docker-registry.helion.space:443",
-      "image": "hsc/hsc-finalize-upgrade-job:0.0.222",
+      "image": "hsc/hsc-finalize-upgrade-job:0.0.257",
       "entrypoint": [],
       "parameters": [
         {
@@ -311,10 +329,15 @@
         },
         {
           "name": "pgsql-password"
+        },
+        {
+          "name": "UPGRADE_VOLUME"
+        },
+        {
+          "name": "UPGRADE_LOCK_FILENAME"
         }
       ],
       "affinity": [],
-      "labels": [],
       "min_instances": 1,
       "max_instances": 1,
       "retry_count": 100,
@@ -345,12 +368,11 @@
       "shared": true
     }
   ],
-  "labels": [],
   "parameters": [
     {
       "name": "CONSOLE_VERSION",
       "description": "The current version of the Helion Stackato Console. This param will be automatically incremented with each release of the Console so as to allow HCP to properly restart each component at the time of upgrade. This should not be changed manually.",
-      "default": "0.0.222",
+      "default": "0.0.257",
       "data_type": "string",
       "required": true,
       "secret": false
@@ -368,11 +390,6 @@
             "value_type": "certificate"
           }
         }
-    },
-    {
-      "name": "CONSOLE_CA_CERT_KEY_FILE",
-      "description": "The Console CA Key file on disk",
-      "default": "/etc/secrets/console-ca-cert-key"
     },
     {
       "name": "console-ca-cert-key",
@@ -395,11 +412,6 @@
       "data_type": "string",
       "required": true,
       "secret": false
-    },
-    {
-      "name": "PGSQL_PASSWORD_FILE",
-      "description": "The Stackato DB password file on disk",
-      "default": "/etc/secrets/pgsql-password"
     },
     {
       "name": "pgsql-password",
@@ -462,11 +474,6 @@
       "data_type": "string",
       "required": true,
       "secret": false
-    },
-    {
-      "name": "POSTGRES_PASSWORD_FILE",
-      "description": "The Postgres password file on disk",
-      "default": "/etc/secrets/postgres-password"
     },
     {
       "name": "postgres-password",
@@ -535,7 +542,7 @@
       "secret": true,
       "generator":
         {
-          "id": "console_cert",
+          "id": "console_certificate",
           "generate": {
             "type": "Certificate",
             "value_type": "private_key"
@@ -686,6 +693,38 @@
       "name": "GITHUB_OAUTH_STATE",
       "description": "** DEPRECATED ** will be removed as a part of TEAMFOUR-561",
       "data_type": "string",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "UPGRADE_VOLUME",
+      "description": "The local shared volume mount for the upgrade lock file.",
+      "data_type": "string",
+      "default": "hsc-upgrade-volume",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "UPGRADE_LOCK_FILENAME",
+      "description": "The filename of the lockfile used to coordinate a Console upgrade.",
+      "data_type": "string",
+      "default": "upgrade.lock",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "ENCRYPTION_KEY_VOLUME",
+      "description": "The local shared volume mount for the encryption key.",
+      "data_type": "string",
+      "default": "hsc-encryption-key-volume",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "ENCRYPTION_KEY_FILENAME",
+      "description": "The filename of the encryption key used to encrypt sensitive data before it gets saved to Postgresql.",
+      "data_type": "string",
+      "default": "key",
       "required": true,
       "secret": false
     }
