@@ -1,6 +1,7 @@
 .PHONY: help test
 
 export CATALOG_LOCATION?=s3://helion-service-manager/release/catalog-templates/HCP-v1/stable-1/services
+export IDL_LOCATION?=s3://helion-service-manager/release/instance-definition/stable-1
 
 default: help
 
@@ -8,6 +9,7 @@ help:
 	@echo "These 'make' targets are available."
 	@echo
 	@echo "  test               Run the unit tests"
+	@echo "	 publish-catalog    Publish the catalog to s3 location"
 
 all: tools test
 
