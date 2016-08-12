@@ -1,7 +1,7 @@
 {
   "name": "hsc",
   "product_version": "4.0",
-  "sdl_version": "0.0.257",
+  "sdl_version": "0.0.255",
   "vendor": "HPE",
   "components": [
     {
@@ -15,7 +15,7 @@
       "platform": "linux-x86_64",
       "capabilities": [],
       "repository": "docker-registry.helion.space:443",
-      "image": "hsc/hsc-console:0.0.257",
+      "image": "hsc/hsc-console:0.0.255",
       "workload_type": "container",
       "entrypoint": [],
       "parameters": [
@@ -61,7 +61,7 @@
       "platform": "linux-x86_64",
       "capabilities": [],
       "repository": "docker-registry.helion.space:443",
-      "image": "hsc/hsc-proxy:0.0.257",
+      "image": "hsc/hsc-proxy:0.0.255",
       "workload_type": "container",
       "entrypoint": [],
       "parameters": [
@@ -251,7 +251,7 @@
       "workload_type": "container",
       "capabilities": [],
       "repository": "docker-registry.helion.space:443",
-      "image": "hsc/hsc-initiate-upgrade-job:0.0.257",
+      "image": "hsc/hsc-initiate-upgrade-job:0.0.255",
       "entrypoint": [],
       "parameters": [
         {
@@ -300,7 +300,7 @@
       "workload_type": "container",
       "capabilities": [],
       "repository": "docker-registry.helion.space:443",
-      "image": "hsc/hsc-finalize-upgrade-job:0.0.257",
+      "image": "hsc/hsc-finalize-upgrade-job:0.0.255",
       "entrypoint": [],
       "parameters": [
         {
@@ -372,7 +372,7 @@
     {
       "name": "CONSOLE_VERSION",
       "description": "The current version of the Helion Stackato Console. This param will be automatically incremented with each release of the Console so as to allow HCP to properly restart each component at the time of upgrade. This should not be changed manually.",
-      "default": "0.0.257",
+      "default": "0.0.255",
       "data_type": "string",
       "required": true,
       "secret": false

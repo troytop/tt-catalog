@@ -1,7 +1,7 @@
 {
   "name": "hsc",
   "product_version": "4.0",
-  "sdl_version": "0.0.257",
+  "sdl_version": "0.0.255",
   "vendor": "HPE",
   "instance_id": "hsc",
   "description": "An instance of the Helion Stackato Console",
