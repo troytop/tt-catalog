@@ -1,13 +1,44 @@
 {
   "name": "hce",
-  "sdl_version": "1.1.40",
-  "product_version": "1.0.0",
+  "sdl_version": "1.1.8",
+  "product_version": "4.0",
   "vendor": "HPE",
   "features": {
     "auth": [
       {
         "auth_zone": "default",
         "clients": [
+          {
+            "id": "hce",
+            "name": "Code Engine user",
+            "scopes": [
+              "hcp.admin",
+              "hcp.user"
+            ],
+            "authorized_grant_types": [
+              "password",
+              "refresh_token"
+            ],
+            "access_token_validity": 604800,
+            "refresh_token_validity": 2592000
+          },
+          {
+            "id": "hceservice",
+            "name": "Code Engine service account",
+            "authorities": [
+              "hcp.user"
+            ],
+            "authorized_grant_types": [
+              "client_credentials"
+            ],
+            "access_token_validity": 604800,
+            "refresh_token_validity": 2592000,
+            "parameters": [
+              {
+                "name": "hce-service-account-secret"
+              }
+            ]
+          },
           {
             "id": "code-engine-renamed",
             "name": "Code Engine Client with access to default zone",
@@ -25,6 +56,55 @@
       }
     ]
   },
+  "postflight": [
+    {
+      "name": "update-database",
+      "version": "1.0.0",
+      "vendor": "HPE",
+      "external_name": "hce-update-database",
+      "repository":"docker-registry.helion.space:443",
+      "image": "hce-rest-service:563d613778737b8af5938d55e663c611886130fa",
+      "workload_type": "container",
+      "min_RAM_mb": 256,
+      "min_disk_gb": 5,
+      "min_VCPU": 1,
+      "platform": "linux-x86_64",
+      "capabilities": [],
+      "entrypoint": [
+        "/app/start.sh",
+	"database-update"
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "retry_count": 10,
+      "volume_mounts": [
+        {
+          "volume_name": "hce-encryption-key-volume",
+          "mountpoint": "/database"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "HCE_DOCKER_USERNAME"
+        },
+        {
+          "name": "HCE_DOCKER_PASSWORD"
+        },
+        {
+          "name": "HCE_DB_HOST"
+        },
+        {
+          "name": "HCE_DB_USER"
+        },
+        {
+          "name": "HCE_DB_PASSWORD"
+        },
+        {
+          "name": "HCE_DB_NAME"
+        }
+      ]
+    }
+  ],
   "volumes": [
     {
       "name": "node1-volume",
@@ -120,7 +200,7 @@
       "vendor": "percona",
       "external_name": "pxc-node1",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-mysql:ee53620ceffb041f3df65a594e35fce79d9fc593",
+      "image": "hce-mysql:91f35f7ba8abf7403b06fc873cb7938ef3136f98",
       "entrypoint": [
         "/start.sh"
       ],
@@ -166,6 +246,13 @@
           "protocol": "TCP",
           "source_port": 4568,
           "target_port": 4568,
+          "public": false
+        },
+        {
+          "name": "mysqlcheck",
+          "protocol": "TCP",
+          "source_port": 9200,
+          "target_port": 9200,
           "public": false
         }
       ],
@@ -217,7 +304,7 @@
       "vendor": "percona",
       "external_name": "pxc-node2",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-mysql:ee53620ceffb041f3df65a594e35fce79d9fc593",
+      "image": "hce-mysql:91f35f7ba8abf7403b06fc873cb7938ef3136f98",
       "entrypoint": [
         "/start.sh"
       ],
@@ -263,6 +350,13 @@
           "protocol": "TCP",
           "source_port": 4568,
           "target_port": 4568,
+          "public": false
+        },
+        {
+          "name": "mysqlcheck",
+          "protocol": "TCP",
+          "source_port": 9200,
+          "target_port": 9200,
           "public": false
         }
       ],
@@ -314,7 +408,7 @@
       "vendor": "percona",
       "external_name": "pxc-node3",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-mysql:ee53620ceffb041f3df65a594e35fce79d9fc593",
+      "image": "hce-mysql:91f35f7ba8abf7403b06fc873cb7938ef3136f98",
       "entrypoint": [
         "/start.sh"
       ],
@@ -360,6 +454,13 @@
           "protocol": "TCP",
           "source_port": 4568,
           "target_port": 4568,
+          "public": false
+        },
+        {
+          "name": "mysqlcheck",
+          "protocol": "TCP",
+          "source_port": 9200,
+          "target_port": 9200,
           "public": false
         }
       ],
@@ -507,7 +608,7 @@
       "vendor": "HPE",
       "external_name": "concourse-worker-1",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-concourse-bin:7163c9fd4f1c0903447a75a07b43e9108ebc94b7",
+      "image": "hce-concourse-bin:f8b27ff3a0a1b7b4b88d7a6b92fa40bf407f9a5f",
       "entrypoint": [
         "/root/scripts/start.sh",
         "worker"
@@ -567,7 +668,7 @@
       "vendor": "HPE",
       "external_name": "concourse-worker-2",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-concourse-bin:7163c9fd4f1c0903447a75a07b43e9108ebc94b7",
+      "image": "hce-concourse-bin:f8b27ff3a0a1b7b4b88d7a6b92fa40bf407f9a5f",
       "entrypoint": [
         "/root/scripts/start.sh",
         "worker"
@@ -627,7 +728,7 @@
       "vendor": "HPE",
       "external_name": "concourse-worker-3",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-concourse-bin:7163c9fd4f1c0903447a75a07b43e9108ebc94b7",
+      "image": "hce-concourse-bin:f8b27ff3a0a1b7b4b88d7a6b92fa40bf407f9a5f",
       "entrypoint": [
         "/root/scripts/start.sh",
         "worker"
@@ -687,7 +788,7 @@
       "vendor": "HPE",
       "external_name": "concourse-web",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-concourse-bin:7163c9fd4f1c0903447a75a07b43e9108ebc94b7",
+      "image": "hce-concourse-bin:f8b27ff3a0a1b7b4b88d7a6b92fa40bf407f9a5f",
       "entrypoint": [
         "/root/scripts/start.sh",
         "web"
@@ -741,6 +842,12 @@
         },
         {
           "name": "HCE_CONCOURSE_DB_HOST"
+        },
+        {
+          "name": "POSTGRES_USER"
+        },
+        {
+          "name": "POSTGRES_PASSWORD"
         }
       ]
     },
@@ -750,7 +857,7 @@
       "vendor": "HPE",
       "external_name": "hce-watchdog",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-rest-service:06d539503f36e49975239097716847378b6c2c2a",
+      "image": "hce-rest-service:563d613778737b8af5938d55e663c611886130fa",
       "entrypoint": [
         "/app/start.sh",
         "watchdog"
@@ -800,6 +907,63 @@
         },
         {
           "name": "HCE_CONCOURSE_PASSWORD"
+        },
+        {
+          "name": "HCE_DOCKER_USERNAME"
+        },
+        {
+          "name": "HCE_DOCKER_PASSWORD"
+        },
+        {
+          "name": "HCE_ARTIFACT_STORAGE_VOLUME"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_BUILD_EVENT_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_HIPCHAT_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_HTTP_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_GITHUB_PR_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_BITBUCKET_PR_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_FLOWDOCK_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_SLACK_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_CLOUD_FOUNDRY_WORKER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_STORM_RUNNER_WORKER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_GIT_MERGE_WORKER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_NODEJS_BUILD_CONTAINER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_PHP_BUILD_CONTAINER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_GOLANG_BUILD_CONTAINER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_PYTHON_BUILD_CONTAINER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_RUBY_BUILD_CONTAINER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_JAVA_MAVEN_BUILD_CONTAINER"
         }
       ]
     },
@@ -809,7 +973,7 @@
       "vendor": "HPE",
       "external_name": "hce-rest",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-rest-service:06d539503f36e49975239097716847378b6c2c2a",
+      "image": "hce-rest-service:563d613778737b8af5938d55e663c611886130fa",
       "entrypoint": [
         "/app/start.sh",
         "rest"
@@ -900,52 +1064,7 @@
           "name": "HCE_REGISTRY_MIRROR"
         },
         {
-          "name": "HCE_IMAGE_TAG_BUILD_EVENT_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_HIPCHAT_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_HTTP_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_GITHUB_PR_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_BITBUCKET_PR_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_FLOWDOCK_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_SLACK_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_CLOUD_FOUNDRY_WORKER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_STORM_RUNNER_WORKER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_GIT_MERGE_WORKER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_NODEJS_BUILD_CONTAINER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_PHP_BUILD_CONTAINER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_GOLANG_BUILD_CONTAINER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_PYTHON_BUILD_CONTAINER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_RUBY_BUILD_CONTAINER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_JAVA_MAVEN_BUILD_CONTAINER"
+          "name": "HCE_ARTIFACT_STORAGE_VOLUME"
         }
       ]
     }
@@ -1021,6 +1140,15 @@
       "example": "cisystem",
       "data_type": "string",
       "required": true,
+      "secret": false
+    },
+    {
+      "name": "HCE_ARTIFACT_STORAGE_VOLUME",
+      "description": "Artifact storage volume path for HCE",
+      "default": "/var/lib/artifacts",
+      "example": "/var/lib/artifacts",
+      "data_type": "string",
+      "required": false,
       "secret": false
     },
     {
@@ -1107,6 +1235,14 @@
     {
       "name": "hce-ssl-cert-crt",
       "description": "SSL certificate for HCE-REST API",
+      "example": "",
+      "data_type": "string",
+      "required": true,
+      "secret": true
+    },
+    {
+      "name": "hce-service-account-secret",
+      "description": "HCE Service account secret",
       "example": "",
       "data_type": "string",
       "required": true,
@@ -1346,7 +1482,7 @@
     {
       "name": "HCE_IMAGE_TAG_STORM_RUNNER_WORKER",
       "description": "Image tag for the stormRunner Docker image",
-      "default": "9c180cd72d2ae2ef27799323578a10e75731cbbe",
+      "default": "c6b81e4d4932e4b9cb1faa426aeb36eb5568f1e6",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1373,7 +1509,7 @@
     {
       "name": "HCE_IMAGE_TAG_PHP_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-php Docker image",
-      "default": "6e7faa5708ffd1b0b3cd71fac878c7276c1bef4c",
+      "default": "22c0967ae694b55ce584e581298c89142f85147f",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1382,7 +1518,7 @@
     {
       "name": "HCE_IMAGE_TAG_GOLANG_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-golang Docker image",
-      "default": "146d1c41da42000e7b33e13dc75d3eea2bf1a894",
+      "default": "cbc54d092b877ecbf29c108b4fccfe2744e29738",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1400,7 +1536,7 @@
     {
       "name": "HCE_IMAGE_TAG_RUBY_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-ruby Docker image",
-      "default": "c7519eaec10824ef72a61c1f593347e7bb265e96",
+      "default": "7533f7655fbaeaa7a04356436b62cdde2783e3d6",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1409,7 +1545,7 @@
     {
       "name": "HCE_IMAGE_TAG_JAVA_MAVEN_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-java-maven Docker image",
-      "default": "a45f9f815a432404479a0e31de8be2209acf29c2",
+      "default": "ddb336b080b395d9cbf026dc2fba14c74a6ba4fe",
       "example": "",
       "data_type": "string",
       "required": false,
