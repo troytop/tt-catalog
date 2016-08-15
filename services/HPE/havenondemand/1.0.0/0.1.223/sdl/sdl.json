@@ -10,7 +10,7 @@
             "version": "0.1.223",
             "vendor": "HPE",
             "external_name": "haven-on-demand-csm-side-car",
-            "image": "docker-registry.helion.space:443/service-catalog/catalog-service-manager:0.1.223",
+            "image": "docker-registry.helion.space:443/catalog-service-manager/csm:0.1.223",
             "min_RAM_mb": 50,
             "min_disk_gb": 1,
             "min_VCPU": 1,
