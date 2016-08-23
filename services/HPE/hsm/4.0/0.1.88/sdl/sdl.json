@@ -1,0 +1,157 @@
+{
+    "name": "hsm",
+    "product_version": "4.0",
+    "sdl_version": "0.1.88",
+    "vendor": "HPE",
+    "volumes": [],
+    "parameters": [
+        {
+            "name": "SYNC_INTERVAL",
+            "description": "Sync Interval for catalog repositories",
+            "default": "300",
+            "example": "300",
+            "data_type": "int32",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "LOG_LEVEL",
+            "description": "Log level for HSM Server",
+            "default": "debug",
+            "example": "debug",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "HCP_TIMEOUT",
+            "description": "Timeout for HCP requests",
+            "default": "5",
+            "example": "5",
+            "data_type": "int32",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "HCP_ENDPOINT",
+            "description": "URL for the HCP Endpoint",
+            "example": "https://ipmgr.hcp.svc.cluster.hcp:8443/v1",
+            "default": "https://ipmgr.hcp.svc.cluster.hcp:8443/v1",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "CATALOG_LIST",
+            "description": "CatalogList declared to hold the catalogs list",
+            "default": "hpe-catalog;helion-service-manager/release/catalog-templates/HCP-v1/stable-1:us-west-2;s3",
+            "example": "hpe-catalog;helion-service-manager/release/catalog-templates/HCP-v1/stable-1:us-west-2;s3",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+          "name": "tls-private-key-file",
+          "description": "Private key string for TLS with endlines preserved with '\n'",
+          "example": "-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----",
+          "required": false,
+          "secret": true,
+          "default": null
+        },
+        {
+          "name": "tls-cert-file",
+          "description": "Public key string for TLS with endlines preserved with '\n'",
+          "example": "-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----",
+          "required": false,
+          "secret": true,
+          "default": null
+        },
+        {
+          "name": "DEV_MODE",
+          "description": "Disable/Enable Developer Mode",
+          "example": "false",
+          "required": true,
+          "default": "false"
+        }
+    ],
+    "features":
+        {
+        "auth": [
+            {
+            "auth_zone": "default",
+            "clients": [
+                {
+                "id": "hsm",
+                "name": "HSM Client",
+                "scopes": [
+                    "hcp.admin",
+                    "hcp.user",
+                    "uaa.user",
+                    "hcp.publisher"
+                ],
+                "authorized_grant_types": [
+                    "implicit",
+                    "password",
+                    "refresh_token"
+                ],
+                "access_token_validity": 3600,
+                "refresh_token_validity": 2592000
+                }
+            ]
+            }
+        ]
+        },
+    "components": [
+        {
+            "name": "hsm-server",
+            "version": "0.1.88",
+            "vendor": "HPE",
+            "repository": "docker-registry.helion.space:443",
+            "image": "hsm/hsm-server:0.1.88",
+            "min_RAM_mb": 256,
+            "min_disk_gb": 1,
+            "min_VCPU": 1,
+            "platform": "linux-x86_64",
+            "workload_type": "container",
+            "min_instances": 1,
+            "max_instances": 1,
+            "service_ports": [
+                {
+                    "name": "hsm-api",
+                    "protocol": "TCP",
+                    "source_port": 8081,
+                    "target_port": 8081,
+                    "public": true
+                }
+            ],
+            "volume_mounts": [],
+            "parameters": [
+                {
+                    "name": "SYNC_INTERVAL"
+                },
+                {
+                    "name": "LOG_LEVEL"
+                },
+                {
+                    "name": "HCP_TIMEOUT"
+                },
+                {
+                    "name": "HCP_ENDPOINT"
+                },
+                {
+                    "name": "CATALOG_LIST"
+                },
+                {
+                    "name": "tls-private-key-file"
+                },
+                {
+                    "name": "tls-cert-file"
+                },
+                {
+                    "name": "DEV_MODE"
+                }
+            ]
+        }
+
+    ]
+}
