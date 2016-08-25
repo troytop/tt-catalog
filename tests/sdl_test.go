@@ -102,12 +102,6 @@ func TestSDLsAreValid(t *testing.T) {
 				t.Log("Validating Service " + serviceName.Name() + " product version " + productVersionDir.Name())
 
 				productVersionPath := filepath.Join(vendorPath, serviceName.Name(), productVersionDir.Name())
-				verSet := versionSet(t, productVersionPath, len(listDirs(t, productVersionPath)))
-
-				if strings.Contains(skipSDLValidation, serviceName.Name()) {
-					t.Log("***** WARNING - " + serviceName.Name() + " - skipped SDL validation")
-					continue
-				}
 
 				for _, sdlVersionDir := range listDirs(t, productVersionPath) {
 					if !sdlVersionDir.IsDir() {
@@ -130,13 +124,17 @@ func TestSDLsAreValid(t *testing.T) {
 					var s sdl
 					err := json.Unmarshal(contents, &s)
 					assert.Nil(t, err, "unmarshalling the sdl failed")
-
 					//check contents match version and vendor directories
 					assert.Equal(t, serviceName.Name(), s.Name, "service name does not match in sdl and directory")
 					assert.Equal(t, vendor.Name(), s.Vendor, "vendor name does not match in sdl and directory")
-					assert.Contains(t, verSet, s.SdlVersion, "version in sdl does not match dir its in")
+					assert.Contains(t, productVersionDir.Name(), s.ProductVersion, "product_version version in sdl does not match dir its in")
+					assert.Contains(t, sdlVersionDir.Name(), s.SdlVersion, "sdl_version in sdl does not match dir its in")
 					assert.True(t, govalidator.IsSemver(s.SdlVersion), "SDL version specified in sdl is not of semver format")
 
+					if strings.Contains(skipSDLValidation, serviceName.Name()) {
+						t.Log("***** WARNING - " + serviceName.Name() + " - skipped SDL validation")
+						continue
+					}
 					//convert sdl parameters to componentParameter type for check
 					var sdlParams []componentParameter
 					for _, param := range s.Parameters {
@@ -198,15 +196,4 @@ func listDirs(t *testing.T, path string) []os.FileInfo {
 	dirList, err := ioutil.ReadDir(path)
 	assert.Nil(t, err, "Error listing services directory")
 	return dirList
-}
-
-func versionSet(t *testing.T, versionDir string, size int) map[string]struct{} {
-	vs := make(map[string]struct{}, size)
-	for _, d := range listDirs(t, versionDir) {
-		if !d.IsDir() {
-			continue
-		}
-		vs[d.Name()] = struct{}{}
-	}
-	return vs
 }
