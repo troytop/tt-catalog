@@ -48,10 +48,16 @@
                     "min_RAM_mb": {
                         "type": "integer"
                     },
+                    "max_RAM_mb": {
+                        "type": "integer"
+                    },
                     "min_disk_gb": {
                         "type": "integer"
                     },
                     "min_VCPU": {
+                        "type": "integer"
+                    },
+                    "max_VCPU": {
                         "type": "integer"
                     },
                     "platform": {
