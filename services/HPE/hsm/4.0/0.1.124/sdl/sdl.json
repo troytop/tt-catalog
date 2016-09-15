@@ -1,0 +1,225 @@
+{
+    "name": "hsm",
+    "product_version": "4.0",
+    "sdl_version": "0.1.124",
+    "vendor": "HPE",
+    "volumes": [],
+    "parameters": [
+        {
+            "name": "SYNC_INTERVAL",
+            "description": "Sync Interval for catalog repositories",
+            "default": "300",
+            "example": "300",
+            "data_type": "int32",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "LOG_LEVEL",
+            "description": "Log level for HSM service",
+            "default": "debug",
+            "example": "debug",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "HCP_TIMEOUT",
+            "description": "Timeout for HCP requests",
+            "default": "5",
+            "example": "5",
+            "data_type": "int32",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "HCP_ENDPOINT",
+            "description": "URL for the HCP Endpoint",
+            "example": "https://ipmgr.hcp.svc:443/v1",
+            "default": "https://ipmgr.hcp.svc:443/v1",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "CATALOG_LIST",
+            "description": "CatalogList declared to hold the catalogs list",
+            "default": "hpe-catalog;helion-service-manager/release/catalog-templates/HCP-v1/stable-1:us-west-2;s3",
+            "example": "hpe-catalog;helion-service-manager/release/catalog-templates/HCP-v1/stable-1:us-west-2;s3",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "DNS",
+            "description": "DNS registered SAN to be used for HSM",
+            "example": "api.hsm",
+            "default": "api.hsm",
+            "required": false,
+            "secret": false
+        },
+        {
+          "name": "tls-private-key-file",
+          "description": "Private key string for TLS with endlines preserved with '\n'",
+          "example": "-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----",
+          "required": false,
+          "secret": true,
+          "generator":
+          {
+            "id": "tls_cert",
+            "generate": {
+              "type": "Certificate",
+              "value_type": "private_key"
+              }
+          }
+        },
+        {
+          "name": "tls-cert-file",
+          "description": "Public key string for TLS with endlines preserved with '\n'",
+          "example": "-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----",
+          "required": false,
+          "secret": true,
+          "generator":
+          {
+            "id": "tls_cert",
+            "generate": {
+              "type": "Certificate",
+              "value_type": "certificate",
+              "subject_alt_names": [
+                  {
+                     "parameter": "DNS",
+                      "wildcard": false
+                  }
+                ]
+              }
+          }
+        },
+        {
+          "name": "generator-ca-private-key",
+          "description": "Private key string for parameter generation ca certificate",
+          "example": "-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----",
+          "required": true,
+          "secret": true,
+          "generator":
+          {
+            "id": "generator_cert",
+            "generate": {
+              "type": "CACertificate",
+              "value_type": "private_key"
+              }
+          }
+        },
+        {
+          "name": "generator-ca-cert",
+          "description": "CA cert for parameter generation",
+          "example": "-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----",
+          "required": false,
+          "secret": true,
+          "generator":
+          {
+            "id": "generator_cert",
+            "generate": {
+              "type": "CACertificate",
+              "value_type": "certificate"
+              }
+          }
+        },
+        {
+          "name": "DEV_MODE",
+          "description": "Disable/Enable Developer Mode",
+          "example": "false",
+          "required": true,
+          "default": "false"
+        }
+    ],
+    "features":
+        {
+        "auth": [
+            {
+            "auth_zone": "default",
+            "clients": [
+                {
+                "id": "hsm",
+                "name": "HSM Client",
+                "scopes": [
+                    "hcp.admin",
+                    "hcp.user",
+                    "uaa.user",
+                    "hcp.publisher"
+                ],
+                "authorized_grant_types": [
+                    "implicit",
+                    "password",
+                    "refresh_token"
+                ],
+                "access_token_validity": 3600,
+                "refresh_token_validity": 2592000
+                }
+            ]
+            }
+        ]
+        },
+    "components": [
+        {
+            "name": "hsm-server",
+            "version": "0.1.124",
+            "vendor": "HPE",
+            "repository": "docker-registry.helion.space:443",
+            "image": "hsm/hsm-server:0.1.124",
+            "min_RAM_mb": 50,
+            "max_RAM_mb": 250,
+            "min_VCPU": 1,
+            "max_VCPU": 5,
+            "platform": "linux-x86_64",
+            "workload_type": "container",
+            "min_instances": 1,
+            "max_instances": 1,
+            "service_ports": [
+                {
+                    "name": "hsm-api",
+                    "protocol": "TCP",
+                    "source_port": 443,
+                    "target_port": 443,
+                    "public": true
+                }
+            ],
+            "volume_mounts": [],
+            "parameters": [
+                {
+                    "name": "SYNC_INTERVAL"
+                },
+                {
+                    "name": "LOG_LEVEL"
+                },
+                {
+                    "name": "HCP_TIMEOUT"
+                },
+                {
+                    "name": "HCP_ENDPOINT"
+                },
+                {
+                    "name": "CATALOG_LIST"
+                },
+                {
+                    "name": "tls-private-key-file"
+                },
+                {
+                    "name": "tls-cert-file"
+                },
+                {
+                    "name": "DEV_MODE"
+                },
+                {
+                    "name": "generator-ca-private-key"
+                },
+                {
+                    "name": "generator-ca-cert"
+                },
+                {
+                    "name": "DNS"
+                }
+            ]
+        }
+
+    ]
+}
