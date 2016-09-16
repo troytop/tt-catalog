@@ -1,5 +1,5 @@
 {
-    "name": "k8-guestbook",
+    "name": "kubernetes-guestbook",
     "product_version": "1.0.0",
     "sdl_version": "1.0.0",
     "vendor": "HPE",
