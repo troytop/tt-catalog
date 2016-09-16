@@ -1,0 +1,7 @@
+{
+    "disabled":
+    {
+        "vulnerability": false,
+        "reason": "Not compatible with latest HSM (0.1.110)"
+    }
+}
