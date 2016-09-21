@@ -1,0 +1,22 @@
+{
+  "name": "hsc",
+  "product_version": "4.0.0",
+  "sdl_version": "1.0.3",
+  "vendor": "HPE",
+  "instance_id": "hsc",
+  "description": "An instance of the Helion Stackato Console",
+  "scaling": [
+    {
+      "component": "hsc-etcd",
+      "min_instances": 5,
+      "max_instances": 5
+    },
+    {
+      "component": "hsc-stkeeper",
+      "min_instances": 3,
+      "max_instances": 3
+    }
+  ],
+  "volumes": [],
+  "parameters": []
+}
