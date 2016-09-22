@@ -1,11 +1,11 @@
 {
   "description": "MySQL is a popular open source relational database management system.", 
   "categories":[
-    "Database"
+    "Data"
   ],
   "labels":[
-    "database",
-    "open source"
+    "MySQL",
+    "Dev Grade"
   ],
   "type": "local"
 }

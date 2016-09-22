@@ -1,11 +1,11 @@
 {
   "description": "RabbitMQ is open source message broker software (sometimes called message-oriented middleware) that implements the Advanced Message Queuing Protocol (AMQP).",
   "categories": [
-    "MessageQueue"
+    "Messaging"
   ],
   "labels": [
-    "messaging broker",
-    "queue"
+    "RabbitMQ",
+    "Dev Grade"
   ],
   "type": "local"
 }

@@ -1,10 +1,11 @@
 {
-  "description": "Microsoft SQL Server is a relational database management system. This service can be used to connect to any external SQL Server instance including Amazon RDS SQL Server", 
+  "description": "Microsoft® SQL Server® 2014 is a relational database management system. This service can be used to connect to any external SQL Server® instance including Amazon RDS", 
   "categories":[
-    "Database"
+    "Data"
   ],
   "labels":[
-    "database"
+    "Microsoft® SQL Server® 2014",
+    "Connector"
   ],
   "type": "by-ref"
 }

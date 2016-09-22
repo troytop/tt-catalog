@@ -1,14 +1,12 @@
 {
   "description": "MySQL RDS is an object-relational database management system (ORDBMS) on Amazon RDS.",
   "categories": [
-    "Database"
+    "Data"
   ],
   "labels":[
-    "database",
-    "mysql",
-    "aws"
+    "AWS",
+    "Connector",
+    "MySQL"
   ],
-  "type": "by-ref",
-  "supported": true,
-  "deployment_grade": "production"
+  "type": "by-ref"
 }
