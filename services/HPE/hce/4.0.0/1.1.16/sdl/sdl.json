@@ -1,7 +1,7 @@
 {
   "name": "hce",
-  "sdl_version": "1.1.8",
-  "product_version": "4.0",
+  "sdl_version": "1.1.16",
+  "product_version": "4.0.0",
   "vendor": "HPE",
   "features": {
     "auth": [
@@ -9,11 +9,11 @@
         "auth_zone": "default",
         "clients": [
           {
-            "id": "hce",
-            "name": "Code Engine user",
+            "id": "code-engine-renamed",
+            "name": "Code Engine Client with access to default zone",
             "scopes": [
               "hcp.admin",
-              "hcp.user"
+              "hcp.publisher"
             ],
             "authorized_grant_types": [
               "password",
@@ -21,6 +21,83 @@
             ],
             "access_token_validity": 604800,
             "refresh_token_validity": 2592000
+          }
+        ]
+      },
+      {
+        "auth_zone": "self",
+        "user_authorities": [
+           "hcp.admin",
+           "hcp.user",
+           "oauth.approvals",
+           "openid",
+           "password.write",
+           "roles",
+           "scim.create",
+           "scim.invite",
+           "scim.me",
+           "scim.read",
+           "scim.write",
+           "uaa.admin",
+           "uaa.user",
+           "user_attributes",
+           "zones.helion-code-engine.admin",
+           "zones.read",
+           "zones.write"
+        ],
+        "clients": [
+          {
+            "id": "hceadminservice_bootstrap",
+            "name": "Bootstrap client for creating Code Engine Admin user",
+            "scopes": [
+              "hcp.admin",
+              "hcp.user",
+              "oauth.approvals",
+              "openid",
+              "password.write",
+              "roles",
+              "scim.create",
+              "scim.invite",
+              "scim.me",
+              "scim.read",
+              "scim.write",
+              "uaa.admin",
+              "uaa.user",
+              "user_attributes",
+              "zones.helion-code-engine.admin",
+              "zones.read",
+              "zones.write"
+            ],
+            "authorities": [
+              "hcp.admin",
+              "hcp.user",
+              "oauth.approvals",
+              "openid",
+              "password.write",
+              "profile",
+              "roles",
+              "scim.create",
+              "scim.invite",
+              "scim.me",
+              "scim.read",
+              "scim.write",
+              "uaa.admin",
+              "uaa.user",
+              "user_attributes",
+              "zones.helion-code-engine.admin",
+              "zones.read",
+              "zones.write"
+            ],
+            "authorized_grant_types": [
+              "client_credentials"
+            ],
+            "access_token_validity": 604800,
+            "refresh_token_validity": 2592000,
+            "parameters": [
+              {
+                "name": "hce-admin-service-account-secret"
+              }
+            ]
           },
           {
             "id": "hceservice",
@@ -40,10 +117,12 @@
             ]
           },
           {
-            "id": "code-engine-renamed",
-            "name": "Code Engine Client with access to default zone",
+            "id": "hce",
+            "name": "Code Engine user",
             "scopes": [
-              "hcp.admin"
+              "scim.write",
+              "hce.admin",
+              "hce.user"
             ],
             "authorized_grant_types": [
               "password",
@@ -56,27 +135,28 @@
       }
     ]
   },
-  "postflight": [
+  "preflight": [
     {
-      "name": "update-database",
+      "name": "preflight-upgrade",
       "version": "1.0.0",
       "vendor": "HPE",
-      "external_name": "hce-update-database",
+      "external_name": "hce-preflight-upgrade",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-rest-service:563d613778737b8af5938d55e663c611886130fa",
+      "image": "hce-rest-service:6901e629edd8f4f99d696299ba54ef0b24d2e459",
       "workload_type": "container",
       "min_RAM_mb": 256,
       "min_disk_gb": 5,
-      "min_VCPU": 1,
+      "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "capabilities": [],
       "entrypoint": [
-        "/app/start.sh",
-	"database-update"
+        "/app/start-preflight.sh",
+        "preflight-upgrade"
       ],
       "min_instances": 1,
       "max_instances": 1,
       "retry_count": 10,
+      "timeout": 1400,
       "volume_mounts": [
         {
           "volume_name": "hce-encryption-key-volume",
@@ -85,10 +165,103 @@
       ],
       "parameters": [
         {
+          "name": "HCE_DB_HOST"
+        },
+        {
+          "name": "HCE_DB_USER"
+        },
+        {
+          "name": "hce-db-password"
+        },
+        {
+          "name": "HCE_DB_NAME"
+        },
+        {
+          "name": "HCE_CONCOURSE_ENDPOINT"
+        },
+        {
+          "name": "HCE_CONCOURSE_USERNAME"
+        },
+        {
+          "name": "hce-concourse-password"
+        },
+        {
+          "name": "HCE_CONCOURSE_TSA_HOST"
+        }
+      ]
+    }
+  ],
+  "postflight": [
+    {
+      "name": "create-users",
+      "version": "1.0.0",
+      "vendor": "HPE",
+      "external_name": "hce-user-setup",
+      "repository":"docker-registry.helion.space:443",
+      "image": "hce-user-setup-postflight:47e45958e32f0eec318bd0359d254ebb3bee66c2",
+      "workload_type": "container",
+      "min_RAM_mb": 256,
+      "min_disk_gb": 5,
+      "min_VCPU": 0.2,
+      "platform": "linux-x86_64",
+      "capabilities": [],
+      "entrypoint": [
+        "/usr/local/hceinit/create_users.sh"
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "retry_count": 10,
+      "timeout": 600,
+      "volume_mounts": [
+      ],
+      "parameters": [
+        {
+          "name": "ZONED_IDENTITY_IP_OVERRIDE"
+        },
+        {
+          "name": "hce-admin-user-password"
+        }
+      ]
+    },
+    {
+      "name": "update-database",
+      "version": "1.0.0",
+      "vendor": "HPE",
+      "external_name": "hce-update-database",
+      "repository":"docker-registry.helion.space:443",
+      "image": "hce-rest-service:6901e629edd8f4f99d696299ba54ef0b24d2e459",
+      "workload_type": "container",
+      "min_RAM_mb": 256,
+      "min_disk_gb": 5,
+      "min_VCPU": 0.2,
+      "platform": "linux-x86_64",
+      "capabilities": [],
+      "entrypoint": [
+        "/app/start.sh",
+        "database-update"
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "retry_count": 20,
+      "timeout": 600,
+      "volume_mounts": [
+        {
+          "volume_name": "hce-encryption-key-volume",
+          "mountpoint": "/database"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "ZONED_IDENTITY_IP_OVERRIDE"
+        },
+        {
+          "name": "HCE_IMAGE_REGISTRY_URL"
+        },
+        {
           "name": "HCE_DOCKER_USERNAME"
         },
         {
-          "name": "HCE_DOCKER_PASSWORD"
+          "name": "hce-docker-password"
         },
         {
           "name": "HCE_DB_HOST"
@@ -97,11 +270,60 @@
           "name": "HCE_DB_USER"
         },
         {
-          "name": "HCE_DB_PASSWORD"
+          "name": "hce-db-password"
         },
         {
           "name": "HCE_DB_NAME"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_BUILD_EVENT_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_HIPCHAT_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_HTTP_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_GITHUB_PR_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_BITBUCKET_PR_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_FLOWDOCK_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_SLACK_NOTIFIER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_CLOUD_FOUNDRY_WORKER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_STORM_RUNNER_WORKER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_GIT_MERGE_WORKER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_NODEJS_BUILD_CONTAINER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_PHP_BUILD_CONTAINER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_GOLANG_BUILD_CONTAINER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_PYTHON_BUILD_CONTAINER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_RUBY_BUILD_CONTAINER"
+        },
+        {
+          "name": "HCE_IMAGE_TAG_JAVA_MAVEN_BUILD_CONTAINER"
         }
+
       ]
     }
   ],
@@ -137,19 +359,7 @@
       "shared": true
     },
     {
-      "name": "garden-worker-volume-1",
-      "size_gb": 30,
-      "filesystem": "ext4",
-      "shared": false
-    },
-    {
-      "name": "garden-worker-volume-2",
-      "size_gb": 30,
-      "filesystem": "ext4",
-      "shared": false
-    },
-    {
-      "name": "garden-worker-volume-3",
+      "name": "concourse-worker-volume",
       "size_gb": 30,
       "filesystem": "ext4",
       "shared": false
@@ -171,7 +381,7 @@
       "image": "hce-ha:kosher-prod",
       "min_RAM_mb": 256,
       "min_disk_gb": 1,
-      "min_VCPU": 1,
+      "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
@@ -200,13 +410,13 @@
       "vendor": "percona",
       "external_name": "pxc-node1",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-mysql:91f35f7ba8abf7403b06fc873cb7938ef3136f98",
+      "image": "hce-mysql:37fc1eaa2e97c992bf0592b51d54e5ba6edee28f",
       "entrypoint": [
         "/start.sh"
       ],
-      "min_RAM_mb": 256,
+      "min_RAM_mb": 1024,
       "min_disk_gb": 1,
-      "min_VCPU": 1,
+      "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
@@ -282,19 +492,19 @@
           "name": "WSREP_SST_USER"
         },
         {
-          "name": "WSREP_SST_PASSWORD"
+          "name": "wsrep-sst-password"
         },
         {
-          "name": "MYSQL_USER"
+          "name": "HCE_DB_USER"
         },
         {
-          "name": "MYSQL_PASSWORD"
+          "name": "hce-db-password"
         },
         {
-          "name": "MYSQL_DATABASE"
+          "name": "HCE_DB_NAME"
         },
         {
-          "name": "MYSQL_ROOT_PASSWORD"
+          "name": "mysql-root-password"
         }
       ]
     },
@@ -304,13 +514,13 @@
       "vendor": "percona",
       "external_name": "pxc-node2",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-mysql:91f35f7ba8abf7403b06fc873cb7938ef3136f98",
+      "image": "hce-mysql:37fc1eaa2e97c992bf0592b51d54e5ba6edee28f",
       "entrypoint": [
         "/start.sh"
       ],
-      "min_RAM_mb": 256,
+      "min_RAM_mb": 1024,
       "min_disk_gb": 1,
-      "min_VCPU": 1,
+      "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
@@ -386,19 +596,19 @@
           "name": "WSREP_SST_USER"
         },
         {
-          "name": "WSREP_SST_PASSWORD"
+          "name": "wsrep-sst-password"
         },
         {
-          "name": "MYSQL_USER"
+          "name": "HCE_DB_USER"
         },
         {
-          "name": "MYSQL_PASSWORD"
+          "name": "hce-db-password"
         },
         {
-          "name": "MYSQL_DATABASE"
+          "name": "HCE_DB_NAME"
         },
         {
-          "name": "MYSQL_ROOT_PASSWORD"
+          "name": "mysql-root-password"
         }
       ]
     },
@@ -408,13 +618,13 @@
       "vendor": "percona",
       "external_name": "pxc-node3",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-mysql:91f35f7ba8abf7403b06fc873cb7938ef3136f98",
+      "image": "hce-mysql:37fc1eaa2e97c992bf0592b51d54e5ba6edee28f",
       "entrypoint": [
         "/start.sh"
       ],
-      "min_RAM_mb": 256,
+      "min_RAM_mb": 1024,
       "min_disk_gb": 1,
-      "min_VCPU": 1,
+      "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
@@ -490,19 +700,19 @@
           "name": "WSREP_SST_USER"
         },
         {
-          "name": "WSREP_SST_PASSWORD"
+          "name": "wsrep-sst-password"
         },
         {
-          "name": "MYSQL_USER"
+          "name": "HCE_DB_USER"
         },
         {
-          "name": "MYSQL_PASSWORD"
+          "name": "hce-db-password"
         },
         {
-          "name": "MYSQL_DATABASE"
+          "name": "HCE_DB_NAME"
         },
         {
-          "name": "MYSQL_ROOT_PASSWORD"
+          "name": "mysql-root-password"
         }
       ]
     },
@@ -512,10 +722,10 @@
       "vendor": "HPE",
       "external_name": "concourse-db",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-concourse-db:81eb237a951137f5dc4f0d7ee8b269b80bb48362",
-      "min_RAM_mb": 256,
+      "image": "hce-concourse-db:004048e99797b9d25d56b537534b1e95748a7c34",
+      "min_RAM_mb": 1024,
       "min_disk_gb": 1,
-      "min_VCPU": 1,
+      "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
@@ -542,7 +752,7 @@
           "name": "POSTGRES_DB"
         },
         {
-          "name": "POSTGRES_PASSWORD"
+          "name": "postgres-password"
         },
         {
           "name": "POSTGRES_USER"
@@ -559,9 +769,9 @@
       "external_name": "registry-mirror",
       "repository":"docker-registry.helion.space:443",
       "image": "hce-docker-registry:f71db0fe3bc9164b20d95c7ab603a6dc8005c969",
-      "min_RAM_mb": 256,
+      "min_RAM_mb": 512,
       "min_disk_gb": 1,
-      "min_VCPU": 1,
+      "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
@@ -592,7 +802,7 @@
           "name": "HCE_DOCKER_USERNAME"
         },
         {
-          "name": "HCE_DOCKER_PASSWORD"
+          "name": "hce-docker-password"
         },
         {
           "name": "hce-registry-mirror-cert-crt"
@@ -603,12 +813,12 @@
       ]
     },
     {
-      "name": "concourse-worker-1",
+      "name": "concourse-worker",
       "version": "1.0.0",
       "vendor": "HPE",
-      "external_name": "concourse-worker-1",
+      "external_name": "concourse-worker",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-concourse-bin:f8b27ff3a0a1b7b4b88d7a6b92fa40bf407f9a5f",
+      "image": "hce-concourse-bin:b9cd6b5f54651aa95c5eea00a57a8d78e1b2a3a1",
       "entrypoint": [
         "/root/scripts/start.sh",
         "worker"
@@ -626,8 +836,8 @@
         "label1",
         "label2"
       ],
-      "min_instances": 1,
-      "max_instances": 1,
+      "min_instances": 3,
+      "max_instances": 3,
       "service_ports": [
         {
           "name": "garden",
@@ -646,133 +856,13 @@
       ],
       "volume_mounts": [
         {
-          "volume_name": "garden-worker-volume-1",
+          "volume_name": "concourse-worker-volume",
           "mountpoint": "/opt/concourse/worker"
         }
       ],
       "parameters": [
         {
-          "name": "NETWORK_POOL_1"
-        },
-        {
-          "name": "HCE_CONCOURSE_TSA_HOST"
-        },
-        {
-          "name": "HCE_CONCOURSE_TSA_PORT"
-        }
-      ]
-    },
-    {
-      "name": "concourse-worker-2",
-      "version": "1.0.0",
-      "vendor": "HPE",
-      "external_name": "concourse-worker-2",
-      "repository":"docker-registry.helion.space:443",
-      "image": "hce-concourse-bin:f8b27ff3a0a1b7b4b88d7a6b92fa40bf407f9a5f",
-      "entrypoint": [
-        "/root/scripts/start.sh",
-        "worker"
-      ],
-      "min_RAM_mb": 1024,
-      "min_disk_gb": 1,
-      "min_VCPU": 1,
-      "platform": "linux-x86_64",
-      "workload_type": "container",
-      "capabilities": [
-        "ALL"
-      ],
-      "affinity": [],
-      "labels": [
-        "label1",
-        "label2"
-      ],
-      "min_instances": 1,
-      "max_instances": 1,
-      "service_ports": [
-        {
-          "name": "garden",
-          "protocol": "TCP",
-          "source_port": 7777,
-          "target_port": 7777,
-          "public": false
-        },
-        {
-          "name": "baggageclaim",
-          "protocol": "TCP",
-          "source_port": 7788,
-          "target_port": 7788,
-          "public": false
-        }
-      ],
-      "volume_mounts": [
-        {
-          "volume_name": "garden-worker-volume-2",
-          "mountpoint": "/opt/concourse/worker"
-        }
-      ],
-      "parameters": [
-        {
-          "name": "NETWORK_POOL_2"
-        },
-        {
-          "name": "HCE_CONCOURSE_TSA_HOST"
-        },
-        {
-          "name": "HCE_CONCOURSE_TSA_PORT"
-        }
-      ]
-    },
-    {
-      "name": "concourse-worker-3",
-      "version": "1.0.0",
-      "vendor": "HPE",
-      "external_name": "concourse-worker-3",
-      "repository":"docker-registry.helion.space:443",
-      "image": "hce-concourse-bin:f8b27ff3a0a1b7b4b88d7a6b92fa40bf407f9a5f",
-      "entrypoint": [
-        "/root/scripts/start.sh",
-        "worker"
-      ],
-      "min_RAM_mb": 1024,
-      "min_disk_gb": 1,
-      "min_VCPU": 1,
-      "platform": "linux-x86_64",
-      "workload_type": "container",
-      "capabilities": [
-        "ALL"
-      ],
-      "affinity": [],
-      "labels": [
-        "label1",
-        "label2"
-      ],
-      "min_instances": 1,
-      "max_instances": 1,
-      "service_ports": [
-        {
-          "name": "garden",
-          "protocol": "TCP",
-          "source_port": 7777,
-          "target_port": 7777,
-          "public": false
-        },
-        {
-          "name": "baggageclaim",
-          "protocol": "TCP",
-          "source_port": 7788,
-          "target_port": 7788,
-          "public": false
-        }
-      ],
-      "volume_mounts": [
-        {
-          "volume_name": "garden-worker-volume-3",
-          "mountpoint": "/opt/concourse/worker"
-        }
-      ],
-      "parameters": [
-        {
-          "name": "NETWORK_POOL_3"
+          "name": "NETWORK_POOL"
         },
         {
           "name": "HCE_CONCOURSE_TSA_HOST"
@@ -788,14 +878,14 @@
       "vendor": "HPE",
       "external_name": "concourse-web",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-concourse-bin:f8b27ff3a0a1b7b4b88d7a6b92fa40bf407f9a5f",
+      "image": "hce-concourse-bin:b9cd6b5f54651aa95c5eea00a57a8d78e1b2a3a1",
       "entrypoint": [
         "/root/scripts/start.sh",
         "web"
       ],
       "min_RAM_mb": 512,
       "min_disk_gb": 1,
-      "min_VCPU": 1,
+      "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
@@ -835,7 +925,7 @@
           "name": "HCE_CONCOURSE_USERNAME"
         },
         {
-          "name": "HCE_CONCOURSE_PASSWORD"
+          "name": "hce-concourse-password"
         },
         {
           "name": "HCE_CONCOURSE_EXTERNAL_URL"
@@ -847,7 +937,7 @@
           "name": "POSTGRES_USER"
         },
         {
-          "name": "POSTGRES_PASSWORD"
+          "name": "postgres-password"
         }
       ]
     },
@@ -857,14 +947,14 @@
       "vendor": "HPE",
       "external_name": "hce-watchdog",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-rest-service:563d613778737b8af5938d55e663c611886130fa",
+      "image": "hce-rest-service:6901e629edd8f4f99d696299ba54ef0b24d2e459",
       "entrypoint": [
         "/app/start.sh",
         "watchdog"
       ],
       "min_RAM_mb": 256,
       "min_disk_gb": 1,
-      "min_VCPU": 1,
+      "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
@@ -888,13 +978,16 @@
       ],
       "parameters": [
         {
+          "name": "ZONED_IDENTITY_IP_OVERRIDE"
+        },
+        {
           "name": "HCE_DB_HOST"
         },
         {
           "name": "HCE_DB_USER"
         },
         {
-          "name": "HCE_DB_PASSWORD"
+          "name": "hce-db-password"
         },
         {
           "name": "HCE_DB_NAME"
@@ -906,64 +999,10 @@
           "name": "HCE_CONCOURSE_USERNAME"
         },
         {
-          "name": "HCE_CONCOURSE_PASSWORD"
-        },
-        {
-          "name": "HCE_DOCKER_USERNAME"
-        },
-        {
-          "name": "HCE_DOCKER_PASSWORD"
+          "name": "hce-concourse-password"
         },
         {
           "name": "HCE_ARTIFACT_STORAGE_VOLUME"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_BUILD_EVENT_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_HIPCHAT_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_HTTP_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_GITHUB_PR_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_BITBUCKET_PR_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_FLOWDOCK_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_SLACK_NOTIFIER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_CLOUD_FOUNDRY_WORKER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_STORM_RUNNER_WORKER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_GIT_MERGE_WORKER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_NODEJS_BUILD_CONTAINER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_PHP_BUILD_CONTAINER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_GOLANG_BUILD_CONTAINER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_PYTHON_BUILD_CONTAINER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_RUBY_BUILD_CONTAINER"
-        },
-        {
-          "name": "HCE_IMAGE_TAG_JAVA_MAVEN_BUILD_CONTAINER"
         }
       ]
     },
@@ -973,14 +1012,14 @@
       "vendor": "HPE",
       "external_name": "hce-rest",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-rest-service:563d613778737b8af5938d55e663c611886130fa",
+      "image": "hce-rest-service:6901e629edd8f4f99d696299ba54ef0b24d2e459",
       "entrypoint": [
         "/app/start.sh",
         "rest"
       ],
       "min_RAM_mb": 256,
       "min_disk_gb": 1,
-      "min_VCPU": 1,
+      "min_VCPU": 0.5,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
@@ -1019,25 +1058,22 @@
       ],
       "parameters": [
         {
+          "name": "HCE_IMAGE_REGISTRY_URL"
+        },
+        {
+          "name": "ZONED_IDENTITY_IP_OVERRIDE"
+        },
+        {
           "name": "HCE_DB_HOST"
         },
         {
           "name": "HCE_DB_USER"
         },
         {
-          "name": "HCE_DB_PASSWORD"
+          "name": "hce-db-password"
         },
         {
           "name": "HCE_DB_NAME"
-        },
-        {
-          "name": "HCE_DOCKER_USERNAME"
-        },
-        {
-          "name": "HCE_DOCKER_PASSWORD"
-        },
-        {
-          "name": "HCE_DOCKER_EMAIL"
         },
         {
           "name": "HCE_DEBUG"
@@ -1058,7 +1094,7 @@
           "name": "HCE_CONCOURSE_USERNAME"
         },
         {
-          "name": "HCE_CONCOURSE_PASSWORD"
+          "name": "hce-concourse-password"
         },
         {
           "name": "HCE_REGISTRY_MIRROR"
@@ -1071,8 +1107,91 @@
   ],
   "parameters": [
     {
+      "name": "HCE_IMAGE_REGISTRY_URL",
+      "description": "URL for the image registry that contains HCE System Images",
+      "data_type": "string",
+      "default": "https://registry-1.docker.io/helioncf",
+      "example": "https://registry-1.docker.io/helioncf",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "HCE_DOCKER_USERNAME",
+      "description": "Username to be used when downloading images from DockerHub",
+      "data_type": "string",
+      "required": false,
+      "secret": false
+    },
+    {
+      "name": "hce-docker-password",
+      "description": "Password to be used when downloading images from DockerHub",
+      "data_type": "string",
+      "required": false,
+      "secret": true
+    },
+    {
+      "name": "hce-ssl-cert-crt",
+      "description": "SSL certificate for HCE-REST API",
+      "data_type": "string",
+      "required": true,
+      "secret": true,
+      "generator":
+        {
+          "id": "hce-ssl-cert",
+          "generate": {
+            "type": "Certificate",
+            "value_type": "certificate"
+          }
+        }
+    },
+    {
+      "name": "hce-ssl-cert-key",
+      "description": "SSL certificate key for HCE-REST API",
+      "data_type": "string",
+      "required": true,
+      "secret": true,
+      "generator":
+        {
+          "id": "hce-ssl-cert",
+          "generate": {
+            "type": "Certificate",
+            "value_type": "private_key"
+          }
+        }
+    },
+    {
+      "name": "hce-registry-mirror-cert-crt",
+      "description": "CRT certificate for HCE registry mirror",
+      "data_type": "string",
+      "required": true,
+      "secret": true,
+      "generator":
+      {
+        "id": "hce-registry-mirror-cert",
+        "generate": {
+          "type": "Certificate",
+          "value_type": "certificate"
+        }
+      }
+    },
+    {
+      "name": "hce-registry-mirror-cert-key",
+      "description": "Key for certificate for HCE registry mirror",
+      "data_type": "string",
+      "required": true,
+      "secret": true,
+      "generator":
+        {
+          "id": "hce-registry-mirror-cert",
+          "generate": {
+            "type": "Certificate",
+            "value_type": "private_key"
+          }
+        }
+    },
+    {
       "name": "POSTGRES_DB",
-      "description": "placeholder",
+      "description": "Name of the Concourse database",
       "default": "concourse",
       "example": "concourse",
       "data_type": "string",
@@ -1080,17 +1199,8 @@
       "secret": false
     },
     {
-      "name": "POSTGRES_PASSWORD",
-      "description": "placeholder",
-      "default": "concourse_pass",
-      "example": "concourse_pass",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
       "name": "POSTGRES_USER",
-      "description": "placeholder",
+      "description": "Name of the database user for Concourse",
       "default": "concourse_user",
       "example": "concourse_user",
       "data_type": "string",
@@ -1098,89 +1208,22 @@
       "secret": false
     },
     {
-      "name": "PGDATA",
-      "description": "placeholder",
-      "default": "/database",
-      "example": "/database",
+      "name": "postgres-password",
+      "description": "Password for the Concourse database user",
       "data_type": "string",
       "required": true,
-      "secret": false
-    },
-    {
-      "name": "HCE_DB_HOST",
-      "description": "placeholder",
-      "default": "hce-ha-int",
-      "example": "hce-ha-int",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "HCE_DB_USER",
-      "description": "placeholder",
-      "default": "ceuser",
-      "example": "ceuser",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "HCE_DB_PASSWORD",
-      "description": "placeholder",
-      "default": "cepassword",
-      "example": "cepassword",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "HCE_DB_NAME",
-      "description": "placeholder",
-      "default": "cisystem",
-      "example": "cisystem",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "HCE_ARTIFACT_STORAGE_VOLUME",
-      "description": "Artifact storage volume path for HCE",
-      "default": "/var/lib/artifacts",
-      "example": "/var/lib/artifacts",
-      "data_type": "string",
-      "required": false,
-      "secret": false
-    },
-    {
-      "name": "HCE_DOCKER_USERNAME",
-      "description": "Username to be used when downloading images from DockerHub",
-      "default": "",
-      "example": "",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "HCE_DOCKER_PASSWORD",
-      "description": "Password to be used when downloading images from DockerHub",
-      "default": "",
-      "example": "",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "HCE_DOCKER_EMAIL",
-      "description": "E-mail address to be used when downloading images from DockerHub",
-      "default": "",
-      "example": "",
-      "data_type": "string",
-      "required": true,
-      "secret": false
+      "secret": true,
+      "generator":
+        {
+          "id": "postgres_password",
+          "generate": {
+            "type": "Password"
+          }
+        }
     },
     {
       "name": "HCE_CONCOURSE_ENDPOINT",
-      "description": "placeholder",
+      "description": "Internal endpoint for Concourse",
       "default": "http://concourse-web-int:8080/",
       "example": "http://concourse-web-int:8080/",
       "data_type": "string",
@@ -1189,7 +1232,7 @@
     },
     {
       "name": "HCE_CONCOURSE_TSA_HOST",
-      "description": "placeholder",
+      "description": "Internal TSA endpoint for Concourse",
       "default": "concourse-web-int",
       "example": "concourse-web-int",
       "data_type": "string",
@@ -1198,7 +1241,7 @@
     },
     {
       "name": "HCE_CONCOURSE_TSA_PORT",
-      "description": "placeholder",
+      "description": "Internal TSA port for Concourse",
       "default": "2222",
       "example": "2222",
       "data_type": "string",
@@ -1207,7 +1250,7 @@
     },
     {
       "name": "HCE_CONCOURSE_DB_HOST",
-      "description": "placeholder",
+      "description": "Hostname for the Concourse database",
       "default": "concourse-db-int",
       "example": "concourse-db-int",
       "data_type": "string",
@@ -1216,7 +1259,7 @@
     },
     {
       "name": "HCE_CONCOURSE_EXTERNAL_URL",
-      "description": "placeholder",
+      "description": "External endpoint for Concourse",
       "default": "http://192.168.99.100:8080/",
       "example": "http://192.168.99.100:8080/",
       "data_type": "string",
@@ -1224,41 +1267,8 @@
       "secret": false
     },
     {
-      "name": "HCE_API_HOST",
-      "description": "placeholder",
-      "default": "hce-rest",
-      "example": "hce-rest",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "hce-ssl-cert-crt",
-      "description": "SSL certificate for HCE-REST API",
-      "example": "",
-      "data_type": "string",
-      "required": true,
-      "secret": true
-    },
-    {
-      "name": "hce-service-account-secret",
-      "description": "HCE Service account secret",
-      "example": "",
-      "data_type": "string",
-      "required": true,
-      "secret": true
-    },
-    {
-      "name": "hce-ssl-cert-key",
-      "description": "SSL certificate key for HCE-REST API",
-      "example": "",
-      "data_type": "string",
-      "required": true,
-      "secret": true
-    },
-    {
       "name": "HCE_CONCOURSE_USERNAME",
-      "description": "placeholder",
+      "description": "Username for Concourse",
       "default": "concourse-user",
       "example": "concourse-user",
       "data_type": "string",
@@ -1266,22 +1276,41 @@
       "secret": false
     },
     {
-      "name": "HCE_CONCOURSE_PASSWORD",
-      "description": "placeholder",
-      "default": "concourse-password",
-      "example": "concourse-password",
+      "name": "hce-concourse-password",
+      "description": "Password for Concourse user",
+      "data_type": "string",
+      "required": true,
+      "secret": true,
+      "generator":
+        {
+          "id": "hce_concourse_password",
+          "generate": {
+            "type": "Password"
+          }
+        }
+    },
+    {
+      "name": "NETWORK_POOL",
+      "description": "Network pool that will be used by Concourse workers",
+      "default": "10.52.0.0/16",
+      "example": "10.52.0.0/16",
       "data_type": "string",
       "required": true,
       "secret": false
     },
     {
-      "name": "HCE_DEBUG",
-      "description": "placeholder",
-      "default": "true",
-      "example": "true",
+      "name": "wsrep-sst-password",
+      "description": "WSREP SST user password",
       "data_type": "string",
       "required": true,
-      "secret": false
+      "secret": true,
+      "generator":
+        {
+          "id": "wsrep_sst_password",
+          "generate": {
+            "type": "Password"
+          }
+        }
     },
     {
       "name": "GALERA_CLUSTER",
@@ -1311,35 +1340,22 @@
       "secret": false
     },
     {
-      "name": "WSREP_SST_PASSWORD",
-      "description": "WSREP_SST_PASSWORD",
-      "default": "sst",
-      "example": "sst",
+      "name": "mysql-root-password",
+      "description": "Root password for HCE database",
       "data_type": "string",
       "required": true,
-      "secret": false
+      "secret": true,
+      "generator":
+        {
+          "id": "mysql_root_password",
+          "generate": {
+            "type": "Password"
+          }
+        }
     },
     {
-      "name": "MYSQL_USER",
-      "description": "MYSQL_USER",
-      "default": "ceuser",
-      "example": "ceuser",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "MYSQL_PASSWORD",
-      "description": "MYSQL_PASSWORD",
-      "default": "cepassword",
-      "example": "cepassword",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "MYSQL_DATABASE",
-      "description": "MYSQL_DATABASE",
+      "name": "HCE_DB_NAME",
+      "description": "Name of the HCE database",
       "default": "cisystem",
       "example": "cisystem",
       "data_type": "string",
@@ -1347,17 +1363,105 @@
       "secret": false
     },
     {
-      "name": "MYSQL_ROOT_PASSWORD",
-      "description": "MYSQL_ROOT_PASSWORD",
-      "default": "rootpassword",
-      "example": "rootpassword",
+      "name": "HCE_DB_USER",
+      "description": "Name of the database user for HCE",
+      "default": "ceuser",
+      "example": "ceuser",
+      "data_type": "string",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "hce-db-password",
+      "description": "Password for the HCE database user",
+      "data_type": "string",
+      "required": true,
+      "secret": true,
+      "generator":
+        {
+          "id": "hce_db_password",
+          "generate": {
+            "type": "Password"
+          }
+        }
+    },
+    {
+      "name": "HCE_DB_HOST",
+      "description": "Hostname of the HCE database server",
+      "default": "hce-ha-int",
+      "example": "hce-ha-int",
+      "data_type": "string",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "hce-admin-service-account-secret",
+      "description": "HCE Admin Service Account secret",
+      "example": "",
+      "data_type": "string",
+      "required": true,
+      "secret": true,
+      "generator":
+        {
+          "id": "hce_admin_service_account_secret",
+          "generate": {
+            "type": "Password"
+          }
+        }
+    },
+    {
+      "name": "ZONED_IDENTITY_IP_OVERRIDE",
+      "description": "Override Identity Endpoint URL's IP address (<instanceid>.<identity-endpoint>) used by HCE provisioning, by pointing it to <identity-endpoint>. To override, use the word 'override'.",
+      "default": "",
+      "example": "override",
+      "data_type": "string",
+      "required": false,
+      "secret": false
+    },
+    {
+      "name": "hce-admin-user-password",
+      "description": "HCE Admin Account Password",
+      "example": "",
+      "data_type": "string",
+      "required": true,
+      "secret": true
+    },
+    {
+      "name": "hce-service-account-secret",
+      "description": "HCE Service account secret",
+      "example": "",
+      "data_type": "string",
+      "required": true,
+      "secret": true,
+      "generator":
+        {
+          "id": "hce_service_account_secret",
+          "generate": {
+            "type": "Password"
+          }
+        }
+    },
+    {
+      "name": "HCE_API_HOST",
+      "description": "Hostname for the HCE-REST API",
+      "default": "hce-rest",
+      "example": "hce-rest",
+      "data_type": "string",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "HCE_DEBUG",
+      "description": "Enables debug mode for HCE",
+      "default": "true",
+      "example": "true",
       "data_type": "string",
       "required": true,
       "secret": false
     },
     {
       "name": "HCE_REGISTRY_MIRROR",
-      "description": "placeholder",
+      "description": "Registry Mirror hostname for HCE",
       "default": "https://registry-mirror-int:5000",
       "example": "https://registry-mirror-int:5000",
       "data_type": "string",
@@ -1365,52 +1469,18 @@
       "secret": false
     },
     {
-      "name": "hce-registry-mirror-cert-crt",
-      "description": "CRT certificate for hce-registry-mirror",
-      "example": "",
+      "name": "HCE_ARTIFACT_STORAGE_VOLUME",
+      "description": "Artifact storage volume path for HCE",
+      "default": "/var/lib/artifacts",
+      "example": "/var/lib/artifacts",
       "data_type": "string",
-      "required": true,
-      "secret": true
-    },
-    {
-      "name": "hce-registry-mirror-cert-key",
-      "description": "Key for certificate for hce-registry-mirror",
-      "example": "",
-      "data_type": "string",
-      "required": true,
-      "secret": true
-    },
-    {
-      "name": "NETWORK_POOL_1",
-      "description": "placeholder",
-      "default": "10.52.0.0/16",
-      "example": "10.52.0.0/16",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "NETWORK_POOL_2",
-      "description": "placeholder",
-      "default": "10.53.0.0/16",
-      "example": "10.53.0.0/16",
-      "data_type": "string",
-      "required": true,
-      "secret": false
-    },
-    {
-      "name": "NETWORK_POOL_3",
-      "description": "placeholder",
-      "default": "10.54.0.0/16",
-      "example": "10.54.0.0/16",
-      "data_type": "string",
-      "required": true,
+      "required": false,
       "secret": false
     },
     {
       "name": "HCE_IMAGE_TAG_BUILD_EVENT_NOTIFIER",
       "description": "Image tag for the buildEvent Docker image",
-      "default": "f3acd520fb619135fcef93d3cb2a566ebf419a3e",
+      "default": "76d95c9c855985e769568479a2e387ec53a442a4",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1419,7 +1489,7 @@
     {
       "name": "HCE_IMAGE_TAG_HIPCHAT_NOTIFIER",
       "description": "Image tag for the hipchat Docker image",
-      "default": "858ccaafa9cdb8ed5df2fb8fa8af4a9205324213",
+      "default": "c5485eef3493e93bc5c1228666aef3bf0f338c4f",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1473,7 +1543,7 @@
     {
       "name": "HCE_IMAGE_TAG_CLOUD_FOUNDRY_WORKER",
       "description": "Image tag for the cloudFoundry Docker image",
-      "default": "0961d78197d43f113e8dca1f660cd6a749346da9",
+      "default": "bc87e2103577ce9adb12c4fa379cf33b1cec9188",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1491,7 +1561,7 @@
     {
       "name": "HCE_IMAGE_TAG_GIT_MERGE_WORKER",
       "description": "Image tag for the gitMerge Docker image",
-      "default": "0da8c6449184a7ee695376d1f60ac879cbb823de",
+      "default": "dd3f3c08221ec40ccf320d990792a0e96bb61cc4",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1500,7 +1570,7 @@
     {
       "name": "HCE_IMAGE_TAG_NODEJS_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-nodejs Docker image",
-      "default": "c390db89732a76132fb742e0aa9b7e376872cb17",
+      "default": "584dbade30f1642b524bacbc265fb11c0a24cc93",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1509,7 +1579,7 @@
     {
       "name": "HCE_IMAGE_TAG_PHP_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-php Docker image",
-      "default": "22c0967ae694b55ce584e581298c89142f85147f",
+      "default": "9371f2ae37f5e96a665db99c9f90f7dc8e9e33da",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1518,7 +1588,7 @@
     {
       "name": "HCE_IMAGE_TAG_GOLANG_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-golang Docker image",
-      "default": "cbc54d092b877ecbf29c108b4fccfe2744e29738",
+      "default": "8faa08ccd31887d3b6de3b38920b5b4dd9d5db8b",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1527,7 +1597,7 @@
     {
       "name": "HCE_IMAGE_TAG_PYTHON_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-python Docker image",
-      "default": "ec6a218dd69c3fee13e145bba6b737c6329f02b7",
+      "default": "dce2f513296584c48850c4191e26feb3eccabd1f",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1536,7 +1606,7 @@
     {
       "name": "HCE_IMAGE_TAG_RUBY_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-ruby Docker image",
-      "default": "7533f7655fbaeaa7a04356436b62cdde2783e3d6",
+      "default": "7cfa95cb1ac91f623c1286483346baec3c0a4d18",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1545,7 +1615,7 @@
     {
       "name": "HCE_IMAGE_TAG_JAVA_MAVEN_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-java-maven Docker image",
-      "default": "ddb336b080b395d9cbf026dc2fba14c74a6ba4fe",
+      "default": "8fb2bb1c504669a03e36904525f95c203cb118bb",
       "example": "",
       "data_type": "string",
       "required": false,

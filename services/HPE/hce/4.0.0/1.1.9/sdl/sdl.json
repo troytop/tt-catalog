@@ -1,7 +1,7 @@
 {
   "name": "hce",
-  "sdl_version": "1.1.11",
-  "product_version": "4.0",
+  "sdl_version": "1.1.9",
+  "product_version": "4.0.0",
   "vendor": "HPE",
   "features": {
     "auth": [
@@ -25,87 +25,13 @@
       },
       {
         "auth_zone": "self",
-        "user_authorities": [
-           "hcp.admin",
-           "hcp.user",
-           "oauth.approvals",
-           "openid",
-           "password.write",
-           "roles",
-           "scim.create",
-           "scim.invite",
-           "scim.me",
-           "scim.read",
-           "scim.write",
-           "uaa.admin",
-           "uaa.user",
-           "user_attributes",
-           "zones.helion-code-engine.admin",
-           "zones.read",
-           "zones.write"
-        ],
         "clients": [
           {
-            "id": "hceadminservice_bootstrap",
-            "name": "Bootstrap client for creating Code Engine Admin user",
-            "scopes": [
-              "hcp.admin",
-              "hcp.user",
-              "oauth.approvals",
-              "openid",
-              "password.write",
-              "roles",
-              "scim.create",
-              "scim.invite",
-              "scim.me",
-              "scim.read",
-              "scim.write",
-              "uaa.admin",
-              "uaa.user",
-              "user_attributes",
-              "zones.helion-code-engine.admin",
-              "zones.read",
-              "zones.write"
-            ],
+            "id": "hceadminservice",
+            "name": "Code Engine Admin service account",
             "authorities": [
               "hcp.admin",
-              "hcp.user",
-              "oauth.approvals",
-              "openid",
-              "password.write",
-              "profile",
-              "roles",
-              "scim.create",
-              "scim.invite",
-              "scim.me",
-              "scim.read",
-              "scim.write",
-              "uaa.admin",
-              "uaa.user",
-              "user_attributes",
-              "zones.helion-code-engine.admin",
-              "zones.read",
-              "zones.write"
-            ],
-            "scopes": [
-              "hcp.admin",
-              "hcp.user",
-              "oauth.approvals",
-              "openid",
-              "password.write",
-              "profile",
-              "roles",
-              "scim.create",
-              "scim.invite",
-              "scim.me",
-              "scim.read",
-              "scim.write",
-              "uaa.admin",
-              "uaa.user",
-              "user_attributes",
-              "zones.helion-code-engine.admin",
-              "zones.read",
-              "zones.write"
+              "hcp.user"
             ],
             "authorized_grant_types": [
               "client_credentials"
@@ -139,9 +65,8 @@
             "id": "hce",
             "name": "Code Engine user",
             "scopes": [
-              "scim.write",
-              "hce.admin",
-              "hce.user"
+              "hcp.admin",
+              "hcp.user"
             ],
             "authorized_grant_types": [
               "password",
@@ -156,39 +81,12 @@
   },
   "postflight": [
     {
-      "name": "create-users",
-      "version": "1.0.0",
-      "vendor": "HPE",
-      "external_name": "hce-user-setup",
-      "repository":"docker-registry.helion.space:443",
-      "image": "hce-user-setup-postflight:latest",
-      "workload_type": "container",
-      "min_RAM_mb": 256,
-      "min_disk_gb": 5,
-      "min_VCPU": 1,
-      "platform": "linux-x86_64",
-      "capabilities": [],
-      "entrypoint": [
-        "/usr/local/hceinit/create_users.sh"
-      ],
-      "min_instances": 1,
-      "max_instances": 1,
-      "retry_count": 10,
-      "volume_mounts": [
-      ],
-      "parameters": [
-        {
-          "name": "hce-admin-user-password"
-        }
-      ]
-    },
-    {
       "name": "update-database",
       "version": "1.0.0",
       "vendor": "HPE",
       "external_name": "hce-update-database",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-rest-service:286f22b351c507b11e73b38746d7d9cd7e91da90",
+      "image": "hce-rest-service:2187bfd4840c38a05d97d7ff7469df9241f13e9f",
       "workload_type": "container",
       "min_RAM_mb": 256,
       "min_disk_gb": 5,
@@ -374,7 +272,7 @@
       "vendor": "percona",
       "external_name": "pxc-node1",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-mysql:2827880abf0e7dcb8b1d8ef10a1ecfdbf81b6cf2",
+      "image": "hce-mysql:598987200ae11fb5070115400f12ea3f3e46147f",
       "entrypoint": [
         "/start.sh"
       ],
@@ -478,7 +376,7 @@
       "vendor": "percona",
       "external_name": "pxc-node2",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-mysql:2827880abf0e7dcb8b1d8ef10a1ecfdbf81b6cf2",
+      "image": "hce-mysql:598987200ae11fb5070115400f12ea3f3e46147f",
       "entrypoint": [
         "/start.sh"
       ],
@@ -582,7 +480,7 @@
       "vendor": "percona",
       "external_name": "pxc-node3",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-mysql:2827880abf0e7dcb8b1d8ef10a1ecfdbf81b6cf2",
+      "image": "hce-mysql:598987200ae11fb5070115400f12ea3f3e46147f",
       "entrypoint": [
         "/start.sh"
       ],
@@ -686,7 +584,7 @@
       "vendor": "HPE",
       "external_name": "concourse-db",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-concourse-db:c92f7a639dbdbfdda90db7b92a91995f8d0911c4",
+      "image": "hce-concourse-db:81eb237a951137f5dc4f0d7ee8b269b80bb48362",
       "min_RAM_mb": 256,
       "min_disk_gb": 1,
       "min_VCPU": 1,
@@ -1031,7 +929,7 @@
       "vendor": "HPE",
       "external_name": "hce-watchdog",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-rest-service:286f22b351c507b11e73b38746d7d9cd7e91da90",
+      "image": "hce-rest-service:2187bfd4840c38a05d97d7ff7469df9241f13e9f",
       "entrypoint": [
         "/app/start.sh",
         "watchdog"
@@ -1093,7 +991,7 @@
       "vendor": "HPE",
       "external_name": "hce-rest",
       "repository":"docker-registry.helion.space:443",
-      "image": "hce-rest-service:286f22b351c507b11e73b38746d7d9cd7e91da90",
+      "image": "hce-rest-service:2187bfd4840c38a05d97d7ff7469df9241f13e9f",
       "entrypoint": [
         "/app/start.sh",
         "rest"
@@ -1288,6 +1186,15 @@
         }
     },
     {
+      "name": "PGDATA",
+      "description": "Database storage volume path for Concourse",
+      "default": "/database",
+      "example": "/database",
+      "data_type": "string",
+      "required": true,
+      "secret": false
+    },
+    {
       "name": "HCE_CONCOURSE_ENDPOINT",
       "description": "Internal endpoint for Concourse",
       "default": "http://concourse-web-int:8080/",
@@ -1383,22 +1290,46 @@
       "secret": false
     },
     {
-      "name": "WSREP_SST_PASSWORD",
-      "description": "WSREP SST user password",
+      "name": "GALERA_CLUSTER",
+      "description": "Enables Galera clustering for HCE",
+      "default": "true",
+      "example": "true",
       "data_type": "string",
       "required": true,
-      "secret": false,
-      "generator":
-        {
-          "id": "wsrep_sst_password",
-          "generate": {
-            "type": "Password"
-          }
-        }
+      "secret": false
+    },
+    {
+      "name": "WSREP_CLUSTER_ADDRESS",
+      "description": "WSREP clustering address for HCE",
+      "default": "gcomm://",
+      "example": "gcomm://",
+      "data_type": "string",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "WSREP_SST_USER",
+      "description": "WSREP SST user name for HCE",
+      "default": "sst",
+      "example": "sst",
+      "data_type": "string",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "WSREP_SST_PASSWORD",
+      "description": "WSREP SST user password",
+      "default": "sst",
+      "example": "sst",
+      "data_type": "string",
+      "required": true,
+      "secret": false
     },
     {
       "name": "MYSQL_ROOT_PASSWORD",
       "description": "Root password for HCE database",
+      "default": "rootpassword",
+      "example": "rootpassword",
       "data_type": "string",
       "required": true,
       "secret": false,
@@ -1457,21 +1388,6 @@
       "example": "",
       "data_type": "string",
       "required": true,
-      "secret": true,
-      "generator":
-        {
-          "id": "hce_admin_service_account_secret",
-          "generate": {
-            "type": "Password"
-          }
-        }
-    },
-    {
-      "name": "hce-admin-user-password",
-      "description": "HCE Admin Account Password",
-      "example": "",
-      "data_type": "string",
-      "required": true,
       "secret": true
     },
     {
@@ -1480,14 +1396,7 @@
       "example": "",
       "data_type": "string",
       "required": true,
-      "secret": true,
-      "generator":
-        {
-          "id": "hce_service_account_secret",
-          "generate": {
-            "type": "Password"
-          }
-        }
+      "secret": true
     },
     {
       "name": "HCE_API_HOST",
@@ -1618,7 +1527,7 @@
     {
       "name": "HCE_IMAGE_TAG_NODEJS_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-nodejs Docker image",
-      "default": "a455a1bae8341a2d997094f066c1d72526b0a2d3",
+      "default": "c390db89732a76132fb742e0aa9b7e376872cb17",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1627,7 +1536,7 @@
     {
       "name": "HCE_IMAGE_TAG_PHP_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-php Docker image",
-      "default": "7dd9b02dd1ebb282420b50e16541b97ebb609291",
+      "default": "22c0967ae694b55ce584e581298c89142f85147f",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1636,7 +1545,7 @@
     {
       "name": "HCE_IMAGE_TAG_GOLANG_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-golang Docker image",
-      "default": "8faa08ccd31887d3b6de3b38920b5b4dd9d5db8b",
+      "default": "cbc54d092b877ecbf29c108b4fccfe2744e29738",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1645,7 +1554,7 @@
     {
       "name": "HCE_IMAGE_TAG_PYTHON_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-python Docker image",
-      "default": "e719f5d3c15abeb3c5ee3671ba80b6144dd2b188",
+      "default": "ec6a218dd69c3fee13e145bba6b737c6329f02b7",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1654,7 +1563,7 @@
     {
       "name": "HCE_IMAGE_TAG_RUBY_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-ruby Docker image",
-      "default": "7f7c052811d814810d642d912c043794882f1e3a",
+      "default": "7533f7655fbaeaa7a04356436b62cdde2783e3d6",
       "example": "",
       "data_type": "string",
       "required": false,
@@ -1663,7 +1572,7 @@
     {
       "name": "HCE_IMAGE_TAG_JAVA_MAVEN_BUILD_CONTAINER",
       "description": "Image tag for the hce-base-java-maven Docker image",
-      "default": "c4a51dc0ec10a4485cfaa99356bda8a04cffb585",
+      "default": "ddb336b080b395d9cbf026dc2fba14c74a6ba4fe",
       "example": "",
       "data_type": "string",
       "required": false,
