@@ -7,5 +7,7 @@
     "MongoDB",
     "Dev Grade"
   ],
+  "documentation_url": "https://docs.mongodb.com/manual/",
+  "license_url": "https://www.mongodb.com/community/licensing",
   "type": "local"
 }

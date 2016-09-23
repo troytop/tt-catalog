@@ -7,5 +7,7 @@
     "Redis",
     "Dev Grade"
   ],
+  "documentation_url": "http://redis.io/documentation",
+  "license_url": "http://redis.io/topics/license",
   "type": "local"
 }

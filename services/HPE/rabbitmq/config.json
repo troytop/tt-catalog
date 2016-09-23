@@ -7,5 +7,7 @@
     "RabbitMQ",
     "Dev Grade"
   ],
+  "documentation_url": "https://www.rabbitmq.com/documentation.html",
+  "license_url": "https://www.rabbitmq.com/mpl.html",
   "type": "local"
 }

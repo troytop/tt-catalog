@@ -7,5 +7,8 @@
     "MySQL",
     "Dev Grade"
   ],
-  "type": "local"
+  "documentation_url": "https://dev.mysql.com/doc/",
+  "license_url": "https://dev.mysql.com/doc/refman/5.5/en/preface.html",
+  "type": "local",
+  "icon_url": "https://www.mysql.com/common/logos/powered-by-mysql-125x64.png"
 }

@@ -6,5 +6,7 @@
   "labels": [
     "HPE HavenOnDemand"
   ],
+  "documentation_url": "https://dev.havenondemand.com/apis",
+  "license_url": "https://www.havenondemand.com/docs/eula.html",
   "type": "by-ref"
 }

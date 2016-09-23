@@ -8,5 +8,7 @@
     "Connector",
     "MySQL"
   ],
+  "documentation_url": "https://aws.amazon.com/documentation/rds/",
+  "license_url": "https://aws.amazon.com/asl/",
   "type": "by-ref"
 }

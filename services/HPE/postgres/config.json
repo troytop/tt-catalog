@@ -3,6 +3,8 @@
   "categories": [
     "Data"
   ],
+  "documentation_url": "https://www.postgresql.org/docs/manuals/",
+  "license_url": "https://www.postgresql.org/about/licence/",
   "labels": [
     "Postgres",
     "Dev Grade"
