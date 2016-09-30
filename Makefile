@@ -8,8 +8,11 @@ default: help
 help:
 	@echo "These 'make' targets are available."
 	@echo
+	@echo "  all                Run install tools and tests"
+	@echo "  tools              Installs tools needed to run"
 	@echo "  test               Run the unit tests"
-	@echo "	 publish-catalog    Publish the catalog to s3 location"
+	@echo "  test-format        Run the formatting tests"
+	@echo "  publish-catalog    Publish the catalog to s3 location"
 
 all: tools test
 
