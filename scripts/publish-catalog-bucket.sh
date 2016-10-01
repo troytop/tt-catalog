@@ -1,7 +1,12 @@
 #!/bin/bash
 
-if [ -z ${CATALOG_LOCATION} ]; then
-    echo "Error: CATALOG_LOCATION is not set. It is recommended to run this script from `make publish-catalog`"
+if [ -z ${CATALOG_LOCATION_DEVELOPMENT} ]; then
+    echo "Error: CATALOG_LOCATION_DEVELOPMENT is not set. It is recommended to run this script from `make publish-catalog`"
+    exit 1
+fi
+
+if [ -z ${CATALOG_LOCATION_STABLE} ]; then
+    echo "Error: CATALOG_LOCATION_STABLE is not set. It is recommended to run this script from `make publish-catalog`"
     exit 1
 fi
 
@@ -12,7 +17,8 @@ fi
 
 if [ -d services ]; 
 then
-    aws s3 sync services ${CATALOG_LOCATION} --acl public-read --delete
+    aws s3 sync services ${CATALOG_LOCATION_DEVELOPMENT} --exclude "*/*.sig" --acl public-read --delete
+    aws s3 sync services ${CATALOG_LOCATION_STABLE} --exclude "*/*.sig" --acl public-read --delete
 fi
 
 if [ -d instance-definition ];
