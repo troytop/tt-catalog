@@ -11,7 +11,7 @@
      POSTGRES_USER
      POSTGRES_PASSWORD
      POSTGRES_SSLMODE
-     CSM_API_KEY
+     SIDECAR_API_KEY
  Once the credentials are provided, it connects to the db instance with the specifications.
  Databases and users can be created/deleted on that instance.
 

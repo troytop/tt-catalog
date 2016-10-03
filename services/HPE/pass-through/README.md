@@ -1,15 +1,15 @@
-# Haven on Demand
+# PassThrough service
 
 
 ### Info:
 
-This service returns an API key which can be used to access Haven on Demand APIs.
+pass-through service, accepts JSON and makes it available to CF apps in VCAP Services
 
 
 ### Usage:
 
-Select HavenOnDemand from catalog.
+Select PassThrough from catalog.
 
 Click deploy.
+Supply the JSON that needs to be available in CF Apps
 
-The API key is now available for use.

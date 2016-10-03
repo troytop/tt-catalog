@@ -19,7 +19,7 @@
         "parameters": {
             "type": "array"
         },
-        "features":{
+        "features": {
             "type": "object"
         },
         "components": {
@@ -39,7 +39,7 @@
                     "external_name": {
                         "type": "string"
                     },
-                    "repository":{
+                    "repository": {
                         "type": "string"
                     },
                     "image": {
@@ -48,17 +48,17 @@
                     "min_RAM_mb": {
                         "type": "integer"
                     },
-                    "max_RAM_mb": {
-                        "type": "integer"
-                    },
                     "min_disk_gb": {
                         "type": "integer"
                     },
-                    "min_VCPU": {
+                    "max_RAM_mb": {
                         "type": "integer"
                     },
+                    "min_VCPU": {
+                        "type": "number"
+                    },
                     "max_VCPU": {
-                        "type": "integer"
+                        "type": "number"
                     },
                     "platform": {
                         "type": "string"
