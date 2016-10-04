@@ -18,7 +18,6 @@ fi
 if [ -d services ]; 
 then
     aws s3 sync services ${CATALOG_LOCATION_DEVELOPMENT} --exclude "*/*.sig" --acl public-read --delete
-    aws s3 sync services ${CATALOG_LOCATION_STABLE} --exclude "*/*.sig" --acl public-read --delete
 fi
 
 if [ -d instance-definition ];
