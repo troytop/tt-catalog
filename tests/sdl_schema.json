@@ -42,7 +42,13 @@
                     "repository": {
                         "type": "string"
                     },
+                    "organization": {
+                        "type": "string"
+                    },
                     "image": {
+                        "type": "string"
+                    },
+                    "tag": {
                         "type": "string"
                     },
                     "min_RAM_mb": {
@@ -119,8 +125,6 @@
                 },
                 "required": [
                     "name",
-                    "version",
-                    "vendor",
                     "image"
                 ],
                 "additionalProperties": false
@@ -131,6 +135,7 @@
         "name",
         "product_version",
         "sdl_version",
+        "vendor",
         "components"
     ],
     "additionalProperties": false
