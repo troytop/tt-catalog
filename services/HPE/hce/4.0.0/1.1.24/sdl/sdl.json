@@ -125,7 +125,9 @@
       "vendor": "HPE",
       "external_name": "hce-preflight-upgrade",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-rest-service",
+      "tag": "8c520c6bd05f9de3e037c3bcb9c20cad4f586b8d",
       "workload_type": "container",
       "min_RAM_mb": 256,
       "min_disk_gb": 5,
@@ -171,9 +173,7 @@
         {
           "name": "HCE_CONCOURSE_TSA_HOST"
         }
-      ],
-      "tag": "8c520c6bd05f9de3e037c3bcb9c20cad4f586b8d",
-      "organization": "stackatodev"
+      ]
     }
   ],
   "postflight": [
@@ -183,7 +183,9 @@
       "vendor": "HPE",
       "external_name": "hce-user-setup",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-user-setup-postflight",
+      "tag": "79250f9206f47df1a3feff617ffe25c0ac1445ba",
       "workload_type": "container",
       "min_RAM_mb": 256,
       "min_disk_gb": 5,
@@ -208,9 +210,7 @@
         {
           "name": "hce-admin-user-password"
         }
-      ],
-      "tag": "79250f9206f47df1a3feff617ffe25c0ac1445ba",
-      "organization": "stackatodev"
+      ]
     },
     {
       "name": "update-database",
@@ -218,7 +218,9 @@
       "vendor": "HPE",
       "external_name": "hce-update-database",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-rest-service",
+      "tag": "8c520c6bd05f9de3e037c3bcb9c20cad4f586b8d",
       "workload_type": "container",
       "min_RAM_mb": 256,
       "min_disk_gb": 5,
@@ -312,9 +314,7 @@
         {
           "name": "HCE_IMAGE_TAG_JAVA_MAVEN_BUILD_CONTAINER"
         }
-      ],
-      "tag": "8c520c6bd05f9de3e037c3bcb9c20cad4f586b8d",
-      "organization": "stackatodev"
+      ]
     }
   ],
   "volumes": [
@@ -368,7 +368,9 @@
       "vendor": "HPE",
       "external_name": "hce-ha",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-ha",
+      "tag": "96f150a221deba4adfa898c48fab988a3742f82e",
       "min_RAM_mb": 256,
       "min_disk_gb": 1,
       "min_VCPU": 0.2,
@@ -399,9 +401,7 @@
         }
       ],
       "volume_mounts": [],
-      "parameters": [],
-      "tag": "96f150a221deba4adfa898c48fab988a3742f82e",
-      "organization": "stackatodev"
+      "parameters": []
     },
     {
       "name": "pxc-node1",
@@ -409,7 +409,9 @@
       "vendor": "percona",
       "external_name": "pxc-node1",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-mysql",
+      "tag": "37fc1eaa2e97c992bf0592b51d54e5ba6edee28f",
       "entrypoint": [
         "/start.sh"
       ],
@@ -505,9 +507,7 @@
         {
           "name": "mysql-root-password"
         }
-      ],
-      "tag": "37fc1eaa2e97c992bf0592b51d54e5ba6edee28f",
-      "organization": "stackatodev"
+      ]
     },
     {
       "name": "pxc-node2",
@@ -515,7 +515,9 @@
       "vendor": "percona",
       "external_name": "pxc-node2",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-mysql",
+      "tag": "37fc1eaa2e97c992bf0592b51d54e5ba6edee28f",
       "entrypoint": [
         "/start.sh"
       ],
@@ -611,9 +613,7 @@
         {
           "name": "mysql-root-password"
         }
-      ],
-      "tag": "37fc1eaa2e97c992bf0592b51d54e5ba6edee28f",
-      "organization": "stackatodev"
+      ]
     },
     {
       "name": "pxc-node3",
@@ -621,7 +621,9 @@
       "vendor": "percona",
       "external_name": "pxc-node3",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-mysql",
+      "tag": "37fc1eaa2e97c992bf0592b51d54e5ba6edee28f",
       "entrypoint": [
         "/start.sh"
       ],
@@ -717,9 +719,7 @@
         {
           "name": "mysql-root-password"
         }
-      ],
-      "tag": "37fc1eaa2e97c992bf0592b51d54e5ba6edee28f",
-      "organization": "stackatodev"
+      ]
     },
     {
       "name": "concourse-db",
@@ -727,7 +727,9 @@
       "vendor": "HPE",
       "external_name": "concourse-db",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-concourse-db",
+      "tag": "004048e99797b9d25d56b537534b1e95748a7c34",
       "min_RAM_mb": 1024,
       "min_disk_gb": 1,
       "min_VCPU": 0.2,
@@ -765,9 +767,7 @@
         {
           "name": "PGDATA"
         }
-      ],
-      "tag": "004048e99797b9d25d56b537534b1e95748a7c34",
-      "organization": "stackatodev"
+      ]
     },
     {
       "name": "registry-mirror",
@@ -775,7 +775,9 @@
       "vendor": "HPE",
       "external_name": "registry-mirror",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-docker-registry",
+      "tag": "f71db0fe3bc9164b20d95c7ab603a6dc8005c969",
       "min_RAM_mb": 512,
       "min_disk_gb": 1,
       "min_VCPU": 0.2,
@@ -817,9 +819,7 @@
         {
           "name": "hce-registry-mirror-cert-key"
         }
-      ],
-      "tag": "f71db0fe3bc9164b20d95c7ab603a6dc8005c969",
-      "organization": "stackatodev"
+      ]
     },
     {
       "name": "concourse-worker",
@@ -827,7 +827,9 @@
       "vendor": "HPE",
       "external_name": "concourse-worker",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-concourse-bin",
+      "tag": "b9cd6b5f54651aa95c5eea00a57a8d78e1b2a3a1",
       "entrypoint": [
         "/usr/local/bin/dumb-init",
         "/root/scripts/start.sh",
@@ -880,9 +882,7 @@
         {
           "name": "HCE_CONCOURSE_TSA_PORT"
         }
-      ],
-      "tag": "b9cd6b5f54651aa95c5eea00a57a8d78e1b2a3a1",
-      "organization": "stackatodev"
+      ]
     },
     {
       "name": "concourse-web",
@@ -890,7 +890,9 @@
       "vendor": "HPE",
       "external_name": "concourse-web",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-concourse-bin",
+      "tag": "b9cd6b5f54651aa95c5eea00a57a8d78e1b2a3a1",
       "entrypoint": [
         "/usr/local/bin/dumb-init",
         "/root/scripts/start.sh",
@@ -952,9 +954,7 @@
         {
           "name": "postgres-password"
         }
-      ],
-      "tag": "b9cd6b5f54651aa95c5eea00a57a8d78e1b2a3a1",
-      "organization": "stackatodev"
+      ]
     },
     {
       "name": "hce-watchdog",
@@ -962,7 +962,9 @@
       "vendor": "HPE",
       "external_name": "hce-watchdog",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-rest-service",
+      "tag": "8c520c6bd05f9de3e037c3bcb9c20cad4f586b8d",
       "entrypoint": [
         "/app/start.sh",
         "watchdog"
@@ -1019,9 +1021,7 @@
         {
           "name": "HCE_ARTIFACT_STORAGE_VOLUME"
         }
-      ],
-      "tag": "8c520c6bd05f9de3e037c3bcb9c20cad4f586b8d",
-      "organization": "stackatodev"
+      ]
     },
     {
       "name": "hce-rest",
@@ -1029,7 +1029,9 @@
       "vendor": "HPE",
       "external_name": "hce-rest",
       "repository": "docker.io",
+      "organization": "stackatodev",
       "image": "hce-rest-service",
+      "tag": "8c520c6bd05f9de3e037c3bcb9c20cad4f586b8d",
       "entrypoint": [
         "/app/start.sh",
         "rest"
@@ -1112,9 +1114,7 @@
         {
           "name": "HCE_ARTIFACT_STORAGE_VOLUME"
         }
-      ],
-      "tag": "8c520c6bd05f9de3e037c3bcb9c20cad4f586b8d",
-      "organization": "stackatodev"
+      ]
     }
   ],
   "parameters": [
