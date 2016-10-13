@@ -5,11 +5,6 @@ if [ -z ${CATALOG_LOCATION_DEVELOPMENT} ]; then
     exit 1
 fi
 
-if [ -z ${CATALOG_LOCATION_STABLE} ]; then
-    echo "Error: CATALOG_LOCATION_STABLE is not set. It is recommended to run this script from `make publish-catalog`"
-    exit 1
-fi
-
 if [ -z ${IDL_LOCATION} ]; then
     echo "Error: CATALOG_LOCATION is not set. It is recommended to run this script from `make publish-catalog`"
     exit 1

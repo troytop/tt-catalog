@@ -1,7 +1,6 @@
 .PHONY: help test
 
 export CATALOG_LOCATION_DEVELOPMENT?=s3://stackato-4-dev/catalog-templates/stable-1/services
-export CATALOG_LOCATION_STABLE?=s3://stackato-4-release/catalog-templates/stable-1/services
 export IDL_LOCATION?=s3://helion-service-manager/release/instance-definition/stable-1
 
 default: help
@@ -15,7 +14,6 @@ help:
 	@echo "  test-format        Run the formatting tests"
 	@echo "  publish-catalog    Publish the catalog to s3 location"
 	@echo "  sign-development   Generate signatures for development bucket"
-	@echo "  sign-stable        Generate signatures for stable bucket"
 
 all: tools test
 
@@ -36,10 +34,5 @@ publish-catalog:
 	./scripts/publish-catalog-bucket.sh
 
 sign-development:
-	@echo "$(OK_COLOR)===> Publish catalog to s3 location @ ${}$(NO_COLOR)"
-	./scripts/generate-signature-development.sh '${PASSPHRASE}'
-
-sign-stable:
-	@echo "$(OK_COLOR)===> Publish catalog to s3 location @ ${}$(NO_COLOR)"
-	./scripts/generate-signature-stable.sh '${PASSPHRASE}'
-
+	@echo "$(OK_COLOR)===> Publish catalog to s3 location ${CATALOG_LOCATION_DEVELOPMENT} $(NO_COLOR)"
+	@./scripts/generate-signature-development.sh '${PASSPHRASE}'
