@@ -22,8 +22,7 @@ fi
 BASEPATH=temp
 
 mkdir $BASEPATH
-aws s3 cp ${BUCKET} temp --recursive --exclude "*" --include "*/sdl.*" > null
-
+aws s3 cp ${BUCKET} temp --recursive --exclude "*" --include "*/sdl.*" > /dev/null
 
 for i in $(find temp -name sdl.json);
 do
