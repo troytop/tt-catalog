@@ -1,0 +1,12 @@
+
+github-token:
+
+github-templates-repo-name: hpcloud/catalog-templates
+github-templates-repo-uri: git@github.com:hpcloud/catalog-templates
+
+docker-registry-username:
+docker-registry-email:
+docker-registry-password:
+
+hsm-buildbase-image: docker-registry.helion.space:443/hsm/hsm-buildbase
+base-image-repo-tag: latest

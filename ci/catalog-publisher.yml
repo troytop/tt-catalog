@@ -1,0 +1,206 @@
+groups:
+- name: publish
+  jobs:
+  - publish-catalog
+
+- name: checkin-pr
+  jobs:
+  - templates-validate
+
+resource_types:
+- name: slack-notification-resource
+  type: docker-image
+  source:
+    email: {{docker-registry-email}}
+    password: {{docker-registry-password}}
+    repository: stackatodev/slack-notification-resource
+    tag: 0106c071d36fd7f71067eba5a4b36e56f11f91c8
+    username: {{docker-registry-username}}
+
+- name: pull-request
+  type: docker-image
+  source:
+    repository: heliondevops/concourse-github-pull-request
+- name: git-status
+  type: docker-image
+  source:
+    repository: heliondevops/concourse-github-status
+
+resources:
+- name: catalog-templates
+  type: git
+  source:
+    branch: stable-1
+    private_key: {{git-private-key}}
+    uri: {{github-templates-repo-uri}}
+    access_token: {{github-token}}
+
+- name: templates-pr
+  type: pull-request
+  source:
+    branch: stable-1
+    private_key: {{git-private-key}}
+    uri: {{github-templates-repo-uri}}
+    access_token: {{github-token}}
+
+- name: templates-status
+  type: git-status
+  source:
+    branch: stable-1
+    private_key: {{git-private-key}}
+    repo: hpcloud/catalog-templates
+    uri: {{github-templates-repo-uri}}
+    access_token: {{github-token}}
+    
+- name: slack-notification
+  type: slack-notification-resource
+  source:
+    channel:  {{slack-channel}}
+    fail_on_error: true
+    url: {{slack-webhook-url}}
+    username: {{slack-username}}
+
+jobs:
+- name: publish-catalog
+  plan:
+  - get: catalog-templates
+    trigger: true
+  - task: verify-catalog
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: {{hsm-buildbase-image}}
+          tag: {{hsm-buildbase-tag}}
+      params:
+        CONCOURSEBUILD: "true"
+      run:
+        path: sh
+        args:
+        - -exec
+        - |
+          mkdir -p $GOPATH/src/github.com/hpcloud
+          ln -s $PWD/catalog-templates $GOPATH/src/github.com/hpcloud/catalog-templates
+          cd  $GOPATH/src/github.com/hpcloud/catalog-templates
+          make test
+        dir: ""
+      inputs:
+      - name: catalog-templates
+        path: ""
+  - task: publish-to-s3
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: {{hsm-buildbase-image}}
+          tag: {{hsm-buildbase-tag}}
+      params:
+        AWS_ACCESS_KEY_ID: AKIAJ7SRN5FZXWD5CSSA
+        AWS_REGION: us-west-2
+        AWS_SECRET_ACCESS_KEY: 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
+        CONCOURSEBUILD: "true"
+      run:
+        path: sh
+        args:
+        - -exec
+        - |
+          mkdir -p $GOPATH/src/github.com/hpcloud
+          ln -s $PWD/catalog-templates $GOPATH/src/github.com/hpcloud/catalog-templates
+          cd  $GOPATH/src/github.com/hpcloud/catalog-templates
+          make publish-catalog
+        dir: ""
+      inputs:
+      - name: catalog-templates
+        path: ""
+    on_success:
+      put: slack-notification
+      params:
+        message:
+          template: Updated S3 catalog @  s3://stackato-4-dev/catalog-templates/stable-1/services  (stable-1 branch)"
+
+  - task: sign-sdls
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: {{hsm-buildbase-image}}
+          tag: {{hsm-buildbase-tag}}
+      params:
+        AWS_ACCESS_KEY_ID: AKIAJ7SRN5FZXWD5CSSA
+        AWS_REGION: us-west-2
+        AWS_SECRET_ACCESS_KEY: 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
+        CONCOURSEBUILD: "true"
+        GPG_PRIVATE_KEY: {{gpg_private_key}}
+        PASSPHRASE: {{gpg_key_passphrase}}
+      run:
+        path: sh
+        args:
+        - -exec
+        - |
+          set +x
+          mkdir -p $GOPATH/src/github.com/hpcloud
+          ln -s $PWD/catalog-templates $GOPATH/src/github.com/hpcloud/catalog-templates
+          cd $GOPATH/src/github.com/hpcloud/catalog-templates
+          echo "Setting up the gpg key"
+          /scripts/setup-gpg.bash
+          make sign-development
+          echo "Cleaning up gpg key"
+          /scripts/cleanup-gpg.bash 3ECD77D0
+        dir: ""
+      inputs:
+      - name: catalog-templates
+        path: ""
+    on_success:
+      put: slack-notification
+      params:
+        message:
+          template: Signed S3 catalog @  s3://stackato-4-dev/catalog-templates/stable-1/services (stable-1 branch)"
+        
+- name: templates-validate
+  plan:
+  - get: templates-pr
+    trigger: true
+  - put: templates-status
+    params:
+      path: templates-pr
+      state: pending
+  - task: unit-tests
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: {{hsm-buildbase-image}}
+          tag: {{hsm-buildbase-tag}}
+      params:
+        CONCOURSEBUILD: "true"
+      run:
+        path: sh
+        args:
+        - -exec
+        - |
+          cp -R templates-pr/* output
+          mkdir -p $GOPATH/src/github.com/hpcloud
+          ln -s $PWD/output $GOPATH/src/github.com/hpcloud/catalog-templates
+          cd $GOPATH/src/github.com/hpcloud/catalog-templates
+          make test
+        dir: ""
+      inputs:
+      - name: templates-pr
+        path: templates-pr
+      outputs:
+      - name: output
+        path: ""
+    on_failure:
+      put: templates-status
+      params:
+        path: templates-pr
+        state: failure
+    on_success:
+      put: templates-status
+      params:
+        path: templates-pr
+        state: success
