@@ -1,7 +1,7 @@
 {
   "name": "hce",
   "sdl_version": "1.1.31-79d5c5f7",
-  "product_version": "4.0.0",
+  "product_version": "4.0.1",
   "vendor": "HPE",
   "features": {
     "auth": [
