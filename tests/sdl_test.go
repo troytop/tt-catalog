@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -14,12 +15,13 @@ import (
 )
 
 type sdl struct {
-	Name           string      `json:"name"`
-	ProductVersion string      `json:"product_version"`
-	SdlVersion     string      `json:"sdl_version"`
-	Vendor         string      `json:"vendor"`
-	Components     []component `json:"components"`
-	Parameters     []parameter `json:"parameters"`
+	Name           string       `json:"name"`
+	ProductVersion string       `json:"product_version"`
+	SdlVersion     string       `json:"sdl_version"`
+	Vendor         string       `json:"vendor"`
+	Components     []component  `json:"components"`
+	Parameters     []parameter  `json:"parameters"`
+	PostFlight     []postFlight `json:"postflight"`
 }
 
 type component struct {
@@ -28,6 +30,21 @@ type component struct {
 	Vendor       string               `json:"vendor"`
 	Capabilities []string             `json:"capabilities"`
 	Parameters   []componentParameter `json:"parameters"`
+	ServicePorts []port               `json:"service_ports"`
+}
+
+type postFlight struct {
+	Name       string               `json:"name"`
+	RetryCount int                  `json:"retry_count"`
+	Parameters []componentParameter `json:"parameters"`
+}
+
+type port struct {
+	Name     string `json:"name"`
+	Protocol string `json:"protocol"`
+	Source   int    `json:"source"`
+	Target   int    `json:"target"`
+	Public   bool   `json:"publi"`
 }
 
 type componentParameter struct {
@@ -48,6 +65,9 @@ type serviceConfig struct {
 	DeploymentGrade string   `json:"deployment_grade"`
 	Supported       bool     `json:"supported"`
 }
+
+var portNameCharsetRegex = regexp.MustCompile("^[-a-z0-9]+$")
+var portNameOneLetterRegexp = regexp.MustCompile("[a-z]")
 
 func TestSDLsAreValid(t *testing.T) {
 	servicesRoot := "../services"
@@ -152,11 +172,16 @@ func TestSDLsAreValid(t *testing.T) {
 					for _, comp := range s.Components {
 						compNames = append(compNames, comp.Name)
 
-						if comp.Name == "csm-side-car" {
-							p := componentParameter{Name: "CSM_API_KEY"}
-							assert.Contains(t, comp.Parameters, p, "CSM_API_KEY is not present in csm-side-car component")
+						if comp.Name == "hsm-side-car" {
+							p := componentParameter{Name: "SIDECAR_API_KEY"}
+							assert.Contains(t, comp.Parameters, p, "SIDECAR_API_KEY is not present in hsm-side-car component")
+							p = componentParameter{Name: "SIDECAR_CA_CERT"}
+							assert.Contains(t, comp.Parameters, p, "SIDECAR_CA_CERT is not present in hsm-side-car component")
+							p = componentParameter{Name: "tls-private-key-file"}
+							assert.Contains(t, comp.Parameters, p, "tls-private-key-file is not present in hsm-side-car component")
+							p = componentParameter{Name: "tls-cert-file"}
+							assert.Contains(t, comp.Parameters, p, "tls-cert-file is not present in hsm-side-car component")
 						}
-
 						//log a warning if component has "ALL" capabilities set
 						for _, cap := range comp.Capabilities {
 							if cap == "ALL" {
@@ -164,8 +189,21 @@ func TestSDLsAreValid(t *testing.T) {
 							}
 						}
 
+						for _, port := range comp.ServicePorts {
+							IsValidPortName(t, port.Name)
+							assert.True(t, port.Source < 30000, "Port numbers should be less than 30000")
+							assert.True(t, port.Target < 30000, "Port numbers should be less than 30000")
+						}
+
 						//check component parameters exist in parameter definition list
 						for _, param := range comp.Parameters {
+							assert.Contains(t, sdlParams, param, "component parameter not found in sdl parameter definition list")
+							compParams = append(compParams, param)
+						}
+					}
+
+					for _, postFlight := range s.PostFlight {
+						for _, param := range postFlight.Parameters {
 							assert.Contains(t, sdlParams, param, "component parameter not found in sdl parameter definition list")
 							compParams = append(compParams, param)
 						}
@@ -190,6 +228,26 @@ func TestSDLsAreValid(t *testing.T) {
 			}
 		}
 	}
+}
+
+// https://github.com/kubernetes/kubernetes/blob/master/pkg/util/validation/validation.go
+// IsValidPortName check that the argument is valid syntax. It must be non empty and no more than 15 characters long
+// It must contain at least one letter [a-z] and it must contain only [a-z0-9-].
+// Hyphens ('-') cannot be leading or trailing character of the string and cannot be adjacent to other hyphens.
+// Although RFC 6335 allows upper and lower case characters but case is ignored for comparison purposes: (HTTP
+// and http denote the same service).
+func IsValidPortName(t *testing.T, port string) {
+	assert.False(t, len(port) > 15, "Port name length shoudl not be more than 15")
+
+	assert.True(t, portNameCharsetRegex.MatchString(port), "must contain only alpha-numeric characters (a-z, 0-9), and hyphens (-)")
+
+	assert.True(t, portNameOneLetterRegexp.MatchString(port), "must contain at least one letter (a-z)")
+
+	assert.False(t, strings.Contains(port, "--"), "must not contain consecutive hyphens")
+
+	assert.False(t, port[0] == '-', "must not begin with a hyphen")
+
+	assert.False(t, len(port) > 0 && port[len(port)-1] == '-', "must not end with a hyphen")
 }
 
 func listDirs(t *testing.T, path string) []os.FileInfo {
