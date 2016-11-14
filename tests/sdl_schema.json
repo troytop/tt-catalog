@@ -22,6 +22,9 @@
         "features": {
             "type": "object"
         },
+        "postflight": {
+          "type" : "array"
+        },
         "components": {
             "type": "array",
             "items": {
