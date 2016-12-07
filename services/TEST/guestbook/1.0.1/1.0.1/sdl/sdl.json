@@ -2,7 +2,7 @@
     "name": "guestbook",
     "product_version": "1.0.1",
     "sdl_version": "1.0.1",
-    "vendor": "Troy Topnik",
+    "vendor": "TEST",
     "volumes": [
         {
             "name": "redis-backup",
