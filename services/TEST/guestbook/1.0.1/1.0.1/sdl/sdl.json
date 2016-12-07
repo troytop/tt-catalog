@@ -1,7 +1,7 @@
 {
-  "name": "kubernetes-guestbook",
-  "product_version": "1.0.0",
-  "sdl_version": "1.0.0",
+  "name": "guestbook",
+  "product_version": "1.0.1",
+  "sdl_version": "1.0.1",
   "vendor": "TEST",
   "volumes": [
     {
