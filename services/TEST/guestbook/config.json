@@ -5,7 +5,8 @@
   ],
   "labels": [
     "app",
-    "samples"
+    "samples",
+    "web"
   ],
   "type": "local"
 }
