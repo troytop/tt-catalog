@@ -41,7 +41,8 @@
         },
         {
             "name": "redis-worker",
-            "image": "gcr.io/google_samples/gb-redisslave:v1",
+            "repository": "gcr.io",
+            "image": "google_samples/gb-redisslave:v1",
             "min_RAM_mb": 256,
             "min_VCPU": 1,
             "platform": "linux-x86_64",
@@ -63,7 +64,8 @@
         },
         {
             "name": "frontend",
-            "image": "gcr.io/google_samples/gb-frontend:v1",
+            "repository": "gcr.io",
+            "image": "google_samples/gb-frontend:v1",
             "min_RAM_mb": 256,
             "min_VCPU": 1,
             "platform": "linux-x86_64",
