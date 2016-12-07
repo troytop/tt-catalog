@@ -1,0 +1,11 @@
+{
+  "description": "Containerized docker registry",
+  "categories": [
+    "Docker"
+  ],
+  "labels": [
+    "Docker",
+    "Registry"
+  ],
+  "type": "local"
+}

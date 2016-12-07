@@ -1,0 +1,12 @@
+{
+  "description": "Microsoft® SQL Server® 2014 is a relational database management system. This service can be used to connect to any external SQL Server® instance including Amazon RDS", 
+  "categories":[
+    "Data"
+  ],
+  "labels":[
+    "Microsoft® SQL Server® 2014",
+    "Connector"
+  ],
+  "icon_url": "https://release.stackato.com/downloads/hsm/service-icons/database.png",
+  "type": "by-ref"
+}

@@ -1,0 +1,13 @@
+{
+  "description": "Percona Galera Cluster",
+  "categories": [
+    "Database"
+  ],
+  "labels": [
+    "database",
+    "mysql",
+    "percona",
+    "cluster"
+  ],
+  "type": "local"
+}

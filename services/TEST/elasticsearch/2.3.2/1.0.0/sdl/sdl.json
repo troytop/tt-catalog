@@ -1,0 +1,123 @@
+{
+    "name": "elasticsearch",
+    "product_version": "2.3.2",
+    "sdl_version": "1.0.0",
+    "vendor": "TEST",
+    "volumes": [],
+    "components": [
+        {
+            "name": "elasticsearch",
+            "image": "elasticsearch:2.3.2",
+            "min_RAM_mb": 256,
+            "min_VCPU": 1,
+            "platform": "linux-x86_64",
+            "workload_type": "container",
+            "capabilities": [],
+            "affinity": [],
+            "min_instances": 1,
+            "max_instances": 1,
+            "service_ports": [
+                {
+                    "name": "http",
+                    "protocol": "TCP",
+                    "source_port": 9200,
+                    "target_port": 9200,
+                    "public": true
+                }
+            ]
+        },
+        {
+            "name": "hsm-side-car",
+            "repository": "docker.io",
+            "organization": "stackatodev",
+            "image": "hsm-sidecar",
+            "tag": "latest",
+            "min_RAM_mb": 50,
+            "min_VCPU": 1,
+            "platform": "linux-x86_64",
+            "workload_type": "container",
+            "capabilities": [],
+            "affinity": [],
+            "min_instances": 1,
+            "max_instances": 1,
+            "retry_count": 5,
+            "service_ports": [
+                {
+                    "name": "sidecar-api",
+                    "protocol": "TCP",
+                    "source_port": 8081,
+                    "target_port": 8081,
+                    "public": false
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "SIDECAR_API_KEY"
+                },
+                {
+                    "name": "SIDECAR_CA_CERT"
+                },
+                {
+                    "name": "tls-private-key-file"
+                },
+                {
+                    "name": "tls-cert-file"
+                }
+            ]
+        }
+    ],
+    "parameters": [
+        {
+            "name": "SIDECAR_API_KEY",
+            "description": "HSM side-car api key",
+            "default": "sidecar-auth-token",
+            "example": "sidecar-auth-token",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "SIDECAR_CA_CERT",
+            "description": "placeholder",
+            "example": "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----",
+            "required": true,
+            "secret": false,
+            "generator": {
+                "id": "cacert",
+                "generate": {
+                    "value_type": "certificate",
+                    "type": "CACertificate"
+                }
+            }
+        },
+        {
+            "name": "tls-private-key-file",
+            "description": "Private certificate string for TLS with endlines preserved with '\n'",
+            "example": "-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----",
+            "required": false,
+            "secret": true,
+            "generator": {
+                "id": "tls_cert",
+                "generate": {
+                    "value_type": "private_key",
+                    "key_length": 4096,
+                    "type": "Certificate"
+                }
+            }
+        },
+        {
+            "name": "tls-cert-file",
+            "description": "Public certificate string for TLS with endlines preserved with '\n'",
+            "example": "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----",
+            "required": false,
+            "secret": true,
+            "generator": {
+                "id": "tls_cert",
+                "generate": {
+                    "value_type": "certificate",
+                    "type": "Certificate"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+{
+  "description": "The Console provides the web interface for building and managing application in Stackato.",
+  "categories": [
+    "Platform Services"
+  ],
+  "labels": [
+    "Helion Console"
+  ],
+  "icon_url": "https://release.stackato.com/downloads/hsm/service-icons/stackato-core.png",
+  "type": "local"
+}

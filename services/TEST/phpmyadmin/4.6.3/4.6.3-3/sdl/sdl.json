@@ -1,0 +1,73 @@
+{
+    "name": "phpmyadmin",
+    "product_version": "4.6.3",
+    "sdl_version": "4.6.3-3",
+    "vendor": "TEST",
+    "volumes": [],
+    "components": [
+        {
+            "name": "phpadmin",
+            "image": "phpmyadmin/phpmyadmin:4.6.3-3",
+            "min_RAM_mb": 50,
+            "min_VCPU": 1,
+            "platform": "linux-x86_64",
+            "workload_type": "container",
+            "capabilities": [],
+            "min_instances": 1,
+            "max_instances": 1,
+            "service_ports": [
+                {
+                    "name": "phpadmin",
+                    "protocol": "TCP",
+                    "source_port": 80,
+                    "target_port": 80,
+                    "public": true
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "PMA_HOST"
+                },
+                {
+                    "name": "PMA_PORT"
+                },
+                {
+                    "name": "PMA_USER"
+                },
+                {
+                    "name": "PMA_PASSWORD"
+                }
+            ]
+        }
+    ],
+    "parameters": [
+        {
+            "name": "PMA_HOST",
+            "description": "MySQL Host address",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "PMA_PORT",
+            "description": "MySQL Port",
+            "data_type": "int32",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "PMA_USER",
+            "description": "MySQL Username",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "PMA_PASSWORD",
+            "description": "MySQL Password",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+  "description": "phpMyAdmin with Alpine and PHP built in web server.", 
+  "categories":[
+    "administration",
+    "monitoring"
+  ],
+  "labels":[
+    "database",
+    "open source",
+    "php"
+  ],
+  "type": "local"
+}

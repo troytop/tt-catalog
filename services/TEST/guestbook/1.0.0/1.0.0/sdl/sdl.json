@@ -1,0 +1,194 @@
+{
+    "name": "guestbook",
+    "product_version": "1.0.0",
+    "sdl_version": "1.0.0",
+    "vendor": "TEST",
+    "volumes": [
+        {
+            "name": "redis-backup",
+            "size_gb": 10,
+            "filesystem": "ext4",
+            "shared": false
+        }
+    ],
+    "components": [
+        {
+            "name": "redis-master",
+            "image": "redis",
+            "min_RAM_mb": 256,
+            "min_VCPU": 1,
+            "platform": "linux-x86_64",
+            "workload_type": "container",
+            "capabilities": [],
+            "affinity": [],
+            "min_instances": 1,
+            "max_instances": 1,
+            "service_ports": [
+                {
+                    "name": "redis-master",
+                    "protocol": "TCP",
+                    "source_port": 6379,
+                    "target_port": 6379,
+                    "public": false
+                }
+            ],
+            "volume_mounts": [
+                {
+                    "volume_name": "redis-backup",
+                    "mountpoint": "/tmp/backup"
+                }
+            ]
+        },
+        {
+            "name": "redis-worker",
+            "image": "gcr.io/google_samples/gb-redisslave:v1",
+            "min_RAM_mb": 256,
+            "min_VCPU": 1,
+            "platform": "linux-x86_64",
+            "workload_type": "container",
+            "capabilities": [],
+            "affinity": [],
+            "min_instances": 2,
+            "max_instances": 2,
+            "service_ports": [
+                {
+                    "name": "redis-worker",
+                    "protocol": "TCP",
+                    "source_port": 6379,
+                    "target_port": 6379,
+                    "public": false
+                }
+            ],
+            "volume_mounts": []
+        },
+        {
+            "name": "frontend",
+            "image": "gcr.io/google_samples/gb-frontend:v1",
+            "min_RAM_mb": 256,
+            "min_VCPU": 1,
+            "platform": "linux-x86_64",
+            "workload_type": "container",
+            "capabilities": [],
+            "affinity": [],
+            "min_instances": 3,
+            "max_instances": 3,
+            "service_ports": [
+                {
+                    "name": "frontend",
+                    "protocol": "TCP",
+                    "source_port": 80,
+                    "target_port": 80,
+                    "public": true
+                }
+            ],
+            "volume_mounts": [],
+            "parameters": [
+                {
+                    "name": "GET_HOSTS_FROM"
+                }
+            ]
+        },
+        {
+            "name": "hsm-side-car",
+            "repository": "docker.io",
+            "organization": "stackatodev",
+            "image": "hsm-sidecar",
+            "tag": "latest",
+            "min_RAM_mb": 50,
+            "min_VCPU": 1,
+            "platform": "linux-x86_64",
+            "workload_type": "container",
+            "capabilities": [],
+            "affinity": [],
+            "min_instances": 1,
+            "max_instances": 1,
+            "retry_count": 5,
+            "service_ports": [
+                {
+                    "name": "sidecar-api",
+                    "protocol": "TCP",
+                    "source_port": 8081,
+                    "target_port": 8081,
+                    "public": true
+                }
+            ],
+            "parameters": [
+                {
+                    "name": "SIDECAR_API_KEY"
+                },
+                {
+                    "name": "SIDECAR_CA_CERT"
+                },
+                {
+                    "name": "tls-private-key-file"
+                },
+                {
+                    "name": "tls-cert-file"
+                }
+            ]
+        }
+    ],
+    "parameters": [
+        {
+            "name": "GET_HOSTS_FROM",
+            "description": "If your cluster config provides DNS, use the value 'dns' here, otherwise use 'env'",
+            "default": "dns",
+            "example": "dns",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "SIDECAR_API_KEY",
+            "description": "HSM side-car api key",
+            "default": "hsm-auth-token",
+            "example": "hsm-auth-token",
+            "data_type": "string",
+            "required": true,
+            "secret": false
+        },
+        {
+            "name": "SIDECAR_CA_CERT",
+            "description": "placeholder",
+            "example": "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----",
+            "required": true,
+            "secret": false,
+            "generator": {
+                "id": "cacert",
+                "generate": {
+                    "value_type": "certificate",
+                    "type": "CACertificate"
+                }
+            }
+        },
+        {
+            "name": "tls-private-key-file",
+            "description": "Private certificate string for TLS with endlines preserved with '\n'",
+            "example": "-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----",
+            "required": false,
+            "secret": true,
+            "generator": {
+                "id": "tls_cert",
+                "generate": {
+                    "value_type": "private_key",
+                    "key_length": 4096,
+                    "type": "Certificate"
+                }
+            }
+        },
+        {
+            "name": "tls-cert-file",
+            "description": "Public certificate string for TLS with endlines preserved with '\n'",
+            "example": "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----",
+            "required": false,
+            "secret": true,
+            "generator": {
+                "id": "tls_cert",
+                "generate": {
+                    "value_type": "certificate",
+                    "type": "Certificate"
+                }
+            }
+        }
+    ]
+}

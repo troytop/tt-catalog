@@ -1,0 +1,12 @@
+{
+  "description": "Apache Spark Cluster",
+  "categories": [
+    "Big Data"
+  ],
+  "labels": [
+    "bigdata",
+    "spark",
+    "apache"
+  ],
+  "type": "local"
+}

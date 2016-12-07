@@ -1,0 +1,12 @@
+{
+  "description": "A sample private guestbook",
+  "categories": [
+    "Sample Applications"
+  ],
+  "labels": [
+    "app",
+    "samples"
+  ],
+  "type": "local",
+  "private": true
+}
