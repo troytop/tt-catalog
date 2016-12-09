@@ -13,8 +13,8 @@
   "components": [
     {
       "name": "frontend",
-      "version": "1.0.1",
-      "vendor": "erming",
+      "version": "1.0.0",
+      "vendor": "Kubernetes",
       "repository": "docker.io",
       "image": "sparklyballs/shout-irc:latest",
       "min_RAM_mb": 256,
@@ -24,7 +24,7 @@
       "workload_type": "container",
       "capabilities": ["ALL"],
       "min_instances": 1,
-      "max_instances": 3,
+      "max_instances": 1,
       "service_ports": [
         {
           "name": "frontend",
