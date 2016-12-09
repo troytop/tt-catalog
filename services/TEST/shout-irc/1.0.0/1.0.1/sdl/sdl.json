@@ -5,12 +5,12 @@
   "vendor": "TEST",
   "components": [
     {
-      "name": "frontend",
+      "name": "web",
       "version": "1.0.0",
       "vendor": "troy",
       "repository": "docker.io",
       "image": "troytop/shout-irc:latest",
-      "min_RAM_mb": 128,
+      "min_RAM_mb": 64,
       "min_disk_gb": 0.5,
       "min_VCPU": 1,
       "platform": "linux-x86_64",
