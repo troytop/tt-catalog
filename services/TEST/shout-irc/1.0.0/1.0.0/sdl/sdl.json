@@ -29,7 +29,7 @@
         {
           "name": "frontend",
           "protocol": "TCP",
-          "source_port": 80,
+          "source_port": 9000,
           "target_port": 80,
           "public": true
         }
