@@ -1,0 +1,32 @@
+{
+  "name": "shout-irc",
+  "product_version": "1.0.0",
+  "sdl_version": "1.0.1",
+  "vendor": "TEST",
+  "components": [
+    {
+      "name": "frontend",
+      "version": "1.0.0",
+      "vendor": "troy",
+      "repository": "docker.io",
+      "image": "troytop/shout-irc:latest",
+      "min_RAM_mb": 128,
+      "min_disk_gb": 0.5,
+      "min_VCPU": 1,
+      "platform": "linux-x86_64",
+      "workload_type": "container",
+      "capabilities": ["ALL"],
+      "min_instances": 1,
+      "max_instances": 1,
+      "service_ports": [
+        {
+          "name": "frontend",
+          "protocol": "TCP",
+          "source_port": 80,
+          "target_port": 9000,
+          "public": true
+        }
+      ]
+    }
+  ]
+}
