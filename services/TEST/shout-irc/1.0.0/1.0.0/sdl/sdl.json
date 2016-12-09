@@ -39,12 +39,6 @@
           "volume_name": "frontend-data",
           "mountpoint": "/data"
         }
-      ],
-      "parameters": [
-    ]
-  ],
-  "preflight": [
-  ],
-  "parameters": [
+      ]
+    }
   ]
-}
