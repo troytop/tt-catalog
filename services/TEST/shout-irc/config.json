@@ -1,0 +1,13 @@
+{
+  "description": "Shout is a web IRC client that you host on your own server",
+  "categories": [
+    "Sample Applications"
+  ],
+  "labels": [
+    "app",
+    "samples",
+    "web",
+    "irc"
+  ],
+  "type": "local"
+}

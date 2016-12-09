@@ -1,0 +1,50 @@
+{
+  "name": "shout-irc",
+  "product_version": "1.0.0",
+  "sdl_version": "1.0.0",
+  "vendor": "TEST",
+  "volumes": [
+    {
+      "name": "frontend-data",
+      "size_gb": 10,
+      "shared": true
+    }
+  ],
+  "components": [
+    {
+      "name": "frontend",
+      "version": "1.0.1",
+      "vendor": "erming",
+      "repository": "docker.io",
+      "image": "sparklyballs/shout-irc:latest",
+      "min_RAM_mb": 256,
+      "min_disk_gb": 1,
+      "min_VCPU": 1,
+      "platform": "linux-x86_64",
+      "workload_type": "container",
+      "capabilities": ["ALL"],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "frontend",
+          "protocol": "TCP",
+          "source_port": 80,
+          "target_port": 80,
+          "public": true
+        }
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "frontend-data",
+          "mountpoint": "/data"
+        }
+      ],
+      "parameters": [
+    ]
+  ],
+  "preflight": [
+  ],
+  "parameters": [
+  ]
+}
