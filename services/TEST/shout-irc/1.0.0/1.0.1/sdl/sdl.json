@@ -20,7 +20,7 @@
       "max_instances": 1,
       "service_ports": [
         {
-          "name": "frontend",
+          "name": "web",
           "protocol": "TCP",
           "source_port": 80,
           "target_port": 9000,
