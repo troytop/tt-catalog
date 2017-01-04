@@ -130,6 +130,7 @@
       "tag": "1.1.31-79d5c5f7",
       "workload_type": "container",
       "min_RAM_mb": 256,
+      "min_disk_gb": 5,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "capabilities": [],
@@ -187,6 +188,7 @@
       "tag": "1.1.31-51d7664b",
       "workload_type": "container",
       "min_RAM_mb": 256,
+      "min_disk_gb": 5,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "capabilities": [],
@@ -222,6 +224,7 @@
       "tag": "1.1.31-79d5c5f7",
       "workload_type": "container",
       "min_RAM_mb": 256,
+      "min_disk_gb": 5,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "capabilities": [],
@@ -371,11 +374,16 @@
       "image": "hce-ha",
       "tag": "1.1.31-96f150a2",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
       "affinity": [],
+      "labels": [
+        "label1",
+        "label2"
+      ],
       "min_instances": 2,
       "max_instances": 2,
       "service_ports": [
@@ -410,12 +418,17 @@
         "/start.sh"
       ],
       "min_RAM_mb": 1024,
+      "min_disk_gb": 1,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
       "depends_on": [],
       "affinity": [],
+      "labels": [
+        "pxc-node1",
+        "hce-db-cluster"
+      ],
       "min_instances": 1,
       "max_instances": 1,
       "retry_count": 5,
@@ -511,12 +524,17 @@
         "/start.sh"
       ],
       "min_RAM_mb": 1024,
+      "min_disk_gb": 1,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
       "depends_on": [],
       "affinity": [],
+      "labels": [
+        "pxc-node2",
+        "hce-db-cluster"
+      ],
       "min_instances": 1,
       "max_instances": 1,
       "retry_count": 5,
@@ -612,12 +630,17 @@
         "/start.sh"
       ],
       "min_RAM_mb": 1024,
+      "min_disk_gb": 1,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
       "depends_on": [],
       "affinity": [],
+      "labels": [
+        "pxc-node3",
+        "hce-db-cluster"
+      ],
       "min_instances": 1,
       "max_instances": 1,
       "retry_count": 5,
@@ -710,12 +733,17 @@
       "image": "hce-concourse-db",
       "tag": "1.1.31-ca36b852",
       "min_RAM_mb": 1024,
+      "min_disk_gb": 1,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
       "depends_on": [],
       "affinity": [],
+      "labels": [
+        "label1",
+        "label2"
+      ],
       "min_instances": 1,
       "max_instances": 1,
       "service_ports": [
@@ -753,11 +781,16 @@
       "image": "hce-docker-registry",
       "tag": "1.1.31-0f453897",
       "min_RAM_mb": 512,
+      "min_disk_gb": 1,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
       "affinity": [],
+      "labels": [
+        "label1",
+        "label2"
+      ],
       "min_instances": 1,
       "max_instances": 1,
       "service_ports": [
@@ -805,6 +838,7 @@
         "worker"
       ],
       "min_RAM_mb": 1024,
+      "min_disk_gb": 1,
       "min_VCPU": 1,
       "platform": "linux-x86_64",
       "workload_type": "container",
@@ -812,6 +846,10 @@
         "ALL"
       ],
       "affinity": [],
+      "labels": [
+        "label1",
+        "label2"
+      ],
       "min_instances": 3,
       "max_instances": 3,
       "service_ports": [
@@ -866,11 +904,16 @@
         "web"
       ],
       "min_RAM_mb": 512,
+      "min_disk_gb": 1,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
       "affinity": [],
+      "labels": [
+        "label1",
+        "label2"
+      ],
       "min_instances": 2,
       "max_instances": 2,
       "service_ports": [
@@ -925,11 +968,16 @@
         "watchdog"
       ],
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.2,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
       "affinity": [],
+      "labels": [
+        "label1",
+        "label2"
+      ],
       "min_instances": 1,
       "max_instances": 1,
       "service_ports": [],
@@ -987,11 +1035,16 @@
         "rest"
       ],
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.5,
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": [],
       "affinity": [],
+      "labels": [
+        "label1",
+        "label2"
+      ],
       "min_instances": 2,
       "max_instances": 2,
       "service_ports": [

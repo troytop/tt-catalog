@@ -63,6 +63,7 @@
       "image": "hcf-nats",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.3582089552238806,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -73,6 +74,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "nats"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -151,6 +155,7 @@
       "image": "hcf-consul",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -161,6 +166,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "consul"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -289,6 +297,7 @@
       "image": "hcf-mysql",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 3072,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -299,6 +308,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "mysql"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -405,6 +417,7 @@
       "image": "hcf-mysql-proxy",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -415,6 +428,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "mysql-proxy"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -494,6 +510,7 @@
       "image": "hcf-diego-database",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -504,6 +521,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "diego-database"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -625,6 +645,7 @@
       "image": "hcf-router",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.3582089552238806,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -635,6 +656,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "router"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -758,6 +782,7 @@
       "image": "hcf-routing-ha-proxy",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -768,6 +793,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "routing-ha-proxy"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -922,6 +950,7 @@
       "image": "hcf-routing-api",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 512,
+      "min_disk_gb": 1,
       "min_VCPU": 0.3582089552238806,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -932,6 +961,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "routing-api"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -1036,6 +1068,7 @@
       "image": "hcf-api",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 2560,
+      "min_disk_gb": 1,
       "min_VCPU": 0.3582089552238806,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -1046,6 +1079,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "api"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -1202,6 +1238,7 @@
       "image": "hcf-api-worker",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 512,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -1212,6 +1249,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "api-worker"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -1340,6 +1380,7 @@
       "image": "hcf-blobstore",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 1536,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -1350,6 +1391,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "blobstore"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -1446,6 +1490,7 @@
       "image": "hcf-clock-global",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 512,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -1456,6 +1501,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "clock-global"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -1581,6 +1629,7 @@
       "image": "hcf-cf-usb",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -1591,6 +1640,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "cf-usb"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -1690,6 +1742,7 @@
       "image": "hcf-doppler",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -1700,6 +1753,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "doppler"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -1794,6 +1850,7 @@
       "image": "hcf-etcd",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -1804,6 +1861,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "etcd"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -1897,6 +1957,7 @@
       "image": "hcf-loggregator",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -1907,6 +1968,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "loggregator"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -1994,6 +2058,7 @@
       "image": "hcf-diego-brain",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.3582089552238806,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2004,6 +2069,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "diego-brain"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -2096,6 +2164,7 @@
       "image": "hcf-diego-cc-bridge",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 512,
+      "min_disk_gb": 1,
       "min_VCPU": 0.3582089552238806,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2106,6 +2175,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "diego-cc-bridge"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -2276,6 +2348,7 @@
       "image": "hcf-diego-route-emitter",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2286,6 +2359,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "diego-route-emitter"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -2378,6 +2454,7 @@
       "image": "hcf-diego-access",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2388,6 +2465,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "diego-access"
       ],
       "min_instances": 1,
       "max_instances": 65535,
@@ -2495,6 +2575,7 @@
       "image": "hcf-diego-cell",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 4096,
+      "min_disk_gb": 1,
       "min_VCPU": 0.3582089552238806,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2505,6 +2586,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "diego-cell"
       ],
       "min_instances": 1,
       "max_instances": 254,
@@ -2609,6 +2693,7 @@
       "image": "hcf-sclr-api",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 1536,
+      "min_disk_gb": 1,
       "min_VCPU": 0.08955223880597014,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2619,6 +2704,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "sclr-api"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -2678,6 +2766,7 @@
       "image": "hcf-sclr-server",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 1024,
+      "min_disk_gb": 1,
       "min_VCPU": 0.08955223880597014,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2688,6 +2777,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "sclr-server"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -2744,6 +2836,7 @@
       "image": "hcf-sclr-broker",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 1536,
+      "min_disk_gb": 1,
       "min_VCPU": 0.08955223880597014,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2754,6 +2847,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "sclr-broker"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -2813,6 +2909,7 @@
       "image": "hcf-couchdb",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.08955223880597014,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2823,6 +2920,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "couchdb"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -2870,6 +2970,7 @@
       "image": "hcf-hcf-sso",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 128,
+      "min_disk_gb": 1,
       "min_VCPU": 0.08955223880597014,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2880,6 +2981,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "hcf-sso"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -2975,6 +3079,7 @@
       "image": "hcf-hcf-versions",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 128,
+      "min_disk_gb": 1,
       "min_VCPU": 0.08955223880597014,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -2985,6 +3090,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "hcf-versions"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -3077,6 +3185,7 @@
       "image": "hcf-demophon",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 128,
+      "min_disk_gb": 1,
       "min_VCPU": 0.1791044776119403,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -3087,6 +3196,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "demophon"
       ],
       "min_instances": 1,
       "max_instances": 3,
@@ -4910,6 +5022,7 @@
       "image": "hcf-post-deployment-setup",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.08955223880597014,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -4920,6 +5033,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "post-deployment-setup"
       ],
       "min_instances": 1,
       "max_instances": 1,
@@ -4980,6 +5096,7 @@
       "image": "hcf-sso-create-service",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.08955223880597014,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -4990,6 +5107,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "sso-create-service"
       ],
       "min_instances": 1,
       "max_instances": 1,
@@ -5044,6 +5164,7 @@
       "image": "hcf-autoscaler-create-service",
       "tag": "1.4.8-cf245.0.g609e539",
       "min_RAM_mb": 256,
+      "min_disk_gb": 1,
       "min_VCPU": 0.08955223880597014,
       "platform": "linux-x86_64",
       "capabilities": [
@@ -5054,6 +5175,9 @@
       ],
       "affinity": [
 
+      ],
+      "labels": [
+        "autoscaler-create-service"
       ],
       "min_instances": 1,
       "max_instances": 1,
