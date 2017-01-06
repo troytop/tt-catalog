@@ -1,12 +1,12 @@
 {
   "name": "hsc",
   "product_version": "4.1.0",
-  "sdl_version": "1.0.27-0-g8497e4b",
+  "sdl_version": "1.0.29-0-gafff281",
   "vendor": "HPE",
   "components": [
     {
       "name": "hsc-postgres",
-      "version": "1.0.27-0-g8497e4b",
+      "version": "1.0.29-0-gafff281",
       "vendor": "HPE",
       "min_RAM_mb": 1024,
       "min_disk_gb": 1,
@@ -16,7 +16,7 @@
       "repository": "docker.io",
       "organization": "stackatodev",
       "image": "hsc-postgres",
-      "tag": "1.0.27-0-g8497e4b",
+      "tag": "1.0.29-0-gafff281",
       "workload_type": "container",
       "entrypoint": [],
       "parameters": [
@@ -50,7 +50,7 @@
     },
     {
       "name": "hsc-proxy",
-      "version": "1.0.27-0-g8497e4b",
+      "version": "1.0.29-0-gafff281",
       "vendor": "HPE",
       "min_RAM_mb": 1024,
       "min_disk_gb": 1,
@@ -60,7 +60,7 @@
       "repository": "docker.io",
       "organization": "stackatodev",
       "image": "hsc-proxy",
-      "tag": "1.0.27-0-g8497e4b",
+      "tag": "1.0.29-0-gafff281",
       "workload_type": "container",
       "entrypoint": [],
       "parameters": [
@@ -152,7 +152,7 @@
     },
     {
       "name": "hsc-console",
-      "version": "1.0.27-0-g8497e4b",
+      "version": "1.0.29-0-gafff281",
       "vendor": "HPE",
       "min_RAM_mb": 1024,
       "min_disk_gb": 1,
@@ -162,7 +162,7 @@
       "repository": "docker.io",
       "organization": "stackatodev",
       "image": "hsc-console",
-      "tag": "1.0.27-0-g8497e4b",
+      "tag": "1.0.29-0-gafff281",
       "workload_type": "container",
       "entrypoint": [],
       "parameters": [
@@ -223,7 +223,7 @@
   "preflight": [
     {
       "name": "hsc-preflight-job",
-      "version": "1.0.27-0-g8497e4b",
+      "version": "1.0.29-0-gafff281",
       "vendor": "HPE",
       "min_RAM_mb": 256,
       "min_disk_gb": 0.5,
@@ -234,7 +234,7 @@
       "repository": "docker.io",
       "organization": "stackatodev",
       "image": "hsc-preflight-job",
-      "tag": "1.0.27-0-g8497e4b",
+      "tag": "1.0.29-0-gafff281",
       "entrypoint": [],
       "parameters": [
         {
@@ -270,7 +270,7 @@
   "postflight": [
     {
       "name": "hsc-postflight-job",
-      "version": "1.0.27-0-g8497e4b",
+      "version": "1.0.29-0-gafff281",
       "vendor": "HPE",
       "min_RAM_mb": 512,
       "min_disk_gb": 0.5,
@@ -281,7 +281,7 @@
       "repository": "docker.io",
       "organization": "stackatodev",
       "image": "hsc-postflight-job",
-      "tag": "1.0.27-0-g8497e4b",
+      "tag": "1.0.29-0-gafff281",
       "entrypoint": [],
       "parameters": [
         {
