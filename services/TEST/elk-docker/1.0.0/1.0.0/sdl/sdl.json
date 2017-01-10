@@ -23,6 +23,7 @@
       "platform": "linux-x86_64",
       "workload_type": "container",
       "capabilities": ["ALL"],
+      "privileged": true,
       "min_instances": 1,
       "max_instances": 1,
       "service_ports": [
