@@ -1,0 +1,59 @@
+{
+  "name": "elk-docker",
+  "product_version": "1.0.0",
+  "sdl_version": "1.0.0",
+  "vendor": "TEST",
+  "volumes": [
+    {
+      "name": "elk-data",
+      "size_gb": 30,
+      "shared": true
+    }
+  ],
+  "components": [
+    {
+      "name": "frontend",
+      "version": "1.0.0",
+      "vendor": "troy",
+      "repository": "docker.io",
+      "image": "sebp/elk",
+      "min_RAM_mb": 512,
+      "min_disk_gb": 1,
+      "min_VCPU": 1,
+      "platform": "linux-x86_64",
+      "workload_type": "container",
+      "capabilities": ["ALL"],
+      "min_instances": 1,
+      "max_instances": 1,
+      "service_ports": [
+        {
+          "name": "kibana",
+          "protocol": "TCP",
+          "source_port": 80,
+          "target_port": 5601,
+          "public": true
+        },
+        {
+          "name": "elasticsearch",
+          "protocol": "TCP",
+          "source_port": "9200",
+          "target_port": "9200",
+          "public": true
+        },
+        {
+          "name": "logstash",
+          "protocol": "TCP",
+          "source_port": "5400",
+          "target_port": "5400",
+          "public": true
+        }
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "elk-data",
+          "mountpoint": "/var/lib/elasticsearch"
+        }
+      ]
+    }
+  ]
+}
