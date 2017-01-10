@@ -3,13 +3,6 @@
   "product_version": "1.0.0",
   "sdl_version": "1.0.0",
   "vendor": "TEST",
-  "volumes": [
-    {
-      "name": "elk-data",
-      "size_gb": 30,
-      "shared": true
-    }
-  ],
   "components": [
     {
       "name": "elk",
@@ -18,7 +11,7 @@
       "repository": "docker.io",
       "image": "sebp/elk",
       "min_RAM_mb": 3584,
-      "min_disk_gb": 1,
+      "min_disk_gb": 20,
       "min_VCPU": 1,
       "platform": "linux-x86_64",
       "workload_type": "container",
@@ -49,12 +42,6 @@
           "public": true
         }
       ],
-      "volume_mounts": [
-        {
-          "volume_name": "elk-data",
-          "mountpoint": "/var/lib/elasticsearch"
-        }
-      ]
     }
   ]
 }
