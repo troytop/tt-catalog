@@ -36,15 +36,15 @@
         {
           "name": "elasticsearch",
           "protocol": "TCP",
-          "source_port": "9200",
-          "target_port": "9200",
+          "source_port": 9200,
+          "target_port": 9200,
           "public": true
         },
         {
           "name": "logstash",
           "protocol": "TCP",
-          "source_port": "5400",
-          "target_port": "5400",
+          "source_port": 5400,
+          "target_port": 5400,
           "public": true
         }
       ],
