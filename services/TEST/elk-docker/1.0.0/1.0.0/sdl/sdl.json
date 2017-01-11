@@ -10,7 +10,7 @@
       "vendor": "troy",
       "repository": "docker.io",
       "image": "sebp/elk",
-      "min_RAM_mb": 2560,
+      "min_RAM_mb": 3072,
       "min_disk_gb": 30,
       "min_VCPU": 1,
       "platform": "linux-x86_64",
