@@ -1,0 +1,12 @@
+{
+  "description": "A convenient centralised log server and log management web interface",
+  "categories": [
+    "Sample Applications"
+  ],
+  "labels": [
+    "app",
+    "samples",
+    "logs"
+  ],
+  "type": "local"
+}
