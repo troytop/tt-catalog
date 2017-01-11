@@ -37,8 +37,8 @@
         {
           "name": "logstash",
           "protocol": "TCP",
-          "source_port": 5400,
-          "target_port": 5400,
+          "source_port": 5044,
+          "target_port": 5044,
           "public": true
         }
       ]
