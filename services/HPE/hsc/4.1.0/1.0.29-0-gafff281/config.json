@@ -1,17 +1,7 @@
 {
-  "upgrade_from": [
+  "disabled":
     {
-      "product_version": "4.0.0",
-      "sdl_versions": [
-        ">=1.0.20-0-g966d3a5",
-        "<=1.1.0"
-      ]
-    },
-    {
-      "product_version": "4.0.1",
-      "sdl_versions": [
-        ">=1.0.0"
-      ]
+        "vulnerability": false,
+        "reason": "New RC build is now available, so this sdl version being deprecated."
     }
-  ]
 }
