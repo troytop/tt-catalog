@@ -3480,7 +3480,7 @@
       "name": "GARDEN_INSECURE_DOCKER_REGISTRIES",
       "description": "Whitelist of IP:PORT tuples and CIDR subnet masks. Pulling from docker registries with self signed certificates will not be permitted if the registry's address is not listed here.",
       "example": "unknown",
-      "required": true,
+      "required": false,
       "secret": false,
       "default": ""
     },
