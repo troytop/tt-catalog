@@ -1,7 +1,0 @@
-{
-    "disabled":
-    {
-        "vulnerability": false,
-        "reason": "This version has some upgrade issues that being investigated currently."
-    }
-}
