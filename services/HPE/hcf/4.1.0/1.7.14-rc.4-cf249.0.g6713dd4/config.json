@@ -1,0 +1,20 @@
+{
+    "upgrade_from": [
+        {
+            "product_version": "4.0.1",
+            "sdl_versions": [
+                ">=1.4.9-cf245.0.g710c0a8"
+            ]
+        }
+    ],
+    "dependencies": [
+        {
+            "name": "hcp",
+            "vendor": "hpe",
+            "product_version": "4.1.0",
+            "sdl_versions": [
+                ">=1.0.0"
+            ]
+        }
+    ]
+}
