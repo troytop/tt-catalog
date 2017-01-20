@@ -4585,7 +4585,7 @@
       "name": "ROOTFS_TRUSTED_CERTS",
       "description": "Certficates to add to the rootfs trust store. Multiple certs are possible by concatenating their definitions into one big block of text.",
       "example": "unknown",
-      "required": true,
+      "required": false,
       "secret": false,
       "default": ""
     },
@@ -4865,7 +4865,7 @@
       "name": "GARDEN_LINUX_DNS_SERVER",
       "description": "Override DNS servers to be used in containers; defaults to the same as the host.",
       "example": "unknown",
-      "required": true,
+      "required": false,
       "secret": false,
       "default": ""
     },
@@ -4924,7 +4924,7 @@
       "name": "STAGER_INSECURE_DOCKER_REGISTRIES",
       "description": "A comma-separated list of insecure Docker registries in the form of '<HOSTNAME|IP>:PORT'. Each registry must be quoted separately.\n",
       "example": "\"docker-registry.example.com:80\", \"hello.example.org:443\"",
-      "required": true,
+      "required": false,
       "secret": false,
       "default": ""
     },
