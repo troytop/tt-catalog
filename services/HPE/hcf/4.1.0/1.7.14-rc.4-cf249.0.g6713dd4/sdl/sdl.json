@@ -3593,7 +3593,8 @@
         "generate": {
           "type": "Password"
         }
-      }
+      },
+      "immutable": true
     },
     {
       "name": "CLUSTER_ADMIN_AUTHORITIES",
