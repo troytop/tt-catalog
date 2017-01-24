@@ -19,3 +19,17 @@ if [ -d instance-definition ];
 then
     aws s3 sync instance-definition ${IDL_LOCATION} --acl public-read --delete
 fi
+
+BASEPATH=temp
+rm -rf $BASEPATH
+mkdir -p $BASEPATH
+aws s3 cp ${CATALOG_LOCATION_DEVELOPMENT} temp --recursive --exclude "*" --include "*/sdl.*" > /dev/null
+for i in $(find temp -name sdl.sig);
+do
+  DIR=$(dirname $i)
+  if [ -z $(find $DIR -name sdl.json) ]; then
+    FILEPATH=$(echo $DIR | sed 's|'$BASEPATH'/|/|')
+    SDL_DIR=$(dirname $FILEPATH)
+    aws s3 rm ${CATALOG_LOCATION_DEVELOPMENT}${SDL_DIR} --recursive
+  fi
+done
