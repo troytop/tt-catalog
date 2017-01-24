@@ -1,12 +1,12 @@
 {
   "name": "hsc",
   "product_version": "4.1.0",
-  "sdl_version": "1.0.31-0-gffb087d",
+  "sdl_version": "1.0.32-0-gffb087d",
   "vendor": "HPE",
   "components": [
     {
       "name": "hsc-postgres",
-      "version": "1.0.31-0-gffb087d",
+      "version": "1.0.32-0-gffb087d",
       "vendor": "HPE",
       "min_RAM_mb": 1024,
       "min_disk_gb": 1,
@@ -50,7 +50,7 @@
     },
     {
       "name": "hsc-proxy",
-      "version": "1.0.31-0-gffb087d",
+      "version": "1.0.32-0-gffb087d",
       "vendor": "HPE",
       "min_RAM_mb": 1024,
       "min_disk_gb": 1,
@@ -152,7 +152,7 @@
     },
     {
       "name": "hsc-console",
-      "version": "1.0.31-0-gffb087d",
+      "version": "1.0.32-0-gffb087d",
       "vendor": "HPE",
       "min_RAM_mb": 1024,
       "min_disk_gb": 1,
@@ -223,7 +223,7 @@
   "preflight": [
     {
       "name": "hsc-preflight-job",
-      "version": "1.0.31-0-gffb087d",
+      "version": "1.0.32-0-gffb087d",
       "vendor": "HPE",
       "min_RAM_mb": 256,
       "min_disk_gb": 0.5,
@@ -270,7 +270,7 @@
   "postflight": [
     {
       "name": "hsc-postflight-job",
-      "version": "1.0.31-0-gffb087d",
+      "version": "1.0.32-0-gffb087d",
       "vendor": "HPE",
       "min_RAM_mb": 512,
       "min_disk_gb": 0.5,
