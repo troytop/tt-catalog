@@ -1,20 +1,7 @@
 {
-    "upgrade_from": [
-        {
-            "product_version": "4.0.1",
-            "sdl_versions": [
-                ">=1.4.9-cf245.0.g710c0a8"
-            ]
-        }
-    ],
-    "dependencies": [
-        {
-            "name": "hcp",
-            "vendor": "hpe",
-            "product_version": "4.1.0",
-            "sdl_versions": [
-                ">=0.10.0"
-            ]
-        }
-    ]
+  "disabled":
+    {
+        "vulnerability": false,
+        "reason": "New RC build (1.7.20-cf249.0.g6fabac8) is now available, so this sdl version being deprecated."
+    }
 }
