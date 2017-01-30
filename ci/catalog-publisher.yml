@@ -158,6 +158,38 @@ jobs:
       params:
         message:
           template: Signed S3 catalog @  s3://stackato-4-dev/catalog-templates/stable-1/services (stable-1 branch)"
+
+  - task: publish-dist-to-s3
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: {{hsm-buildbase-image}}
+          tag: {{hsm-buildbase-tag}}
+      params:
+        AWS_ACCESS_KEY_ID: AKIAJ7SRN5FZXWD5CSSA
+        AWS_REGION: us-west-2
+        AWS_SECRET_ACCESS_KEY: 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
+        CONCOURSEBUILD: "true"
+      run:
+        path: sh
+        args:
+        - -exec
+        - |
+          mkdir -p $GOPATH/src/github.com/hpcloud
+          ln -s $PWD/catalog-templates $GOPATH/src/github.com/hpcloud/catalog-templates
+          cd  $GOPATH/src/github.com/hpcloud/catalog-templates
+          make publish-catalog-dist
+        dir: ""
+      inputs:
+      - name: catalog-templates
+        path: ""
+    on_success:
+      put: slack-notification
+      params:
+        message:
+          template: Updated S3 catalog distributable @  s3://stackato-4-dev/downloads/hsm/catalog-templates  (stable-1 branch)"
         
 - name: templates-validate
   plan:
