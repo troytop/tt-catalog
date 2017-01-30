@@ -1,7 +1,9 @@
 .PHONY: help test
 
 export CATALOG_LOCATION_DEVELOPMENT?=s3://stackato-4-dev/catalog-templates/stable-1/services
+export CATALOG_DIST_LOCATION_DEVELOPMENT?=s3://stackato-4-dev/downloads/hsm/catalog-templates
 export IDL_LOCATION?=s3://helion-service-manager/release/instance-definition/stable-1
+export STACKATO_VERSION?=4.1.0
 
 default: help
 
@@ -30,8 +32,12 @@ test-format:
 	./scripts/testFmt.sh tests
 
 publish-catalog:
-	@echo "$(OK_COLOR)===> Publish catalog to s3 location @ ${}$(NO_COLOR)"
+	@echo "$(OK_COLOR)===> Publish catalog to s3 location @ ${CATALOG_LOCATION_DEVELOPMENT}$(NO_COLOR)"
 	./scripts/publish-catalog-bucket.sh
+
+publish-catalog-dist:
+	@echo "$(OK_COLOR)===> Publish catalog distributable to s3 location @ ${CATALOG_DIST_LOCATION_DEVELOPMENT}$(NO_COLOR)"
+	./scripts/publish-catalog-dist.sh
 
 sign-development:
 	@echo "$(OK_COLOR)===> Publish catalog to s3 location ${CATALOG_LOCATION_DEVELOPMENT} $(NO_COLOR)"
