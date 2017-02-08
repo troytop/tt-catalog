@@ -211,7 +211,7 @@
     {
       "name": "heapster",
       "repository": "docker.io",
-      "organization": "stackatotest",
+      "organization": "stackatodev",
       "image": "hsc-heapster",
       "tag": "1.0.33-0-gf7198d8",
       "min_RAM_mb": 512,
@@ -251,7 +251,7 @@
     {
       "name": "opentsdb",
       "repository": "docker.io",
-      "organization": "stackatotest",
+      "organization": "stackatodev",
       "image": "hsc-opentsdb",
       "tag": "1.0.33-0-gf7198d8",
       "min_RAM_mb": 512,
