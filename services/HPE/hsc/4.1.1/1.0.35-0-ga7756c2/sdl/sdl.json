@@ -265,8 +265,7 @@
           "name": "opentsdb",
           "protocol": "TCP",
           "source_port": 4242,
-          "target_port": 4242,
-          "public": true
+          "target_port": 4242
         }
       ]
     }
