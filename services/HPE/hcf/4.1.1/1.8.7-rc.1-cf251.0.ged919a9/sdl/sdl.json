@@ -1,0 +1,5392 @@
+{
+  "name": "hcf",
+  "sdl_version": "1.8.7-rc.1-cf251.0.ged919a9",
+  "product_version": "4.1.1",
+  "vendor": "HPE",
+  "volumes": [
+    {
+      "name": "api-data",
+      "size_gb": 100,
+      "filesystem": "ext4",
+      "shared": true
+    },
+    {
+      "name": "persistore",
+      "size_gb": 100,
+      "filesystem": "ext4",
+      "shared": true
+    },
+    {
+      "name": "consul-data",
+      "size_gb": 5,
+      "filesystem": "ext4",
+      "shared": false
+    },
+    {
+      "name": "mysql-data",
+      "size_gb": 10,
+      "filesystem": "ext4",
+      "shared": false
+    },
+    {
+      "name": "diego-database-data",
+      "size_gb": 10,
+      "filesystem": "ext4",
+      "shared": false
+    },
+    {
+      "name": "blobstore-data",
+      "size_gb": 100,
+      "filesystem": "ext4",
+      "shared": false
+    },
+    {
+      "name": "cf-etcd-data",
+      "size_gb": 10,
+      "filesystem": "ext4",
+      "shared": false
+    },
+    {
+      "name": "garden-graph",
+      "size_gb": 50,
+      "filesystem": "ext4",
+      "shared": false
+    },
+    {
+      "name": "couchdb-data",
+      "size_gb": 5,
+      "filesystem": "ext4",
+      "shared": false
+    },
+    {
+      "name": "persibroker-data",
+      "size_gb": 1,
+      "filesystem": "ext4",
+      "shared": false
+    }
+  ],
+  "components": [
+    {
+      "name": "nats",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-nats",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.34285714285714286,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "nats",
+          "protocol": "TCP",
+          "source_port": 4222,
+          "target_port": 4222,
+          "public": false
+        },
+        {
+          "name": "nats-routes",
+          "protocol": "TCP",
+          "source_port": 4223,
+          "target_port": 4223,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "nats-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "consul",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-consul",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "server-rpc",
+          "protocol": "TCP",
+          "source_port": 8300,
+          "target_port": 8300,
+          "public": false
+        },
+        {
+          "name": "serf-lan-tcp",
+          "protocol": "TCP",
+          "source_port": 8301,
+          "target_port": 8301,
+          "public": false
+        },
+        {
+          "name": "serf-lan-udp",
+          "protocol": "UDP",
+          "source_port": 8301,
+          "target_port": 8301,
+          "public": false
+        },
+        {
+          "name": "serf-wan-tcp",
+          "protocol": "TCP",
+          "source_port": 8302,
+          "target_port": 8302,
+          "public": false
+        },
+        {
+          "name": "serf-wan-udp",
+          "protocol": "UDP",
+          "source_port": 8302,
+          "target_port": 8302,
+          "public": false
+        },
+        {
+          "name": "cli-rpc",
+          "protocol": "TCP",
+          "source_port": 8400,
+          "target_port": 8400,
+          "public": false
+        },
+        {
+          "name": "http-api",
+          "protocol": "TCP",
+          "source_port": 8500,
+          "target_port": 8500,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "consul-data",
+          "mountpoint": "/var/vcap/store"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "mysql",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-mysql",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 3072,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "mysql",
+          "protocol": "TCP",
+          "source_port": 3306,
+          "target_port": 3306,
+          "public": false
+        },
+        {
+          "name": "galera-tcp",
+          "protocol": "TCP",
+          "source_port": 4567,
+          "target_port": 4567,
+          "public": false
+        },
+        {
+          "name": "galera-udp",
+          "protocol": "UDP",
+          "source_port": 4567,
+          "target_port": 4567,
+          "public": false
+        },
+        {
+          "name": "galera-ist",
+          "protocol": "TCP",
+          "source_port": 4568,
+          "target_port": 4568,
+          "public": false
+        },
+        {
+          "name": "healthcheck",
+          "protocol": "tcp",
+          "source_port": 9200,
+          "target_port": 9200,
+          "public": false
+        },
+        {
+          "name": "xtrabackup",
+          "protocol": "tcp",
+          "source_port": 4444,
+          "target_port": 4444,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "mysql-data",
+          "mountpoint": "/var/vcap/store"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "MYSQL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "autoscaler-password"
+        },
+        {
+          "name": "ccdb-role-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "mysql-admin-password"
+        },
+        {
+          "name": "mysql-cf-usb-password"
+        },
+        {
+          "name": "mysql-cluster-health-password"
+        },
+        {
+          "name": "mysql-diego-password"
+        },
+        {
+          "name": "mysql-galera-healthcheck-endpoint-password"
+        },
+        {
+          "name": "uaadb-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "mysql-proxy",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-mysql-proxy",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+        {
+          "name": "mysql-proxy",
+          "protocol": "TCP",
+          "source_port": 3306,
+          "target_port": 3306,
+          "public": false
+        },
+        {
+          "name": "api",
+          "protocol": "TCP",
+          "source_port": 80,
+          "target_port": 80,
+          "public": false
+        },
+        {
+          "name": "healthcheck",
+          "protocol": "TCP",
+          "source_port": 1936,
+          "target_port": 1936,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "MYSQL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "autoscaler-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "mysql-proxy-admin-password"
+        },
+        {
+          "name": "nats-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "diego-database",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-diego-database",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "service_ports": [
+        {
+          "name": "cell-metrics",
+          "protocol": "TCP",
+          "source_port": 5678,
+          "target_port": 5678,
+          "public": false
+        },
+        {
+          "name": "cell-bbs-api",
+          "protocol": "TCP",
+          "source_port": 8889,
+          "target_port": 8889,
+          "public": false
+        },
+        {
+          "name": "cell-bbs-dbg",
+          "protocol": "TCP",
+          "source_port": 17017,
+          "target_port": 17017,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "diego-database-data",
+          "mountpoint": "/var/vcap/store"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "bbs-active-key-passphrase"
+        },
+        {
+          "name": "bbs-auctioneer-cert"
+        },
+        {
+          "name": "bbs-auctioneer-key"
+        },
+        {
+          "name": "bbs-rep-cert"
+        },
+        {
+          "name": "bbs-rep-key"
+        },
+        {
+          "name": "bbs-server-crt"
+        },
+        {
+          "name": "bbs-server-key"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "etcd-client-crt"
+        },
+        {
+          "name": "etcd-client-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "mysql-diego-password"
+        },
+        {
+          "name": "rep-server-key"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "router",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-router",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.34285714285714286,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+        {
+          "name": "router",
+          "protocol": "TCP",
+          "source_port": 80,
+          "target_port": 80,
+          "public": true
+        },
+        {
+          "name": "router2",
+          "protocol": "TCP",
+          "source_port": 443,
+          "target_port": 443,
+          "public": true
+        },
+        {
+          "name": "router3",
+          "protocol": "TCP",
+          "source_port": 4443,
+          "target_port": 443,
+          "public": true
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "DNS_HEALTH_CHECK_HOST"
+        },
+        {
+          "name": "FORCE_FORWARDED_PROTO_AS_HTTPS"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "nats-password"
+        },
+        {
+          "name": "router-services-secret"
+        },
+        {
+          "name": "router-ssl-cert"
+        },
+        {
+          "name": "router-ssl-key"
+        },
+        {
+          "name": "router-status-password"
+        },
+        {
+          "name": "uaa-clients-gorouter-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "tcp-router",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-tcp-router",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "healthcheck",
+          "protocol": "TCP",
+          "source_port": 2341,
+          "target_port": 80,
+          "public": true
+        },
+        {
+          "name": "tcp-rout35a8ed6",
+          "protocol": "TCP",
+          "source_port": 20000,
+          "target_port": 20000,
+          "public": true
+        },
+        {
+          "name": "tcp-routa5e9685",
+          "protocol": "TCP",
+          "source_port": 20001,
+          "target_port": 20001,
+          "public": true
+        },
+        {
+          "name": "tcp-rout602fe32",
+          "protocol": "TCP",
+          "source_port": 20002,
+          "target_port": 20002,
+          "public": true
+        },
+        {
+          "name": "tcp-rout9ca357b",
+          "protocol": "TCP",
+          "source_port": 20003,
+          "target_port": 20003,
+          "public": true
+        },
+        {
+          "name": "tcp-rout9cc6e4e",
+          "protocol": "TCP",
+          "source_port": 20004,
+          "target_port": 20004,
+          "public": true
+        },
+        {
+          "name": "tcp-routc0a41c2",
+          "protocol": "TCP",
+          "source_port": 20005,
+          "target_port": 20005,
+          "public": true
+        },
+        {
+          "name": "tcp-rout9bb6762",
+          "protocol": "TCP",
+          "source_port": 20006,
+          "target_port": 20006,
+          "public": true
+        },
+        {
+          "name": "tcp-routd942be6",
+          "protocol": "TCP",
+          "source_port": 20007,
+          "target_port": 20007,
+          "public": true
+        },
+        {
+          "name": "tcp-route0ba05a",
+          "protocol": "TCP",
+          "source_port": 20008,
+          "target_port": 20008,
+          "public": true
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "DNS_HEALTH_CHECK_HOST"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "uaa-clients-tcp-router-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "routing-api",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-routing-api",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 512,
+      "min_VCPU": 0.34285714285714286,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "service_ports": [
+        {
+          "name": "routing-api",
+          "protocol": "TCP",
+          "source_port": 3000,
+          "target_port": 3000,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "DNS_HEALTH_CHECK_HOST"
+        },
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "ETCD_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "RESERVABLE_PORTS"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "bbs-client-crt"
+        },
+        {
+          "name": "bbs-client-key"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "etcd-client-crt"
+        },
+        {
+          "name": "etcd-client-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "uaa-clients-tcp-emitter-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "api",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-api",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 2560,
+      "min_VCPU": 0.34285714285714286,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+        {
+          "name": "api",
+          "protocol": "TCP",
+          "source_port": 9022,
+          "target_port": 9022,
+          "public": false
+        },
+        {
+          "name": "statsd",
+          "protocol": "TCP",
+          "source_port": 8125,
+          "target_port": 8125,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "ALLOWED_CORS_DOMAINS"
+        },
+        {
+          "name": "ALLOW_APP_SSH_ACCESS"
+        },
+        {
+          "name": "APP_TOKEN_UPLOAD_GRACE_PERIOD"
+        },
+        {
+          "name": "CDN_URI"
+        },
+        {
+          "name": "CLUSTER_BUILD"
+        },
+        {
+          "name": "CLUSTER_DESCRIPTION"
+        },
+        {
+          "name": "CLUSTER_NAME"
+        },
+        {
+          "name": "CLUSTER_VERSION"
+        },
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "DEFAULT_APP_DISK_IN_MB"
+        },
+        {
+          "name": "DEFAULT_APP_MEMORY"
+        },
+        {
+          "name": "DEFAULT_APP_SSH_ACCESS"
+        },
+        {
+          "name": "DISABLE_CUSTOM_BUILDPACKS"
+        },
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "DROPLET_MAX_STAGED_STORED"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "MAX_APP_DISK_IN_MB"
+        },
+        {
+          "name": "MAX_HEALTH_CHECK_TIMEOUT"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "NGINX_MAX_REQUEST_BODY_SIZE"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "STAGING_TIMEOUT"
+        },
+        {
+          "name": "SUPPORT_ADDRESS"
+        },
+        {
+          "name": "app-ssh-key-fingerprint"
+        },
+        {
+          "name": "blobstore-password"
+        },
+        {
+          "name": "bulk-api-password"
+        },
+        {
+          "name": "ccdb-role-password"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "db-encryption-key"
+        },
+        {
+          "name": "internal-api-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "nats-password"
+        },
+        {
+          "name": "router-services-secret"
+        },
+        {
+          "name": "staging-upload-password"
+        },
+        {
+          "name": "uaa-clients-cc-routing-secret"
+        },
+        {
+          "name": "uaa-clients-cc-service-secret"
+        },
+        {
+          "name": "uaa-clients-cloud-controller-username-lookup-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "api-worker",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-api-worker",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 512,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "api-data",
+          "mountpoint": "/var/vcap/nfs/shared"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "ALLOW_APP_SSH_ACCESS"
+        },
+        {
+          "name": "APP_TOKEN_UPLOAD_GRACE_PERIOD"
+        },
+        {
+          "name": "CDN_URI"
+        },
+        {
+          "name": "CLUSTER_BUILD"
+        },
+        {
+          "name": "CLUSTER_DESCRIPTION"
+        },
+        {
+          "name": "CLUSTER_NAME"
+        },
+        {
+          "name": "CLUSTER_VERSION"
+        },
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "DEFAULT_APP_DISK_IN_MB"
+        },
+        {
+          "name": "DEFAULT_APP_MEMORY"
+        },
+        {
+          "name": "DEFAULT_APP_SSH_ACCESS"
+        },
+        {
+          "name": "DISABLE_CUSTOM_BUILDPACKS"
+        },
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "MAX_APP_DISK_IN_MB"
+        },
+        {
+          "name": "MAX_HEALTH_CHECK_TIMEOUT"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "STAGING_TIMEOUT"
+        },
+        {
+          "name": "SUPPORT_ADDRESS"
+        },
+        {
+          "name": "blobstore-password"
+        },
+        {
+          "name": "bulk-api-password"
+        },
+        {
+          "name": "ccdb-role-password"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "db-encryption-key"
+        },
+        {
+          "name": "internal-api-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "nats-password"
+        },
+        {
+          "name": "staging-upload-password"
+        },
+        {
+          "name": "uaa-clients-cc-service-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "blobstore",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-blobstore",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 1536,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "service_ports": [
+        {
+          "name": "blobstore-ext",
+          "protocol": "TCP",
+          "source_port": 8080,
+          "target_port": 8080,
+          "public": false
+        },
+        {
+          "name": "blobstore-int",
+          "protocol": "TCP",
+          "source_port": 4443,
+          "target_port": 4443,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "blobstore-data",
+          "mountpoint": "/var/vcap/store"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "BLOBSTORE_ACCESS_RULES"
+        },
+        {
+          "name": "BLOBSTORE_MAX_UPLOAD_SIZE"
+        },
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "blobstore-password"
+        },
+        {
+          "name": "blobstore-secure-link"
+        },
+        {
+          "name": "blobstore-tls-cert"
+        },
+        {
+          "name": "blobstore-tls-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "nats-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "clock-global",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-clock-global",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 512,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "ALLOW_APP_SSH_ACCESS"
+        },
+        {
+          "name": "APP_TOKEN_UPLOAD_GRACE_PERIOD"
+        },
+        {
+          "name": "CDN_URI"
+        },
+        {
+          "name": "CLUSTER_BUILD"
+        },
+        {
+          "name": "CLUSTER_DESCRIPTION"
+        },
+        {
+          "name": "CLUSTER_NAME"
+        },
+        {
+          "name": "CLUSTER_VERSION"
+        },
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "DEFAULT_APP_DISK_IN_MB"
+        },
+        {
+          "name": "DEFAULT_APP_MEMORY"
+        },
+        {
+          "name": "DISABLE_CUSTOM_BUILDPACKS"
+        },
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "MAX_APP_DISK_IN_MB"
+        },
+        {
+          "name": "MAX_HEALTH_CHECK_TIMEOUT"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "STAGING_TIMEOUT"
+        },
+        {
+          "name": "SUPPORT_ADDRESS"
+        },
+        {
+          "name": "blobstore-password"
+        },
+        {
+          "name": "bulk-api-password"
+        },
+        {
+          "name": "ccdb-role-password"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "db-encryption-key"
+        },
+        {
+          "name": "internal-api-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "nats-password"
+        },
+        {
+          "name": "staging-upload-password"
+        },
+        {
+          "name": "uaa-clients-cc-service-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "cf-usb",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-cf-usb",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+        {
+          "name": "usb",
+          "protocol": "TCP",
+          "source_port": 24054,
+          "target_port": 24054,
+          "public": false
+        },
+        {
+          "name": "usb2",
+          "protocol": "TCP",
+          "source_port": 24053,
+          "target_port": 24053,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "cf-usb-broker-server-cert"
+        },
+        {
+          "name": "cf-usb-broker-server-key"
+        },
+        {
+          "name": "cf-usb-password"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "mysql-cf-usb-password"
+        },
+        {
+          "name": "nats-password"
+        },
+        {
+          "name": "uaa-clients-cf-usb-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "doppler",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-doppler",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+        {
+          "name": "doppler-in",
+          "protocol": "TCP",
+          "source_port": 3456,
+          "target_port": 3456,
+          "public": false
+        },
+        {
+          "name": "dropsnode-in",
+          "protocol": "UDP",
+          "source_port": 3457,
+          "target_port": 3457,
+          "public": false
+        },
+        {
+          "name": "doppler-tls",
+          "protocol": "TCP",
+          "source_port": 3458,
+          "target_port": 3458,
+          "public": false
+        },
+        {
+          "name": "doppler-ws",
+          "protocol": "TCP",
+          "source_port": 8081,
+          "target_port": 8081,
+          "public": false
+        },
+        {
+          "name": "doppler-grpc",
+          "protocol": "TCP",
+          "source_port": 8082,
+          "target_port": 8082,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "ETCD_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "bulk-api-password"
+        },
+        {
+          "name": "doppler-cert"
+        },
+        {
+          "name": "doppler-key"
+        },
+        {
+          "name": "etcd-client-crt"
+        },
+        {
+          "name": "etcd-client-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "etcd",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-etcd",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "etcd-client",
+          "protocol": "TCP",
+          "source_port": 4001,
+          "target_port": 4001,
+          "public": false
+        },
+        {
+          "name": "etcd-peer",
+          "protocol": "TCP",
+          "source_port": 7001,
+          "target_port": 7001,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "cf-etcd-data",
+          "mountpoint": "/var/vcap/store"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "DNS_HEALTH_CHECK_HOST"
+        },
+        {
+          "name": "ETCD_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "autoscaler-password"
+        },
+        {
+          "name": "etcd-client-crt"
+        },
+        {
+          "name": "etcd-client-key"
+        },
+        {
+          "name": "etcd-peer-crt"
+        },
+        {
+          "name": "etcd-peer-key"
+        },
+        {
+          "name": "etcd-server-crt"
+        },
+        {
+          "name": "etcd-server-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "loggregator",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-loggregator",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+        {
+          "name": "loggregator",
+          "protocol": "TCP",
+          "source_port": 8080,
+          "target_port": 8080,
+          "public": false
+        },
+        {
+          "name": "loggregator-ws",
+          "protocol": "TCP",
+          "source_port": 8081,
+          "target_port": 8081,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "ETCD_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "etcd-client-crt"
+        },
+        {
+          "name": "etcd-client-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "nats-password"
+        },
+        {
+          "name": "trafficcontroller-cert"
+        },
+        {
+          "name": "trafficcontroller-key"
+        },
+        {
+          "name": "uaa-clients-doppler-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "diego-brain",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-diego-brain",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.34285714285714286,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "diego-auction",
+          "protocol": "TCP",
+          "source_port": 9016,
+          "target_port": 9016,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "auctioneer-rep-cert"
+        },
+        {
+          "name": "auctioneer-rep-key"
+        },
+        {
+          "name": "auctioneer-server-cert"
+        },
+        {
+          "name": "auctioneer-server-key"
+        },
+        {
+          "name": "bbs-client-crt"
+        },
+        {
+          "name": "bbs-client-key"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "rep-server-key"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "diego-cc-bridge",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-diego-cc-bridge",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 512,
+      "min_VCPU": 0.34285714285714286,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+        {
+          "name": "nsync-listen",
+          "protocol": "TCP",
+          "source_port": 8787,
+          "target_port": 8787,
+          "public": false
+        },
+        {
+          "name": "nsync-dbg-l",
+          "protocol": "TCP",
+          "source_port": 17006,
+          "target_port": 17006,
+          "public": false
+        },
+        {
+          "name": "nsync-dbg-b",
+          "protocol": "TCP",
+          "source_port": 17007,
+          "target_port": 17007,
+          "public": false
+        },
+        {
+          "name": "stager-dbg",
+          "protocol": "TCP",
+          "source_port": 17011,
+          "target_port": 17011,
+          "public": false
+        },
+        {
+          "name": "stager-listen",
+          "protocol": "TCP",
+          "source_port": 8888,
+          "target_port": 8888,
+          "public": false
+        },
+        {
+          "name": "tps-listen",
+          "protocol": "TCP",
+          "source_port": 1518,
+          "target_port": 1518,
+          "public": false
+        },
+        {
+          "name": "tps-dbg-l",
+          "protocol": "TCP",
+          "source_port": 17014,
+          "target_port": 17014,
+          "public": false
+        },
+        {
+          "name": "tps-dbg-w",
+          "protocol": "TCP",
+          "source_port": 17015,
+          "target_port": 17015,
+          "public": false
+        },
+        {
+          "name": "cc-up-listen",
+          "protocol": "TCP",
+          "source_port": 9090,
+          "target_port": 9090,
+          "public": false
+        },
+        {
+          "name": "cc-up-dbg",
+          "protocol": "TCP",
+          "source_port": 17018,
+          "target_port": 17018,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "STAGER_INSECURE_DOCKER_REGISTRIES"
+        },
+        {
+          "name": "USE_DIEGO_PRIVILEGED_CONTAINERS"
+        },
+        {
+          "name": "USE_STAGER_PRIVILEGED_CONTAINERS"
+        },
+        {
+          "name": "bbs-client-crt"
+        },
+        {
+          "name": "bbs-client-key"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "internal-api-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "diego-route-emitter",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-diego-route-emitter",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "bbs-client-crt"
+        },
+        {
+          "name": "bbs-client-key"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "nats-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "diego-access",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-diego-access",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 65535,
+      "service_ports": [
+        {
+          "name": "diego-ssh",
+          "protocol": "TCP",
+          "source_port": 2222,
+          "target_port": 2222,
+          "public": true
+        },
+        {
+          "name": "diego-files",
+          "protocol": "TCP",
+          "source_port": 8080,
+          "target_port": 8080,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "app-ssh-key"
+        },
+        {
+          "name": "bbs-client-crt"
+        },
+        {
+          "name": "bbs-client-key"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "uaa-clients-diego-ssh-proxy-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "diego-cell",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-diego-cell",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 4096,
+      "min_VCPU": 0.34285714285714286,
+      "platform": "linux-x86_64",
+      "capabilities": [
+        "ALL"
+      ],
+      "min_instances": 1,
+      "max_instances": 254,
+      "service_ports": [
+        {
+          "name": "rep-server",
+          "protocol": "TCP",
+          "source_port": 1801,
+          "target_port": 1801,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "garden-graph",
+          "mountpoint": "/var/vcap/data/garden"
+        },
+        {
+          "volume_name": "persistore",
+          "mountpoint": "/var/vcap/persistore/servicevolumes/_volumes"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "DIEGO_CELL_MEMORY_CAPACITY_MB"
+        },
+        {
+          "name": "DIEGO_CELL_NETWORK_MTU"
+        },
+        {
+          "name": "DIEGO_CELL_SUBNET"
+        },
+        {
+          "name": "GARDEN_DOCKER_REGISTRY"
+        },
+        {
+          "name": "GARDEN_INSECURE_DOCKER_REGISTRIES"
+        },
+        {
+          "name": "GARDEN_LINUX_DNS_SERVER"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "LOG_LEVEL"
+        },
+        {
+          "name": "ROOTFS_TRUSTED_CERTS"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "TRUSTED_CERTS"
+        },
+        {
+          "name": "bbs-client-crt"
+        },
+        {
+          "name": "bbs-client-key"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "consul-server-cert"
+        },
+        {
+          "name": "consul-server-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "rep-server-cert"
+        },
+        {
+          "name": "rep-server-key"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "sclr-api",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-sclr-api",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 1536,
+      "min_VCPU": 0.08571428571428572,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "api",
+          "protocol": "TCP",
+          "source_port": 28861,
+          "target_port": 28861,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "autoscaler-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "nats-password"
+        },
+        {
+          "name": "uaa-clients-cf-autoscaler-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "sclr-server",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-sclr-server",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 1024,
+      "min_VCPU": 0.08571428571428572,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "server",
+          "protocol": "TCP",
+          "source_port": 28862,
+          "target_port": 28862,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "autoscaler-couchdb-password"
+        },
+        {
+          "name": "autoscaler-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "uaa-clients-cf-autoscaler-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "sclr-broker",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-sclr-broker",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 1536,
+      "min_VCPU": 0.08571428571428572,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "broker",
+          "protocol": "TCP",
+          "source_port": 28863,
+          "target_port": 28863,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "autoscaler-couchdb-password"
+        },
+        {
+          "name": "autoscaler-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "couchdb",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-couchdb",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.08571428571428572,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "couchdb",
+          "protocol": "TCP",
+          "source_port": 5984,
+          "target_port": 5984,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "couchdb-data",
+          "mountpoint": "/var/vcap/store"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "autoscaler-couchdb-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "hcf-sso",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-hcf-sso",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 128,
+      "min_VCPU": 0.08571428571428572,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "service-broker",
+          "protocol": "TCP",
+          "source_port": 3000,
+          "target_port": 3000,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "HCF_SSO_OAUTH_AUTHORIZE_URL"
+        },
+        {
+          "name": "HCF_SSO_OAUTH_ID"
+        },
+        {
+          "name": "HCF_SSO_OAUTH_TOKEN_URL"
+        },
+        {
+          "name": "HCF_SSO_OAUTH_VERIFICATION_KEY"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "hcf-sso-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "sso-route-cert"
+        },
+        {
+          "name": "sso-route-key"
+        },
+        {
+          "name": "uaa-clients-hcf-sso-secret"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "hcf-versions",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-hcf-versions",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 128,
+      "min_VCPU": 0.08571428571428572,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "hcf-vers579f9a5",
+          "protocol": "TCP",
+          "source_port": 3000,
+          "target_port": 3000,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "NATS_HCF_CLUSTER_CONFIG_REVISION"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "blobstore-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "mysql-admin-password"
+        },
+        {
+          "name": "nats-password"
+        },
+        {
+          "name": "staging-upload-password"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "demophon",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-demophon",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 128,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 3,
+      "service_ports": [
+        {
+          "name": "demophon",
+          "protocol": "TCP",
+          "source_port": 8443,
+          "target_port": 8443,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "bbs-client-crt"
+        },
+        {
+          "name": "bbs-client-key"
+        },
+        {
+          "name": "consul-agent-cert"
+        },
+        {
+          "name": "consul-agent-key"
+        },
+        {
+          "name": "consul-encryption-keys"
+        },
+        {
+          "name": "demophon-server-cert"
+        },
+        {
+          "name": "demophon-server-key"
+        },
+        {
+          "name": "etcd-client-crt"
+        },
+        {
+          "name": "etcd-client-key"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "loggregator-shared-secret"
+        },
+        {
+          "name": "metron-cert"
+        },
+        {
+          "name": "metron-key"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "rep-server-cert"
+        },
+        {
+          "name": "rep-server-key"
+        }
+      ],
+      "workload_type": "container"
+    },
+    {
+      "name": "persi-broker",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-persi-broker",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.17142857142857143,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "service_ports": [
+        {
+          "name": "persi-broker",
+          "protocol": "TCP",
+          "source_port": 443,
+          "target_port": 443,
+          "public": false
+        }
+      ],
+      "volume_mounts": [
+        {
+          "volume_name": "persibroker-data",
+          "mountpoint": "/var/vcap/store"
+        },
+        {
+          "volume_name": "persistore",
+          "mountpoint": "/var/vcap/persistore/servicevolumes/_volumes"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "persi-broker-password"
+        },
+        {
+          "name": "persi-broker-tls-cert-key"
+        }
+      ],
+      "workload_type": "container"
+    }
+  ],
+  "features": {
+    "auth": [
+      {
+        "auth_zone": "self",
+        "user_authorities": [
+          "openid",
+          "scim.me",
+          "cloud_controller.read",
+          "cloud_controller.write",
+          "cloud_controller_service_permissions.read",
+          "password.write",
+          "uaa.user",
+          "approvals.me",
+          "oauth.approvals",
+          "notification_preferences.read",
+          "notification_preferences.write",
+          "profile",
+          "roles",
+          "user_attributes",
+          "routing.router_groups.read"
+        ],
+        "clients": [
+          {
+            "id": "cf-autoscaler-client",
+            "authorized_grant_types": [
+              "client_credentials"
+            ],
+            "scopes": [
+
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "cloud_controller.read",
+              "cloud_controller.admin"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-cf-autoscaler-secret"
+              }
+            ]
+          },
+          {
+            "id": "cf-usb",
+            "authorized_grant_types": [
+              "client_credentials"
+            ],
+            "scopes": [
+              "usb.management.admin"
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "cloud_controller.admin",
+              "usb.management.admin"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-cf-usb-secret"
+              }
+            ]
+          },
+          {
+            "id": "cc-service-dashboards",
+            "authorized_grant_types": [
+              "client_credentials"
+            ],
+            "scopes": [
+              "openid",
+              "cloud_controller_service_permissions.read"
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "clients.read",
+              "clients.write",
+              "clients.admin"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-cc-service-secret"
+              }
+            ]
+          },
+          {
+            "id": "cc_routing",
+            "authorized_grant_types": [
+              "client_credentials"
+            ],
+            "scopes": [
+
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "routing.router_groups.read"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-cc-routing-secret"
+              }
+            ]
+          },
+          {
+            "id": "cf",
+            "authorized_grant_types": [
+              "implicit",
+              "password",
+              "refresh_token"
+            ],
+            "scopes": [
+              "cloud_controller.read",
+              "cloud_controller.write",
+              "openid",
+              "password.write",
+              "cloud_controller.admin",
+              "scim.read",
+              "scim.write",
+              "doppler.firehose",
+              "uaa.user",
+              "routing.router_groups.read"
+            ],
+            "autoapprove": [
+              "cloud_controller.read",
+              "cloud_controller.write",
+              "openid",
+              "password.write",
+              "cloud_controller.admin",
+              "scim.read",
+              "scim.write",
+              "doppler.firehose",
+              "uaa.user",
+              "routing.router_groups.read"
+            ],
+            "authorities": [
+              "uaa.none"
+            ],
+            "access_token_validity": 600,
+            "refresh_token_validity": 2592000,
+            "parameters": [
+
+            ]
+          },
+          {
+            "id": "cloud_controller",
+            "authorized_grant_types": [
+              "client_credentials"
+            ],
+            "scopes": [
+
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "scim.read",
+              "scim.write",
+              "password.write"
+            ],
+            "access_token_validity": 604800,
+            "parameters": [
+              {
+                "name": "uaa-cc-client-secret"
+              }
+            ]
+          },
+          {
+            "id": "cloud_controller_username_lookup",
+            "authorized_grant_types": [
+              "client_credentials"
+            ],
+            "scopes": [
+
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "scim.userids"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-cloud-controller-username-lookup-secret"
+              }
+            ]
+          },
+          {
+            "id": "doppler",
+            "authorized_grant_types": [
+              "authorization_code",
+              "refresh_token"
+            ],
+            "scopes": [
+
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "uaa.resource"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-doppler-secret"
+              }
+            ]
+          },
+          {
+            "id": "gorouter",
+            "authorized_grant_types": [
+              "client_credentials",
+              "refresh_token"
+            ],
+            "scopes": [
+              "openid",
+              "cloud_controller_service_permissions.read"
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "clients.read",
+              "clients.write",
+              "clients.admin",
+              "route.admin",
+              "route.advertise",
+              "routing.routes.read"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-gorouter-secret"
+              }
+            ]
+          },
+          {
+            "id": "hcf_auto_config",
+            "authorized_grant_types": [
+              "client_credentials"
+            ],
+            "scopes": [
+
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "scim.read",
+              "scim.write",
+              "clients.admin",
+              "cloud_controller.admin"
+            ],
+            "access_token_validity": 600,
+            "parameters": [
+              {
+                "name": "uaa-clients-hcf-auto-config-secret"
+              }
+            ]
+          },
+          {
+            "id": "hcf-sso",
+            "authorized_grant_types": [
+              "authorization_code"
+            ],
+            "scopes": [
+              "scim.me"
+            ],
+            "autoapprove": [
+              "scim.me"
+            ],
+            "access_token_validity": 3600,
+            "parameters": [
+              {
+                "name": "uaa-clients-hcf-sso-secret"
+              }
+            ]
+          },
+          {
+            "id": "login",
+            "authorized_grant_types": [
+              "authorization_code",
+              "client_credentials",
+              "refresh_token"
+            ],
+            "scopes": [
+              "openid",
+              "oauth.approvals"
+            ],
+            "autoapprove": [
+              "openid",
+              "oauth.approvals"
+            ],
+            "authorities": [
+              "oauth.login",
+              "scim.write",
+              "clients.read",
+              "notifications.write",
+              "critical_notifications.write",
+              "emails.write",
+              "scim.userids",
+              "password.write"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-login-secret"
+              }
+            ]
+          },
+          {
+            "id": "ssh-proxy",
+            "authorized_grant_types": [
+              "authorization_code"
+            ],
+            "scopes": [
+              "openid",
+              "cloud_controller.read",
+              "cloud_controller.write",
+              "cloud_controller.admin"
+            ],
+            "autoapprove": [
+              "openid",
+              "cloud_controller.read",
+              "cloud_controller.write",
+              "cloud_controller.admin"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-diego-ssh-proxy-secret"
+              }
+            ]
+          },
+          {
+            "id": "tcp_emitter",
+            "authorized_grant_types": [
+              "client_credentials",
+              "refresh_token"
+            ],
+            "scopes": [
+
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "routing.routes.write",
+              "routing.routes.read"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-tcp-emitter-secret"
+              }
+            ]
+          },
+          {
+            "id": "tcp_router",
+            "authorized_grant_types": [
+              "client_credentials",
+              "refresh_token"
+            ],
+            "scopes": [
+
+            ],
+            "autoapprove": [
+
+            ],
+            "authorities": [
+              "routing.routes.read"
+            ],
+            "parameters": [
+              {
+                "name": "uaa-clients-tcp-router-secret"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "parameters": [
+    {
+      "name": "ALLOWED_CORS_DOMAINS",
+      "description": "List of domains (including scheme) from which Cross-Origin requests will be accepted, a * can be used as a wildcard for any part of a domain.",
+      "example": "[]",
+      "required": true,
+      "secret": false,
+      "default": "[]"
+    },
+    {
+      "name": "ALLOW_APP_SSH_ACCESS",
+      "description": "Allow users to change the value of the app-level allow_ssh attribute.",
+      "example": "true",
+      "required": true,
+      "secret": false,
+      "default": "true"
+    },
+    {
+      "name": "BLOBSTORE_ACCESS_RULES",
+      "description": "List of allow / deny rules for the blobstore internal server. Will be followed by 'deny all'. Each entry must be follow by a semicolon.",
+      "example": "allow 10.0.0.0/8; allow 172.16.0.0/12; allow 192.168.0.0/16;",
+      "required": true,
+      "secret": false,
+      "default": "allow 10.0.0.0/8; allow 172.16.0.0/12; allow 192.168.0.0/16;"
+    },
+    {
+      "name": "BLOBSTORE_MAX_UPLOAD_SIZE",
+      "description": "Maximal allowed file size for upload to blobstore, in megabytes.",
+      "example": "5000",
+      "required": true,
+      "secret": false,
+      "default": "5000"
+    },
+    {
+      "name": "blobstore-password",
+      "description": "The basic auth password that Cloud Controller uses to connect to the blobstore server. Auto-generated if not provided. Passwords must be alphanumeric (URL-safe).",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "blobstore-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "blobstore-secure-link",
+      "description": "The secret used for signing URLs between Cloud Controller and blobstore.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "blobstore-secure-link",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "autoscaler-password",
+      "description": "The Autoscaler API password. Auto-generated if not provided. Passwords must be alphanumeric (URL-safe).",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "autoscaler-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "CDN_URI",
+      "description": "URI for a CDN to use for buildpack downloads.",
+      "example": "''",
+      "required": true,
+      "secret": false,
+      "default": "''"
+    },
+    {
+      "name": "CONSUL_HCF_CLUSTER_CONFIG_REVISION",
+      "description": "An indicator to increment when changing the number of consul hosts in the cluster, to properly trigger HCP component restarts.",
+      "example": "0",
+      "required": true,
+      "secret": false,
+      "default": "0"
+    },
+    {
+      "name": "DIEGO_CELL_MEMORY_CAPACITY_MB",
+      "description": "The memory capacity the cell should manage. If this capacity is larger than the actual memory of the cell component, over-provisioning will occur.",
+      "example": "auto",
+      "required": true,
+      "secret": false,
+      "default": "auto"
+    },
+    {
+      "name": "USE_DIEGO_PRIVILEGED_CONTAINERS",
+      "description": "Whether or not to use privileged containers for buildpack based applications. Containers with a docker-image-based rootfs will continue to always be unprivileged.",
+      "example": "false",
+      "required": true,
+      "secret": false,
+      "default": "false"
+    },
+    {
+      "name": "DISABLE_CUSTOM_BUILDPACKS",
+      "description": "Disable external buildpacks. Only admin buildpacks and system buildpacks will be available to users.",
+      "example": "false",
+      "required": true,
+      "secret": false,
+      "default": "false"
+    },
+    {
+      "name": "DEFAULT_APP_DISK_IN_MB",
+      "description": "The standard amount of disk (in MB) given to an application when not overriden by the user via manifest, command line, etc.",
+      "example": "1024",
+      "required": true,
+      "secret": false,
+      "default": "1024"
+    },
+    {
+      "name": "DEFAULT_APP_MEMORY",
+      "description": "The standard amount of memory (in MB) given to an application when not overriden by the user via manifest, command line, etc.",
+      "example": "1024",
+      "required": true,
+      "secret": false,
+      "default": "1024"
+    },
+    {
+      "name": "DEFAULT_APP_SSH_ACCESS",
+      "description": "If set apps pushed to spaces that allow SSH access will have SSH enabled by default.",
+      "example": "true",
+      "required": true,
+      "secret": false,
+      "default": "true"
+    },
+    {
+      "name": "DROPLET_MAX_STAGED_STORED",
+      "description": "The number of versions of an application to keep. You will be able to rollback to this amount of versions.",
+      "example": "5",
+      "required": true,
+      "secret": false,
+      "default": "5"
+    },
+    {
+      "name": "DNS_HEALTH_CHECK_HOST",
+      "description": "The host to ping for confirmation of DNS resolution.",
+      "example": "127.0.0.1",
+      "required": true,
+      "secret": false,
+      "default": "127.0.0.1"
+    },
+    {
+      "name": "FORCE_FORWARDED_PROTO_AS_HTTPS",
+      "description": "Enables setting the X-Forwarded-Proto header if SSL termination happened upstream and the header value was set incorrectly. When this property is set to true, the gorouter sets the header X-Forwarded-Proto to https. When this value set to false, the gorouter sets the header X-Forwarded-Proto to the protocol of the incoming request.",
+      "example": "false",
+      "required": true,
+      "secret": false,
+      "default": "false"
+    },
+    {
+      "name": "GARDEN_DOCKER_REGISTRY",
+      "description": "URL pointing to the Docker registry used for fetching Docker images. If not set, the Docker service default is used.",
+      "example": "registry-1.docker.io",
+      "required": true,
+      "secret": false,
+      "default": "registry-1.docker.io"
+    },
+    {
+      "name": "GARDEN_INSECURE_DOCKER_REGISTRIES",
+      "description": "Whitelist of IP:PORT tuples and CIDR subnet masks. Pulling from docker registries with self signed certificates will not be permitted if the registry's address is not listed here.",
+      "example": "unknown",
+      "required": false,
+      "secret": false,
+      "default": ""
+    },
+    {
+      "name": "LOG_LEVEL",
+      "description": "The cluster's log level: off, fatal, error, warn, info, debug, debug1, debug2.",
+      "example": "info",
+      "required": true,
+      "secret": false,
+      "default": "info"
+    },
+    {
+      "name": "NATS_HCF_CLUSTER_CONFIG_REVISION",
+      "description": "An indicator to increment when changing the number of NATS hosts in the cluster, to properly trigger HCP component restarts.",
+      "example": "0",
+      "required": true,
+      "secret": false,
+      "default": "0"
+    },
+    {
+      "name": "NGINX_MAX_REQUEST_BODY_SIZE",
+      "description": "Sets the maximum allowed size of the client request body, specified in the “Content-Length” request header field, in megabytes. If the size in a request exceeds the configured value, the 413 (Request Entity Too Large) error is returned to the client. Please be aware that browsers cannot correctly display this error. Setting size to 0 disables checking of client request body size. This limits application uploads, buildpack uploads, etc.",
+      "example": "1536",
+      "required": true,
+      "secret": false,
+      "default": "1536"
+    },
+    {
+      "name": "MAX_APP_DISK_IN_MB",
+      "description": "The maximum amount of disk a user can request for an application via manifest, command line, etc., in MB. See also DEFAULT_APP_DISK_IN_MB for the standard amount.",
+      "example": "2048",
+      "required": true,
+      "secret": false,
+      "default": "2048"
+    },
+    {
+      "name": "MAX_HEALTH_CHECK_TIMEOUT",
+      "description": "Maximum health check timeout that can be set for an app, in seconds.",
+      "example": "180",
+      "required": true,
+      "secret": false,
+      "default": "180"
+    },
+    {
+      "name": "MYSQL_HCF_CLUSTER_CONFIG_REVISION",
+      "description": "An indicator to increment when changing the number of MySQL hosts in the cluster, to properly trigger HCP component restarts.",
+      "example": "0",
+      "required": true,
+      "secret": false,
+      "default": "0"
+    },
+    {
+      "name": "ETCD_HCF_CLUSTER_CONFIG_REVISION",
+      "description": "An indicator to increment when changing the number of etcd hosts in the cluster, to properly trigger HCP component restarts.",
+      "example": "0",
+      "required": true,
+      "secret": false,
+      "default": "0"
+    },
+    {
+      "name": "bulk-api-password",
+      "description": "The password for the bulk api.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "bulk-api-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "ccdb-role-password",
+      "description": "The password for access to the Cloud Controller database.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "ccdb-role-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "cf-usb-password",
+      "description": "The password for access to the Universal Service Broker.",
+      "example": "password",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "cf-usb-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "mysql-cf-usb-password",
+      "description": "The password for access to the usb config database.",
+      "example": "password",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "mysql-cf-usb-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "CLUSTER_ADMIN_AUTHORITIES",
+      "description": "The Oauth2 authorities available to the cluster administrator.",
+      "example": "scim.write,scim.read,openid,cloud_controller.admin,clients.read,clients.write,doppler.firehose,routing.router_groups.read",
+      "required": true,
+      "secret": false,
+      "default": "scim.write,scim.read,openid,cloud_controller.admin,clients.read,clients.write,doppler.firehose,routing.router_groups.read"
+    },
+    {
+      "name": "cluster-admin-password",
+      "description": "The password for the cluster administrator.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "immutable": true
+    },
+    {
+      "name": "CLUSTER_BUILD",
+      "description": "'build' attribute in the /v2/info endpoint",
+      "example": "4.0.1",
+      "required": true,
+      "secret": false,
+      "default": "4.0.1"
+    },
+    {
+      "name": "CLUSTER_DESCRIPTION",
+      "description": "'description' attribute in the /v2/info endpoint",
+      "example": "HPE Helion Cloud Foundry",
+      "required": true,
+      "secret": false,
+      "default": "HPE Helion Cloud Foundry"
+    },
+    {
+      "name": "CLUSTER_NAME",
+      "description": "'name' attribute in the /v2/info endpoint",
+      "example": "HCF",
+      "required": true,
+      "secret": false,
+      "default": "HCF"
+    },
+    {
+      "name": "CLUSTER_VERSION",
+      "description": "'version' attribute in the /v2/info endpoint",
+      "example": "2",
+      "required": true,
+      "secret": false,
+      "default": "2"
+    },
+    {
+      "name": "SUPPORT_ADDRESS",
+      "description": "Support contact information for the cluster",
+      "example": "stackato-support@hpe.com",
+      "required": true,
+      "secret": false,
+      "default": "stackato-support@hpe.com"
+    },
+    {
+      "name": "consul-encryption-keys",
+      "description": "Part of: A list of passphrases that will be converted into encryption keys, the first key in the list is the active one.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "consul-encryption-keys",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "db-encryption-key",
+      "description": "key for encrypting sensitive values in the Cloud Controller database.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "db-encryption-key",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "DOMAIN",
+      "description": "Base domain of the HCF cluster.",
+      "example": "my-hcf-cluster.com",
+      "required": true,
+      "secret": false
+    },
+    {
+      "name": "TCP_DOMAIN",
+      "description": "TCP routing domain of the HCF cluster.",
+      "example": "tcp.my-hcf-cluster.com",
+      "required": false,
+      "secret": false
+    },
+    {
+      "name": "RESERVABLE_PORTS",
+      "description": "Modifying this value will break TCP port forwarding.",
+      "example": "20000-20008",
+      "required": true,
+      "secret": false,
+      "default": "20000-20008"
+    },
+    {
+      "name": "HCF_LOG_HOST",
+      "description": "The log destination to talk to. If not set it defaults to flightrecorder.",
+      "example": "unknown",
+      "required": false,
+      "secret": false,
+      "default": ""
+    },
+    {
+      "name": "HCF_LOG_PORT",
+      "description": "The port used by rsyslog to talk to the log destination. If not set it defaults to the flightrecorder port. If that is not set we fall back to 514, the standard port of syslog.",
+      "example": "unknown",
+      "required": false,
+      "secret": false,
+      "default": ""
+    },
+    {
+      "name": "HCF_LOG_PROTOCOL",
+      "description": "The protocol used by rsyslog to talk to the log destination. The allowed values are tcp, and udp.",
+      "example": "tcp",
+      "required": true,
+      "secret": false,
+      "default": "tcp"
+    },
+    {
+      "name": "hcf-sso-password",
+      "description": "The password for access to the HCF SSO service broker.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "hcf-sso-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "HCF_SSO_OAUTH_AUTHORIZE_URL",
+      "description": "The OAuth authorization URL for SSO; defaults to using the same UAA as HCF",
+      "example": "unknown",
+      "required": false,
+      "secret": false
+    },
+    {
+      "name": "HCF_SSO_OAUTH_ID",
+      "description": "The OAuth client id for SSO; defaults to the HCF-built-in client for UAA",
+      "example": "hcf-sso",
+      "required": false,
+      "secret": false,
+      "default": "hcf-sso",
+      "immutable": true
+    },
+    {
+      "name": "HCF_SSO_OAUTH_TOKEN_URL",
+      "description": "The OAuth token URL for SSO; defaults to using the same UAA as HCF",
+      "example": "unknown",
+      "required": false,
+      "secret": false
+    },
+    {
+      "name": "HCF_SSO_OAUTH_VERIFICATION_KEY",
+      "description": "The OAuth verification key for SSO; defaults to using the same UAA as HCF",
+      "example": "unknown",
+      "required": false,
+      "secret": false
+    },
+    {
+      "name": "persi-broker-password",
+      "description": "The password for access to the Persi service broker.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "persi-broker-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "loggregator-shared-secret",
+      "description": "Shared secret used to verify cryptographically signed dropsonde messages.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "loggregator-shared-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "monit-password",
+      "description": "Password used for the monit API.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "monit-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "nats-password",
+      "description": "The password for access to NATS.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "nats-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "staging-upload-password",
+      "description": "The password for access to the uploader of staged droplets.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "staging-upload-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "internal-api-password",
+      "description": "Basic auth password for access to the Cloud Controller's internal API.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "internal-api-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "TRUSTED_CERTS",
+      "description": "Concatenation of trusted CA certificates to be made available on the cell.",
+      "example": "unknown",
+      "required": false,
+      "secret": false
+    },
+    {
+      "name": "uaa-admin-client-secret",
+      "description": "The password of the admin client - a client named admin with uaa.admin as an authority.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-admin-client-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-cc-client-secret",
+      "description": "The password for UAA access by the Cloud Controller.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-cc-client-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-doppler-secret",
+      "description": "The password for UAA access by doppler.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-doppler-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-gorouter-secret",
+      "description": "The password for UAA access by the gorouter.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-gorouter-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-hcf-sso-secret",
+      "description": "The OAuth client secret for SSO; defaults to a randomly generated value",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-hcf-sso-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-login-secret",
+      "description": "The password for UAA access by the login client.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-login-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-cc-routing-secret",
+      "description": "The password for UAA access by the Routing API.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-cc-routing-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-cc-service-secret",
+      "description": "Used for generating SSO clients for service brokers.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-cc-service-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-cf-usb-secret",
+      "description": "The password for UAA access by the Universal Service Broker.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-cf-usb-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-diego-ssh-proxy-secret",
+      "description": "The password for UAA access by the SSH proxy.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-diego-ssh-proxy-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-hcf-auto-config-secret",
+      "description": "The password for UAA access by the task creating the cluster administrator user",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-hcf-auto-config-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-tcp-emitter-secret",
+      "description": "The password for UAA access by the TCP emitter.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-tcp-emitter-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-tcp-router-secret",
+      "description": "The password for UAA access by the TCP router.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-tcp-router-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "bbs-active-key-passphrase",
+      "description": "The password for access to the diego BBS database.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "bbs-active-key-passphrase",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "mysql-admin-password",
+      "description": "The password for the MySQL server admin user.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "mysql-admin-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "mysql-cluster-health-password",
+      "description": "The password for the cluster logger health user.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "mysql-cluster-health-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "mysql-proxy-admin-password",
+      "description": "The password for Basic Auth used to secure the MySQL proxy API.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "mysql-proxy-admin-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "mysql-diego-password",
+      "description": "The password for access to MySQL by diego.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "mysql-diego-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "mysql-galera-healthcheck-endpoint-password",
+      "description": "The password used to contact the sidecar endpoints via Basic Auth.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "mysql-galera-healthcheck-endpoint-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-cloud-controller-username-lookup-secret",
+      "description": "The password for UAA access by the Cloud Controller for fetching usernames.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-cloud-controller-username-lookup-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaadb-password",
+      "description": "The password for access to the UAA database.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaadb-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "DIEGO_CELL_SUBNET",
+      "description": "A CIDR subnet mask specifying the range of subnets available to be assigned to containers.",
+      "example": "10.38.0.0/16",
+      "required": true,
+      "secret": false,
+      "default": "10.38.0.0/16"
+    },
+    {
+      "name": "DIEGO_CELL_NETWORK_MTU",
+      "description": "Maximum network transmission unit length in bytes for application containers.",
+      "example": "1400",
+      "required": true,
+      "secret": false,
+      "default": "1400"
+    },
+    {
+      "name": "etcd-peer-key",
+      "description": "PEM-encoded peer key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "etcd_peer_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "etcd-peer-crt",
+      "description": "PEM-encoded peer certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "etcd_peer_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "etcd-server-key",
+      "description": "PEM-encoded server key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "etcd_server_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "etcd-client-key",
+      "description": "PEM-encoded client key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "etcd_client_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "etcd-server-crt",
+      "description": "PEM-encoded server certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "etcd_server_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "etcd-client-crt",
+      "description": "PEM-encoded client certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "etcd_client_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "doppler-cert",
+      "description": "PEM-encoded certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "doppler_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "doppler-key",
+      "description": "PEM-encoded key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "doppler_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "auctioneer-server-cert",
+      "description": "PEM-encoded server certificate",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "auctioneer_server_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "auctioneer-server-key",
+      "description": "PEM-encoded server key",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "auctioneer_server_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "auctioneer-rep-cert",
+      "description": "PEM-encoded certificate",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "auctioneer_rep_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "auctioneer-rep-key",
+      "description": "PEM-encoded key",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "auctioneer_rep_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "bbs-auctioneer-cert",
+      "description": "PEM-encoded certificate",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "bbs_auctioneer_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "bbs-auctioneer-key",
+      "description": "PEM-encoded key",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "bbs_auctioneer_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "bbs-rep-cert",
+      "description": "PEM-encoded certificate",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "bbs_rep_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "bbs-rep-key",
+      "description": "PEM-encoded key",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "bbs_rep_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "rep-server-cert",
+      "description": "PEM-encoded server certificate",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "rep_server_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "rep-server-key",
+      "description": "PEM-encoded server key",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "rep_server_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "metron-key",
+      "description": "PEM-encoded key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "metron_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "metron-cert",
+      "description": "PEM-encoded certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "metron_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "saml-serviceprovider-cert",
+      "description": "PEM-encoded certificate",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "saml_serviceprovider_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "saml-serviceprovider-key",
+      "description": "PEM-encoded key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "saml_serviceprovider_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "trafficcontroller-cert",
+      "description": "PEM-encoded certificate",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "trafficcontroller_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "trafficcontroller-key",
+      "description": "PEM-encoded key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "trafficcontroller_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "bbs-server-key",
+      "description": "PEM-encoded client key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "bbs_server_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "bbs-client-key",
+      "description": "PEM-encoded client key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "bbs_client_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "bbs-server-crt",
+      "description": "PEM-encoded client certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "bbs_server_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "bbs-client-crt",
+      "description": "PEM-encoded client certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "bbs_client_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "app-ssh-key",
+      "description": "PEM encoded RSA private key used to identify host.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "app_ssh",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "SSH"
+        }
+      }
+    },
+    {
+      "name": "app-ssh-key-fingerprint",
+      "description": "MD5 fingerprint of the host key of the SSH proxy that brokers connections to application instances.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "app_ssh",
+        "generate": {
+          "value_type": "fingerprint",
+          "type": "SSH"
+        }
+      }
+    },
+    {
+      "name": "ROOTFS_TRUSTED_CERTS",
+      "description": "Certficates to add to the rootfs trust store. Multiple certs are possible by concatenating their definitions into one big block of text.",
+      "example": "unknown",
+      "required": false,
+      "secret": false,
+      "default": ""
+    },
+    {
+      "name": "router-services-secret",
+      "description": "Support for route services is disabled when no value is configured. A robust passphrase is recommended.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "router-services-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "router-ssl-cert",
+      "description": "The public ssl cert for ssl termination.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "router_cert",
+        "generate": {
+          "value_type": "certificate",
+          "key_length": 4096,
+          "type": "Certificate",
+          "subject_alt_names": [
+            {
+              "parameter": "DOMAIN",
+              "wildcard": false
+            },
+            {
+              "parameter": "DOMAIN",
+              "wildcard": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "router-ssl-key",
+      "description": "The private ssl key for ssl termination.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "router_cert",
+        "generate": {
+          "value_type": "private_key",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "haproxy-ssl-cert-key",
+      "description": "SSL certificate (PEM file).",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "router_cert",
+        "generate": {
+          "value_type": "cert_private_key",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "router-status-password",
+      "description": "Password for HTTP basic auth to the varz/status endpoint.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "router_status_password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-server-key",
+      "description": "The server's ssl private key. Only passphrase-less keys are supported.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa_cert",
+        "generate": {
+          "value_type": "private_key",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "uaa-server-cert",
+      "description": "The server's ssl certificate. The default is a self-signed certificate and should always be replaced for production deployments.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa_cert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "blobstore-tls-cert",
+      "description": "The PEM-encoded certificate (optionally as a certificate chain) for serving blobs over TLS/SSL.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "blobstore_cert",
+        "generate": {
+          "value_type": "certificate",
+          "key_length": 4096,
+          "type": "Certificate",
+          "subject_alt_names": [
+            {
+              "parameter": "DOMAIN",
+              "wildcard": false
+            },
+            {
+              "parameter": "DOMAIN",
+              "wildcard": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "blobstore-tls-key",
+      "description": "The PEM-encoded private key for signing TLS/SSL traffic.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "blobstore_cert",
+        "generate": {
+          "value_type": "private_key",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "consul-agent-cert",
+      "description": "PEM-encoded agent certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "consul_agent_cert",
+        "generate": {
+          "value_type": "certificate",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "consul-agent-key",
+      "description": "PEM-encoded client key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "consul_agent_cert",
+        "generate": {
+          "value_type": "private_key",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "consul-server-cert",
+      "description": "PEM-encoded server certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "consul_server_cert",
+        "generate": {
+          "value_type": "certificate",
+          "key_length": 4096,
+          "type": "Certificate",
+          "subject_alt_names": [
+            {
+              "static": "server.dc1.hcf",
+              "wildcard": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "consul-server-key",
+      "description": "PEM-encoded server key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "consul_server_cert",
+        "generate": {
+          "value_type": "private_key",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "demophon-server-cert",
+      "description": "PEM-encoded server certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "demophon_server_cert",
+        "generate": {
+          "value_type": "certificate",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "demophon-server-key",
+      "description": "PEM-encoded server key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "demophon_server_cert",
+        "generate": {
+          "value_type": "private_key",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "persi-broker-tls-cert-key",
+      "description": "TLS certificate and key (PEM file).",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "persi_broker_cert",
+        "generate": {
+          "value_type": "cert_private_key",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "SKIP_CERT_VERIFY_INTERNAL",
+      "description": "Determines whether dashboard verifies SSL certificates when communicating with Cloud Controller and UAA.",
+      "example": "false",
+      "required": true,
+      "secret": false,
+      "default": "false"
+    },
+    {
+      "name": "SKIP_CERT_VERIFY_EXTERNAL",
+      "description": "Skip TLS verification when communicating with UAA system domain.",
+      "example": "false",
+      "required": true,
+      "secret": false,
+      "default": "false"
+    },
+    {
+      "name": "GARDEN_LINUX_DNS_SERVER",
+      "description": "Override DNS servers to be used in containers; defaults to the same as the host.",
+      "example": "unknown",
+      "required": false,
+      "secret": false,
+      "default": ""
+    },
+    {
+      "name": "internal-ca-cert",
+      "description": "PEM-encoded CA certificate used to sign TLS certificate hosted by Diego BBS.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "cacert",
+        "generate": {
+          "value_type": "certificate",
+          "type": "CACertificate"
+        }
+      }
+    },
+    {
+      "name": "sso-route-cert",
+      "description": "Certificate for the SSO service.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "sso_cert",
+        "generate": {
+          "value_type": "certificate",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "sso-route-key",
+      "description": "Key for the SSO service.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "sso_cert",
+        "generate": {
+          "value_type": "private_key",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "STAGER_INSECURE_DOCKER_REGISTRIES",
+      "description": "A comma-separated list of insecure Docker registries in the form of '<HOSTNAME|IP>:PORT'. Each registry must be quoted separately.\n",
+      "example": "\"docker-registry.example.com:80\", \"hello.example.org:443\"",
+      "required": false,
+      "secret": false,
+      "default": ""
+    },
+    {
+      "name": "USE_STAGER_PRIVILEGED_CONTAINERS",
+      "description": "Whether or not to use privileged containers for staging tasks.",
+      "example": "false",
+      "required": true,
+      "secret": false,
+      "default": "false"
+    },
+    {
+      "name": "STAGING_TIMEOUT",
+      "description": "Timeout for staging an app, in seconds.",
+      "example": "900",
+      "required": true,
+      "secret": false,
+      "default": "900"
+    },
+    {
+      "name": "cf-usb-broker-server-cert",
+      "description": "PEM-encoded broker server certificate.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "usb_broker_server_cert",
+        "generate": {
+          "value_type": "certificate",
+          "key_length": 4096,
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "cf-usb-broker-server-key",
+      "description": "PEM-encoded broker server key.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "usb_broker_server_cert",
+        "generate": {
+          "value_type": "private_key",
+          "type": "Certificate"
+        }
+      }
+    },
+    {
+      "name": "autoscaler-couchdb-password",
+      "description": "the password.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "autoscaler-couchdb-password",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "uaa-clients-cf-autoscaler-secret",
+      "description": "The password for UAA access by the Autoscaler.",
+      "example": "unknown",
+      "required": true,
+      "secret": true,
+      "generator": {
+        "id": "uaa-clients-cf-autoscaler-secret",
+        "generate": {
+          "type": "Password"
+        }
+      },
+      "immutable": true
+    },
+    {
+      "name": "APP_TOKEN_UPLOAD_GRACE_PERIOD",
+      "description": "Extra token expiry time while uploading big apps, in seconds.",
+      "example": "1200",
+      "required": true,
+      "secret": false,
+      "default": "1200"
+    }
+  ],
+  "preflight": [
+
+  ],
+  "postflight": [
+    {
+      "name": "post-deployment-setup",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-post-deployment-setup",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.08571428571428572,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "service_ports": [
+
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "CLUSTER_ADMIN_AUTHORITIES"
+        },
+        {
+          "name": "DOMAIN"
+        },
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "cluster-admin-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "uaa-admin-client-secret"
+        },
+        {
+          "name": "uaa-clients-hcf-auto-config-secret"
+        }
+      ],
+      "workload_type": "container",
+      "retry_count": 5
+    },
+    {
+      "name": "sso-create-service",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-sso-create-service",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.08571428571428572,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "service_ports": [
+
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "hcf-sso-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "uaa-clients-hcf-auto-config-secret"
+        }
+      ],
+      "workload_type": "container",
+      "retry_count": 5
+    },
+    {
+      "name": "autoscaler-create-service",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-autoscaler-create-service",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.08571428571428572,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "service_ports": [
+
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "autoscaler-password"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "uaa-clients-hcf-auto-config-secret"
+        }
+      ],
+      "workload_type": "container",
+      "retry_count": 5
+    },
+    {
+      "name": "persi-create-service",
+      "repository": "docker.io",
+      "organization": "stackatodev",
+      "image": "hcf-persi-create-service",
+      "tag": "1.8.7-rc.1-cf251.0.ged919a9",
+      "min_RAM_mb": 256,
+      "min_VCPU": 0.08571428571428572,
+      "platform": "linux-x86_64",
+      "capabilities": [
+
+      ],
+      "min_instances": 1,
+      "max_instances": 1,
+      "service_ports": [
+
+      ],
+      "volume_mounts": [
+
+      ],
+      "parameters": [
+        {
+          "name": "HCF_LOG_HOST"
+        },
+        {
+          "name": "HCF_LOG_PORT"
+        },
+        {
+          "name": "HCF_LOG_PROTOCOL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_EXTERNAL"
+        },
+        {
+          "name": "SKIP_CERT_VERIFY_INTERNAL"
+        },
+        {
+          "name": "internal-ca-cert"
+        },
+        {
+          "name": "monit-password"
+        },
+        {
+          "name": "persi-broker-password"
+        },
+        {
+          "name": "uaa-clients-hcf-auto-config-secret"
+        }
+      ],
+      "workload_type": "container",
+      "retry_count": 5
+    }
+  ]
+}
