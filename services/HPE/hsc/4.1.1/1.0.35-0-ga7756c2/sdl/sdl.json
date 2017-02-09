@@ -730,7 +730,7 @@
     {
       "name": "OPENTSDB_HOST",
       "description": "Host of Opentsdb sink",
-      "default": "opentsdb.hsc.svc",
+      "default": "opentsdb-int.hsc.svc",
       "required": false,
       "secret": false
     },
@@ -769,7 +769,7 @@
     {
       "name": "HEAPSTER_HOST",
       "description": "Heapster host",
-      "default": "heapster.hsc.svc",
+      "default": "heapster-int.hsc.svc",
       "data_type": "string",
       "required": false,
       "secret": false
