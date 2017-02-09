@@ -1,0 +1,7 @@
+{
+  "disabled":
+    {
+      "vulnerability": false,
+      "reason": "New RC build is now available, so this sdl version being deprecated."
+    }
+}
