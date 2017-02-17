@@ -3755,10 +3755,10 @@
     {
       "name": "CLUSTER_BUILD",
       "description": "'build' attribute in the /v2/info endpoint",
-      "example": "4.0.1",
+      "example": "4.1.1",
       "required": true,
       "secret": false,
-      "default": "4.0.1"
+      "default": "4.1.1"
     },
     {
       "name": "CLUSTER_DESCRIPTION",
